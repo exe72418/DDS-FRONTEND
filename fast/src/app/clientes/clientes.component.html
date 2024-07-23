@@ -1,1 +1,9 @@
 <p>clientes works!</p>
+<div class="clientes">
+  <h2>Listado de Clientes</h2>
+  <ul>
+    <li *ngFor="let cliente of clientes">
+      {{ cliente.id }} - {{ cliente.apellidoNombre }} - {{ cliente.telefono }} - {{ cliente.cuit }} - {{ cliente.email }} - {{ cliente.domicilio }}
+      </li>
+  </ul>
+</div>
