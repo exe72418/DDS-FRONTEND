@@ -1,9 +1,24 @@
-<p>clientes works!</p>
-<div class="clientes">
-  <h2>Listado de Clientes</h2>
-  <ul>
-    <li *ngFor="let cliente of clientes">
-      {{ cliente.id }} - {{ cliente.apellidoNombre }} - {{ cliente.telefono }} - {{ cliente.cuit }} - {{ cliente.email }} - {{ cliente.domicilio }}
-      </li>
-  </ul>
+<div class="tabla-centrada">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Apellido y Nombre</th>
+        <th>Teléfono</th>
+        <th>CUIT</th>
+        <th>Email</th>
+        <th>Domicilio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cliente of clientes">
+        <td>{{ cliente.id }}</td>
+        <td>{{ cliente.apellidoNombre }}</td>
+        <td>{{ cliente.telefono }}</td>
+        <td>{{ cliente.cuit }}</td>
+        <td>{{ cliente.email }}</td>
+        <td>{{ cliente.domicilio }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
