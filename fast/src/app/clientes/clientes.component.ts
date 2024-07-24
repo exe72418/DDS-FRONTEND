@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ClienteService } from '../services/cliente.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ClientesComponent implements OnInit {
 
-  constructor(private apiService: ApiService, public router: Router) { }
+  constructor(private apiService: ClienteService, public router: Router) { }
   clientes: Cliente[] = [];
 
   ngOnInit(): void {
@@ -20,7 +20,7 @@ export class ClientesComponent implements OnInit {
   }
 
   llenarData() {
-    this.apiService.getAllClientes().subscribe(data => {
+    this.apiService.getAllClients().subscribe(data => {
       this.clientes = data['data'].map((cliente: Cliente) => {
         const clienteFormateado: Cliente = {
           id: cliente.id,
