@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientes',
@@ -11,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ClientesComponent implements OnInit {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, public router: Router) { }
   clientes: Cliente[] = [];
 
   ngOnInit(): void {

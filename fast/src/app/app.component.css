@@ -6,6 +6,16 @@
   padding: 20px;
 }
 
+footer {
+  position: absolute;
+  color: #f0f0f0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 20px;
+}
+
 /* Estilos para el título "FAST" */
 .navbar-brand {
   margin-left: 5%;
