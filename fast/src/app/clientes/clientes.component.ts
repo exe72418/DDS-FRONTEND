@@ -20,7 +20,7 @@ export class ClientesComponent implements OnInit {
   }
 
   llenarData() {
-    this.apiService.getData().subscribe(data => {
+    this.apiService.getAllClientes().subscribe(data => {
       this.clientes = data['data'].map((cliente: Cliente) => {
         const clienteFormateado: Cliente = {
           id: cliente.id,
