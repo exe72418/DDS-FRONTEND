@@ -1,24 +1,47 @@
-<div class="tabla-centrada">
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Apellido y Nombre</th>
-        <th>Teléfono</th>
-        <th>CUIT</th>
-        <th>Email</th>
-        <th>Domicilio</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let cliente of clientes">
-        <td>{{ cliente.id }}</td>
-        <td>{{ cliente.apellidoNombre }}</td>
-        <td>{{ cliente.telefono }}</td>
-        <td>{{ cliente.cuit }}</td>
-        <td>{{ cliente.email }}</td>
-        <td>{{ cliente.domicilio }}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="container">
+  <nav class="navbar">
+    <a href="#" class="navbar-brand">FAST</a>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a href="/clientes" class="nav-link">Clientes</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Crear cliente</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Buscar cliente</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Actualizar cliente</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Borrar cliente</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="tabla-centrada">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Apellido y Nombre</th>
+          <th>Teléfono</th>
+          <th>CUIT</th>
+          <th>Email</th>
+          <th>Domicilio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of clientes">
+          <td>{{ cliente.id }}</td>
+          <td>{{ cliente.apellidoNombre }}</td>
+          <td>{{ cliente.telefono }}</td>
+          <td>{{ cliente.cuit }}</td>
+          <td>{{ cliente.email }}</td>
+          <td>{{ cliente.domicilio }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
