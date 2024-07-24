@@ -1,28 +1,29 @@
 <div class="container">
   <div class="form-container">
     <h2>Crear Cliente</h2>
-    <form >
+    <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="apellidoNombre">Apellido y Nombre:</label>
-        <input type="text" class="form-control" id="apellidoNombre" name="apellidoNombre">
+        <input type="text" class="form-control" id="apellidoNombre" name="apellidoNombre" formControlName="apellidoNombre">
       </div>
       <div class="form-group">
         <label for="telefono">Teléfono:</label>
-        <input type="tel" class="form-control" id="telefono" name="telefono">
+        <input type="tel" class="form-control" id="telefono" name="telefono" formControlName="telefono">
       </div>
       <div class="form-group">
         <label for="cuit">CUIT:</label>
-        <input type="text" class="form-control" id="cuit" name="cuit">
+        <input type="text" class="form-control" id="cuit" name="cuit" formControlName="cuit">
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email">
+        <input type="email" class="form-control" id="email" name="email" formControlName="email">
       </div>
       <div class="form-group">
         <label for="domicilio">Domicilio:</label>
-        <input type="text" class="form-control" id="domicilio" name="domicilio">
+        <input type="text" class="form-control" id="domicilio" name="domicilio" formControlName="domicilio">
       </div>
       <button type="submit" class="btn btn-primary">Crear</button>
     </form>
+
   </div>
 </div>
