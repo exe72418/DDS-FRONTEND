@@ -15,6 +15,13 @@
   color: #2196F3; /* Color azul */
   text-transform: uppercase; /* Texto en mayúsculas */
 }
+.iconos{
+  display: flex;
+  justify-content: space-around;
+}
+.iconos:hover{
+  cursor: pointer;
+}
 
 
 /* Estilos para la navbar */

@@ -1,6 +1,7 @@
 <div class="container">
   <div class="form-container">
-    <h2>Crear Cliente</h2>
+    <h2 *ngIf="!cliente">Crear Cliente</h2>
+    <h2 *ngIf="cliente">Modificar Cliente</h2>
     <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="apellidoNombre">Apellido y Nombre:</label>
@@ -22,7 +23,9 @@
         <label for="domicilio">Domicilio:</label>
         <input type="text" class="form-control" id="domicilio" name="domicilio" formControlName="domicilio">
       </div>
-      <button type="submit" class="btn btn-primary">Crear</button>
+      <button *ngIf="!cliente" type="submit" class="btn btn-primary">Crear</button>
+      <button *ngIf="cliente" type="submit" class="btn btn-primary">Modificar</button>
+
     </form>
 
   </div>

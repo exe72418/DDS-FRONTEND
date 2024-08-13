@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Cliente } from '../models/cliente';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ClienteService {
 
   constructor(private http: HttpClient) { }
 
-  get(id: any): Observable<any> {
+  get(id: number): Observable<Cliente> {
     return this.http.get<any>(`${this.baseUrl}/${id}`)
   }
 
@@ -19,15 +20,15 @@ export class ClienteService {
     return this.http.get<any>(this.baseUrl)
   }
 
-  createClient(data: any): Observable<any> {
+  createClient(data: Cliente): Observable<Cliente> {
     return this.http.post<any>(this.baseUrl, data)
   }
 
-  updateClient(id: any, data: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, data)
+  updateClient(data: Cliente): Observable<Cliente> {
+    return this.http.put<any>(`${this.baseUrl}`, data)
   }
 
-  deleteClient(id: any): Observable<any> {
+  deleteClient(id: any): Observable<Cliente> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`)
   }
 }

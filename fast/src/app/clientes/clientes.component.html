@@ -1,5 +1,5 @@
 
-<div class="container">
+<div *ngIf="!editCreateMode" class="container">
   <div class="tabla-centrada">
     <table>
       <thead>
@@ -10,6 +10,7 @@
           <th>CUIT</th>
           <th>Email</th>
           <th>Domicilio</th>
+          <th>Editar/Borrar</th>
         </tr>
       </thead>
       <tbody>
@@ -20,8 +21,15 @@
           <td>{{ cliente.cuit }}</td>
           <td>{{ cliente.email }}</td>
           <td>{{ cliente.domicilio }}</td>
+          <td class="iconos">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit" (click)="navegarEdit(cliente)"></mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
+<div *ngIf="editCreateMode">
+  <app-crear-clientes [cliente]="clienteSelected"></app-crear-clientes>
 </div>
