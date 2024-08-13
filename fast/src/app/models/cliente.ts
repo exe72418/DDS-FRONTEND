@@ -1,9 +1,10 @@
 
 export class Cliente {
-    apellidoNombre: string = "";
-    id: string = "";
-    telefono: string = "";
-    email: string = "";
-    domicilio: string = "";
-    cuit: string = "";
+    apellidoNombre!: string;
+    id!: number;
+    telefono!: string;
+    email!: string;
+    domicilio!: string;
+    cuit!: string;
+    disponible!:boolean;
   }

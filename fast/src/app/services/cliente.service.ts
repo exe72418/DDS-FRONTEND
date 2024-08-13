@@ -28,7 +28,7 @@ export class ClienteService {
     return this.http.put<any>(`${this.baseUrl}`, data)
   }
 
-  deleteClient(id: any): Observable<Cliente> {
+  deleteClient(id: any): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`)
   }
 }

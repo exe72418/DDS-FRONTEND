@@ -11,6 +11,7 @@
           <th>Email</th>
           <th>Domicilio</th>
           <th>Editar/Borrar</th>
+          <th>Disponible</th>
         </tr>
       </thead>
       <tbody>
@@ -21,9 +22,10 @@
           <td>{{ cliente.cuit }}</td>
           <td>{{ cliente.email }}</td>
           <td>{{ cliente.domicilio }}</td>
+          <td>{{ cliente.disponible}}</td>
           <td class="iconos">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit" (click)="navegarEdit(cliente)"></mat-icon>
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" (click)="borrarCliente(cliente)"></mat-icon>
           </td>
         </tr>
       </tbody>

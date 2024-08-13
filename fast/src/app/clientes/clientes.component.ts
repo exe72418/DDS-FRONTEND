@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import { Cliente } from '../models/cliente';
 import { CrearClientesComponent } from "../crear-clientes/crear-clientes.component";
-import Swal, { SweetAlertResult } from 'sweetalert2'
+import Swal from 'sweetalert2'
 
 
 @Component({
@@ -19,6 +19,8 @@ export class ClientesComponent implements OnInit {
 
   constructor(private apiService: ClienteService, public router: Router
   ) { }
+
+  //swal = require('sweetalert2');
   clientes!:Cliente [];
   editCreateMode:boolean = false
   clienteSelected! : Cliente;
@@ -34,8 +36,32 @@ export class ClientesComponent implements OnInit {
     this.editCreateMode = true
   }
 
-  borrarCliente(id:number){
-    
+  borrarCliente(cliente:Cliente){
+    Swal.fire({
+      title: "Atencion?",
+      text: "Deseas borrar el cliente " + cliente.apellidoNombre,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.apiService.deleteClient(cliente.id).subscribe((cliente)=>{
+          Swal.fire({
+            title: "Cliente borrado",
+            text: "",
+            icon: "success"
+          });
+        },(error)=>{
+          Swal.fire({
+            title: "Cliente no se borro",
+            text: error.message,
+            icon: "error"
+          });
+        })
+      }
+    });
   }
 
   llenarData() {
@@ -48,6 +74,7 @@ export class ClientesComponent implements OnInit {
           email: cliente.email,
           domicilio: cliente.domicilio,
           cuit: cliente.cuit,
+          disponible:cliente.disponible
         };
         return clienteFormateado;
       });
