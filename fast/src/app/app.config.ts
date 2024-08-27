@@ -8,6 +8,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     providers: [
       provideHttpClient(),
       provideZoneChangeDetection({ eventCoalescing: true }),
-      provideRouter(routes), provideAnimationsAsync(),
+      provideRouter(routes), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(),
     ],
   };
