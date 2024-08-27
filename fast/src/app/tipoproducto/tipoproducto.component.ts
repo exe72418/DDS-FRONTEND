@@ -24,11 +24,6 @@ export class TipoproductoComponent implements OnInit {
 
   tiposProducto: TipoProducto[] = [];
 
-  
-  ELEMENT_DATA: TipoProducto[] = [
-    {id: 1 ,  productos : [] ,nombre: 'Electrodomesticos'}
-  ];
-
   ngOnInit(): void {
     this.tipoproductoService.getAll().subscribe((data:any)=>{
       console.log(data);
@@ -36,7 +31,6 @@ export class TipoproductoComponent implements OnInit {
         const tipoProductoFormateado: TipoProducto = {
           id: tipoprod.id,
           nombre: tipoprod.nombre,
-          productos: tipoprod.productos,
         };
         return tipoProductoFormateado;
       });
