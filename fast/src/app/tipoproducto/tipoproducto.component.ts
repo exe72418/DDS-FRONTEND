@@ -5,11 +5,12 @@ import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/
 import { DataSource } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-tipoproducto',
   standalone: true,
-  imports: [MatTable, MatTableModule, CommonModule, TableModule],
+  imports: [MatTable, MatTableModule, CommonModule, TableModule, ButtonModule],
   templateUrl: './tipoproducto.component.html',
   styleUrl: './tipoproducto.component.css'
 })
@@ -17,6 +18,12 @@ import { TableModule } from 'primeng/table';
 
 
 export class TipoproductoComponent implements OnInit {
+deleteProduct(arg0: any) {
+throw new Error('Method not implemented.');
+}
+editProduct(arg0: any) {
+throw new Error('Method not implemented.');
+}
 
   displayedColumns: string[] = ['nombre'];
     
