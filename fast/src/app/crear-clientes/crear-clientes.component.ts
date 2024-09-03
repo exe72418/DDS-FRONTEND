@@ -21,12 +21,13 @@ export class CrearClientesComponent implements OnInit {
 
   constructor(private http: HttpClient, private cliService: ClienteService, private router : Router) {
     this.clienteForm = new FormGroup({
-      id:new FormControl('', [Validators.required]),
+      id:new FormControl(''),
       apellidoNombre: new FormControl('', [Validators.required]),
       telefono: new FormControl('', [Validators.required, ]), // Ajusta la expresión regular según tus necesidades
       cuit: new FormControl('', [Validators.required, ]), // Ajusta la expresión regular según tus necesidades
       email: new FormControl('', [Validators.required, ]),
       domicilio: new FormControl('', [Validators.required]),
+      zona: new FormControl('',[Validators.required]),
     });
   }
 
@@ -39,7 +40,8 @@ export class CrearClientesComponent implements OnInit {
   onSubmit() {
     if (this.clienteForm.valid) {
       if(!this.cliente){
-        const clienteData = this.clienteForm.value;
+        let clienteData = this.clienteForm.value;
+        clienteData.id = 0;
         // Aquí puedes enviar los datos al servidor usando HttpClient
         this.cliService.createClient(clienteData)
           .subscribe(response => {

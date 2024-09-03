@@ -23,6 +23,10 @@
         <label for="domicilio">Domicilio:</label>
         <input type="text" class="form-control" id="domicilio" name="domicilio" formControlName="domicilio">
       </div>
+      <div class="form-group">
+        <label for="zona">Zona:</label>
+        <input type="text" class="form-control" id="zona" name="zona" formControlName="zona">
+      </div>
       <button *ngIf="!cliente" type="submit" class="btn btn-primary">Crear</button>
       <button *ngIf="cliente" type="submit" class="btn btn-primary">Modificar</button>
 
