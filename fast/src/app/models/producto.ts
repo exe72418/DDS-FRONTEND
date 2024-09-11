@@ -7,6 +7,4 @@ export class Producto {
     stock!: number;
     precio!: number;
     tipoProducto!: TipoProducto;
-
-    lineas! : LineaDeProducto[];
 }

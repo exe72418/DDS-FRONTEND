@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { ButtonModule } from "primeng/button";
 import { PrimeIcons } from "primeng/api";
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
     declarations:[],
@@ -21,7 +22,8 @@ import { PrimeIcons } from "primeng/api";
         CommonModule, 
         TableModule, 
         ButtonModule, 
-        CardModule
+        CardModule,
+        DropdownModule,
     ],
     exports:[
         TableModule,
@@ -34,7 +36,8 @@ import { PrimeIcons } from "primeng/api";
         CommonModule, 
         TableModule, 
         ButtonModule, 
-        CardModule
+        CardModule,
+        DropdownModule,
     ],
     schemas:[CUSTOM_ELEMENTS_SCHEMA],
 })
