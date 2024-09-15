@@ -1,1 +1,39 @@
-<p>repartidor works!</p>
+<div *ngIf="crearEditarMode == false" style="display: flex; justify-content: center; margin-bottom: 10px;">
+  <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
+</div>
+<p-table *ngIf="crearEditarMode == false" [value]="repartidores" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>ID</th>
+      <th>CUIT</th>
+      <th>APELLIDO Y NOMBRE</th>
+      <th>VEHICULO</th>
+      <th>ZONA</th>
+      <th style="text-align: center;">Editar/Borrar</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-repartidor>
+    <tr>
+
+      <td>{{ repartidor.id }}</td>
+      <td>{{ repartidor.cuit }}</td>
+      <td>{{ repartidor.apellidoNombre }}</td>
+      <td>{{ repartidor.vehiculo }}</td>
+      <td>{{ repartidor.zona }}</td>
+
+      <td>
+        <div style="margin-right: 10px; display: flex;justify-content: space-around;">
+          <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
+            (onClick)="editRepartidor(repartidor)" />
+          <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+            (onClick)="deleteRepartidor(repartidor)" />
+        </div>
+
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div>
+  <app-crear-repartidores (editCrear)="changeEditCreate()" [repartidor]="repartidorSelected"
+    *ngIf="crearEditarMode"></app-crear-repartidores>
+</div>
