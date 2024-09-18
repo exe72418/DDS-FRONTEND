@@ -38,6 +38,11 @@ export class CrearTipoProdComponent implements OnInit{
         // Aquí puedes enviar los datos al servidor usando HttpClient
         this.tipoproductoService.create(tipoProducto)
           .subscribe(response => {
+            Swal.fire({
+              title: "Guardado",
+              text: 'Tipo de producto creado',
+              icon: "success"
+            });
             // Puedes realizar acciones adicionales después de crear el cliente
             this.editCrear.emit(false);
           }, error => {
@@ -49,7 +54,7 @@ export class CrearTipoProdComponent implements OnInit{
           .subscribe(response => {
             Swal.fire({
               title: "Guardado",
-              text: "Tipo de producto guardado",
+              text: "Tipo de producto actualizado",
               icon: "success"
             });
             this.editCrear.emit(false);

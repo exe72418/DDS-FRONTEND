@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TipoproductoService } from '../services/tipoproducto.service';
 import { TipoProducto } from '../models/tipoProducto';
 import { ProductosServiceService } from '../services/productos-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-productos',
@@ -50,16 +51,34 @@ export class CrearProductosComponent implements OnInit {
   guardar(prod: Producto) {
     if(this.producto != undefined || this.producto != null){
       if(this.producto.codigo){
-        this._productoService.update(prod).subscribe((prodBackend)=>{
+        this._productoService.update(prod).subscribe(prodBackend=>{
+          Swal.fire({
+            title: "Guardado",
+            text: "Producto actualizado",
+            icon: "success"
+          });
+          this.editCrear.emit(false);
+
           console.log(prodBackend)
+        },error =>{
+          console.error('Error al modificar el producto:', error);
         })
       }
     }else{
       console.log(prod)
-      this._productoService.save(prod).subscribe((prodBackend)=>{
+      prod.codigo = 0;
+      this._productoService.save(prod).subscribe(prodBackend=>{
+        Swal.fire({
+              title: "Guardado",
+              text: "Producto creado",
+              icon: "success"
+            });
+        this.editCrear.emit(false);
+
         console.log(prodBackend)
-      })
+      }, error => {
+          console.error('Error al crear el producto:', error);
+        });
     }
-    
   }
 }
