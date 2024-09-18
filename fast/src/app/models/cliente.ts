@@ -7,4 +7,5 @@ export class Cliente {
     domicilio!: string;
     cuit!: string;
     disponible!:boolean;
+    zona!:string;
   }

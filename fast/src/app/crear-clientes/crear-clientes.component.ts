@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/cliente';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-clientes',
@@ -16,6 +17,8 @@ import { Cliente } from '../models/cliente';
 export class CrearClientesComponent implements OnInit {
 
   @Input() cliente! : Cliente ;
+  @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
+
 
   clienteForm: FormGroup;
 
@@ -45,6 +48,13 @@ export class CrearClientesComponent implements OnInit {
         // Aquí puedes enviar los datos al servidor usando HttpClient
         this.cliService.createClient(clienteData)
           .subscribe(response => {
+            Swal.fire({
+              title: "Guardado",
+              text: "Cliente creado",
+              icon: "success"
+            });
+            this.editCrear.emit(false);
+  
             console.log('Cliente creado exitosamente:', response);
             // Puedes realizar acciones adicionales después de crear el cliente
           }, error => {
@@ -55,6 +65,13 @@ export class CrearClientesComponent implements OnInit {
         // Aquí puedes enviar los datos al servidor usando HttpClient
         this.cliService.updateClient(clienteData)
           .subscribe(response => {
+            Swal.fire({
+              title: "Guardado",
+              text: "Cliente actualizado",
+              icon: "success"
+            });
+            this.editCrear.emit(false);
+  
             console.log('Cliente creado exitosamente:', response);
             // Puedes realizar acciones adicionales después de crear el cliente
           }, error => {

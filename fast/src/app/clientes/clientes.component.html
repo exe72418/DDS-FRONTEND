@@ -1,4 +1,9 @@
-
+<div *ngIf="editCreateMode == false" style="display: flex; justify-content: center; margin-bottom: 10px;">
+  <p-button 
+  label="Nuevo" 
+  icon="pi pi-plus" 
+  (onClick)="new()" />
+</div>
 <div *ngIf="!editCreateMode" class="container">
   <div class="tabla-centrada">
     <table>
@@ -10,8 +15,10 @@
           <th>CUIT</th>
           <th>Email</th>
           <th>Domicilio</th>
-          <th>Editar/Borrar</th>
           <th>Disponible</th>
+          <th>Zona</th>
+          <th>Editar/Borrar</th>
+
         </tr>
       </thead>
       <tbody>
@@ -23,6 +30,7 @@
           <td>{{ cliente.email }}</td>
           <td>{{ cliente.domicilio }}</td>
           <td>{{ cliente.disponible}}</td>
+          <td>{{cliente.zona}}</td>
           <td class="iconos">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit" (click)="navegarEdit(cliente)"></mat-icon>
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" (click)="borrarCliente(cliente)"></mat-icon>
@@ -33,5 +41,5 @@
   </div>
 </div>
 <div *ngIf="editCreateMode">
-  <app-crear-clientes [cliente]="clienteSelected"></app-crear-clientes>
+  <app-crear-clientes (editCrear)="changeEditCrear()" [cliente]="clienteSelected"></app-crear-clientes>
 </div>

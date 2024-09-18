@@ -6,16 +6,19 @@ import {MatIconModule} from '@angular/material/icon';
 import { Cliente } from '../models/cliente';
 import { CrearClientesComponent } from "../crear-clientes/crear-clientes.component";
 import Swal from 'sweetalert2'
+import { CustomComponentsModule } from '../modules/custom-components.module';
 
 
 @Component({
   selector: 'app-clientes',
   standalone: true,
-  imports: [CommonModule, MatIconModule, CrearClientesComponent],
+  imports: [CommonModule, MatIconModule, CrearClientesComponent, CustomComponentsModule],
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.css'
 })
 export class ClientesComponent implements OnInit {
+  event!: boolean;
+
 
   constructor(private apiService: ClienteService, public router: Router
   ) { }
@@ -27,6 +30,13 @@ export class ClientesComponent implements OnInit {
 
   ngOnInit(): void {
     this.llenarData();
+  }
+  new() {
+    this.editCreateMode = true;
+  }
+  changeEditCrear() {
+    this.editCreateMode = false
+    console.log(this.editCreateMode)
   }
 
   navegarEdit(cliente:Cliente){
@@ -74,7 +84,8 @@ export class ClientesComponent implements OnInit {
           email: cliente.email,
           domicilio: cliente.domicilio,
           cuit: cliente.cuit,
-          disponible:cliente.disponible
+          disponible:cliente.disponible,
+          zona:cliente.zona
         };
         return clienteFormateado;
       });

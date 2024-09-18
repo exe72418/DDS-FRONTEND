@@ -18,6 +18,7 @@
 .iconos{
   display: flex;
   justify-content: space-around;
+  margin-top: 10px;
 }
 .iconos:hover{
   cursor: pointer;

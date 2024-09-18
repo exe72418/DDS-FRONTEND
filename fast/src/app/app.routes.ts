@@ -7,7 +7,6 @@ import { RepartidorComponent } from './repartidor/repartidor.component';
 
 export const routes: Routes = [
   { path: "clientes", component: ClientesComponent },
-  { path: "crearclientes", component: CrearClientesComponent },
   { path: "crearTipoProducto", component: TipoproductoComponent },
   { path: "productos", component: ProductosComponent },
   { path: "repartidores", component: RepartidorComponent }
