@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ClienteService } from '../services/cliente.service';
-import { Cliente } from '../models/cliente';
+import { ClienteService } from '../../services/cliente.service';
+import { Cliente } from '../../models/cliente';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -54,7 +54,7 @@ export class CrearClientesComponent implements OnInit {
               icon: "success"
             });
             this.editCrear.emit(false);
-  
+
             console.log('Cliente creado exitosamente:', response);
             // Puedes realizar acciones adicionales después de crear el cliente
           }, error => {
@@ -71,14 +71,14 @@ export class CrearClientesComponent implements OnInit {
               icon: "success"
             });
             this.editCrear.emit(false);
-  
+
             console.log('Cliente creado exitosamente:', response);
             // Puedes realizar acciones adicionales después de crear el cliente
           }, error => {
             console.error('Error al crear el cliente:', error);
           });
       }
-      
+
     } else {
       // Manejar errores de validación
       console.error('Formulario inválido');

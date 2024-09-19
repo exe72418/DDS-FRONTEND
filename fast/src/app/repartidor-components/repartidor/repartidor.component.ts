@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RepartidorService } from '../services/repartidor.service';
-import { Repartidor } from '../models/repartidor';
+import { RepartidorService } from '../../services/repartidor.service';
+import { Repartidor } from '../../models/repartidor';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrearRepartidoresComponent } from "../crear-repartidores/crear-repartidores.component";
-import { CustomComponentsModule } from '../modules/custom-components.module';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-repartidor',

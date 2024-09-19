@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomComponentsModule } from '../modules/custom-components.module';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CrearProductosComponent } from "../crear-productos/crear-productos.component";
-import { ProductosServiceService } from '../services/productos-service.service';
-import { Producto } from '../models/producto';
+import { ProductosServiceService } from '../../services/productos-service.service';
+import { Producto } from '../../models/producto';
 
 //import { addIcons } from "ionicons";
 
@@ -19,7 +19,7 @@ export class ProductosComponent implements OnInit {
   prodSelected!: Producto;
   crearEditarMode: boolean = false;
   productos! : Producto[];
-  
+
   constructor(private _productoService : ProductosServiceService){
 
   }
@@ -27,7 +27,7 @@ export class ProductosComponent implements OnInit {
     this._productoService.getAll().subscribe((productos)=>{
       console.log(productos)
       this.productos = productos;
-    })  
+    })
   }
   changeEditCreate() {
     this.crearEditarMode = false;

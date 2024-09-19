@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TipoproductoService } from '../services/tipoproducto.service';
+import { TipoproductoService } from '../../services/tipoproducto.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TipoProducto } from '../models/tipoProducto';
+import { TipoProducto } from '../../models/tipoProducto';
 import Swal from 'sweetalert2';
-import { CustomComponentsModule } from '../modules/custom-components.module';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-crear-tipo-prod',
@@ -17,7 +17,7 @@ export class CrearTipoProdComponent implements OnInit{
   @Input() tipoProd!:TipoProducto;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
   tipoProdForm!: FormGroup;
-    
+
   constructor(private tipoproductoService : TipoproductoService){
     this.tipoProdForm = new FormGroup({
       id:new FormControl(''),
@@ -64,11 +64,11 @@ export class CrearTipoProdComponent implements OnInit{
             console.error('Error al modificar el Tipo de producto:', error);
           });
       }
-      
+
     } else {
       // Manejar errores de validación
       console.error('Formulario inválido');
     }
   }
-       
+
 }

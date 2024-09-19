@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Producto } from '../models/producto';
-import { CustomComponentsModule } from '../modules/custom-components.module';
+import { Producto } from '../../models/producto';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TipoproductoService } from '../services/tipoproducto.service';
-import { TipoProducto } from '../models/tipoProducto';
-import { ProductosServiceService } from '../services/productos-service.service';
+import { TipoproductoService } from '../../services/tipoproducto.service';
+import { TipoProducto } from '../../models/tipoProducto';
+import { ProductosServiceService } from '../../services/productos-service.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -29,13 +29,13 @@ export class CrearProductosComponent implements OnInit {
       stock: new FormControl('', [Validators.required]),
       precio: new FormControl('', [Validators.required]),
       tipoProducto: new FormControl('', [Validators.required]),
-      
+
     })
   }
   ngOnInit(): void {
     if(this.producto !=null){
       this.prodForm.patchValue(this.producto)
-    }  
+    }
     this.tipoproductoService.getAll().subscribe((data:any)=>{
       this.tiposProducto =data['data'].map((tipoprod: TipoProducto) => {
         const tipoProductoFormateado: TipoProducto = {

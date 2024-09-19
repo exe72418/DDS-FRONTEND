@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ClienteService } from '../services/cliente.service';
+import { ClienteService } from '../../services/cliente.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
-import { Cliente } from '../models/cliente';
+import { Cliente } from '../../models/cliente';
 import { CrearClientesComponent } from "../crear-clientes/crear-clientes.component";
 import Swal from 'sweetalert2'
-import { CustomComponentsModule } from '../modules/custom-components.module';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 
 @Component({
@@ -40,7 +40,7 @@ export class ClientesComponent implements OnInit {
   }
 
   navegarEdit(cliente:Cliente){
-    
+
     this.clienteSelected = cliente;
     console.log(cliente)
     this.editCreateMode = true

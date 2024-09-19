@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TipopagoService } from '../services/tipopago.service';
+import { TipopagoService } from '../../services/tipopago.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TipoPago } from '../models/tipopago';
+import { TipoPago } from '../../models/tipopago';
 import Swal from 'sweetalert2';
-import { CustomComponentsModule } from '../modules/custom-components.module';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-crear-tipopago',
@@ -34,9 +34,9 @@ export class CrearTipoPagoComponent implements OnInit {
 
   guardar(tipoPago: TipoPago) {
     if (this.tipoPagoForm.valid) {
-  
+
       if (!this.tipoPago) {
-        tipoPago.id = 0;  
+        tipoPago.id = 0;
 
         this.tipopagoService.create(tipoPago)
           .subscribe(response => {
@@ -45,10 +45,10 @@ export class CrearTipoPagoComponent implements OnInit {
               text: 'Tipo de pago creado',
               icon: "success"
             });
-       
+
             this.editCrear.emit(false);
           }, error => {
-      
+
             console.error('Error al crear el tipo de pago:', error);
             Swal.fire({
               title: "Error",
@@ -56,9 +56,9 @@ export class CrearTipoPagoComponent implements OnInit {
               icon: "error"
             });
           });
-  
+
       } else {
-      
+
         this.tipopagoService.update(tipoPago)
           .subscribe(response => {
             Swal.fire({
@@ -66,7 +66,7 @@ export class CrearTipoPagoComponent implements OnInit {
               text: 'Tipo de pago actualizado',
               icon: "success"
             });
-      
+
             this.editCrear.emit(false);
           }, error => {
             // Manejo de errores
@@ -78,7 +78,7 @@ export class CrearTipoPagoComponent implements OnInit {
             });
           });
       }
-  
+
     } else {
 
       Swal.fire({

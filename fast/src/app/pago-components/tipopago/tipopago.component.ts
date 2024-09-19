@@ -1,6 +1,6 @@
-import { TipoPago } from '../models/tipopago';
+import { TipoPago } from '../../models/tipopago';
 import { Component, OnInit } from '@angular/core';
-import { TipopagoService } from '../services/tipopago.service';
+import { TipopagoService } from '../../services/tipopago.service';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrearTipoPagoComponent } from "../crear-tipopago/crear-tipopago.component";
-import { CustomComponentsModule } from '../modules/custom-components.module';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-tipopago',
@@ -35,8 +35,8 @@ export class TipopagoComponent {
     this.search();
 
   }
-    
-    
+
+
     search(){
       this.tipopagoService.getAll().subscribe((data:any)=>{
         this.tiposPago =data['data'].map((tipopago: TipoPago) => {
@@ -54,17 +54,17 @@ export class TipopagoComponent {
       this.crearEditarMode = false
       this.search();
     }
-  
+
     new() {
       this.crearEditarMode = true;
     }
-  
+
     editProduct(tipopago: TipoPago) {
         this.crearEditarMode = true;
         this.tipoPagoelected = tipopago;
-        
+
     }
-    
+
 
   deleteTipoPago(tipoPago: TipoPago) {
     Swal.fire({

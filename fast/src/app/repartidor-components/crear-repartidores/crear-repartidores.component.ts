@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RepartidorService } from '../services/repartidor.service';
+import { RepartidorService } from '../../services/repartidor.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Repartidor } from '../models/repartidor';
+import { Repartidor } from '../../models/repartidor';
 import Swal from 'sweetalert2';
-import { CustomComponentsModule } from '../modules/custom-components.module';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-crear-repartidores',
