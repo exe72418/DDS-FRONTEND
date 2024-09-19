@@ -1,0 +1,18 @@
+<div style="display: flex; justify-content: center;">
+    <p-card>
+        <div>
+            <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="tipoPagoForm"
+                (ngSubmit)="guardar(tipoPagoForm.value)">
+                <h4 *ngIf="tipoPago">Modificar</h4>
+                <h4 *ngIf="!tipoPago">Crear</h4>
+                <label for="nombre">Nombre</label>
+                <input pInputText id="nombre" type="text" formControlName="nombre">
+                
+                <label for="descripcion">Descripción</label>
+                <input pInputText id="descripcion" type="text" formControlName="descripcion">
+                
+                <button style="margin-top: 10px;" pButton type="submit" label="Guardar"></button>
+            </form>
+        </div>
+    </p-card>
+</div>
