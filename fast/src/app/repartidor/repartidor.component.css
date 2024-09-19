@@ -5,3 +5,12 @@
 .p-datatable .p-datatable-thead>tr>th {
   text-align: center;
 }
+
+/* Estilos para la tabla (ya los tienes) */
+.tabla-centrada {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Ajusta la alineación vertical si lo deseas */
+  min-height: 100vh;
+  margin-top: 20px; /* Ajusta el margen superior si lo deseas */
+}
