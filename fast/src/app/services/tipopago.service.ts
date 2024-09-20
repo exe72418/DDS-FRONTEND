@@ -18,7 +18,7 @@ export class TipopagoService {
     return this.httpClient.delete<void>(environment.serverUrl+'tiposDePago/'+idTipoPago);
   }
   update (tipopago:TipoPago):Observable<TipoPago>{
-    return this.httpClient.put<TipoPago>(environment.serverUrl+'tiposDePago',tipopago)
+    return this.httpClient.put<TipoPago>(environment.serverUrl+'tiposDePago/'+tipopago.id,tipopago)
   }
   create (tipopago:TipoPago):Observable<TipoPago>{
     return this.httpClient.post<TipoPago>(environment.serverUrl+'tiposDePago',tipopago)
