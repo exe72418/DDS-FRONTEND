@@ -1,0 +1,23 @@
+<div style="display: flex; justify-content: center;">
+  <p-card>
+    <div>
+      <form style="display: flex;flex-direction: column; justify-content: center;" [formGroup]="entregaForm"
+        (ngSubmit)="guardar(entregaForm.value)">
+        <h4 *ngIf="entrega != null || entrega != undefined ">Modificar</h4>
+        <h4 *ngIf="entrega == null || entrega == undefined ">Crear</h4>
+        <label for="fecha">Fecha</label>
+        <input pInputText id="fecha" type="text" formControlName="fecha" [disabled]="true">
+        <label for="lote">Lote</label>
+        <input pInputText id="lote" type="text" formControlName="lote" [disabled]="true">
+        <label for="zona">Zona</label>
+        <input pInputText id="zona" type="text" formControlName="zona" [disabled]="true">
+        <p-dropdown id="repartidor" [options]="repartidores" formControlName="repartidor" optionLabel="apellidoNombre"
+          placeholder="Repartidor" />
+        <button style="margin-top: 10px;" pButton type="submit" class="btn btn-primary">Guardar</button>
+
+      </form>
+    </div>
+
+  </p-card>
+
+</div>

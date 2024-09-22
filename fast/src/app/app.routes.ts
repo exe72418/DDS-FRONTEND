@@ -5,7 +5,8 @@ import { TipoproductoComponent } from './producto-components/tipoproducto/tipopr
 import { ProductosComponent } from './producto-components/productos/productos.component';
 import { RepartidorComponent } from './repartidor-components/repartidor/repartidor.component';
 import { TipopagoComponent } from './pago-components/tipopago/tipopago.component';
-import { CrearTipoPagoComponent } from  './pago-components/crear-tipopago/crear-tipopago.component';
+import { CrearTipoPagoComponent } from './pago-components/crear-tipopago/crear-tipopago.component';
+import { EntregaComponent } from './entrega-components/entrega/entrega.component';
 
 export const routes: Routes = [
   { path: "clientes", component: ClientesComponent },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: "productos", component: ProductosComponent },
   { path: "repartidores", component: RepartidorComponent },
   { path: "tiposDePago", component: TipopagoComponent },
-  { path: "crearTipoPago", component: CrearTipoPagoComponent }
+  { path: "crearTipoPago", component: CrearTipoPagoComponent },
+  { path: "entregas", component: EntregaComponent }
 ];

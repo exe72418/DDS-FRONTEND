@@ -1,0 +1,39 @@
+<div *ngIf="crearEditarMode == false" style="display: flex; justify-content: center; margin-bottom: 10px;">
+  <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
+</div>
+<div style="width: 100%; display: flex; justify-content: center;">
+  <p-table *ngIf="crearEditarMode == false" [value]="entregas" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Fecha</th>
+        <th>Lote</th>
+        <th>Zona</th>
+        <th>Repartidor</th>
+        <th style="text-align: center;">Editar/Borrar</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-entrega of entregas>
+      <tr>
+        <td>{{ entrega.fecha }}</td>
+        <td>{{ entrega.lote }}</td>
+        <td>{{ entrega.zona }}</td>
+        <td>{{ entrega.repartidor.apellidoNombre }}</td>
+
+        <td>
+          <div style="margin-right: 10px; display: flex;justify-content: space-around;">
+            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
+              (onClick)="editEntrega(entrega)" />
+            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+              (onClick)="deleteEntrega(entrega)" />
+          </div>
+
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div>
+  <app-crear-entrega (editCrear)="changeEditCreate()" [entrega]="entSelected"
+    *ngIf="crearEditarMode"></app-crear-entrega>
+</div>

@@ -19,7 +19,7 @@ export class RepartidorService {
     return this.httpClient.delete<void>(environment.serverUrl + 'repartidores/' + idRepartidor);
   }
   update(repartidor: Repartidor): Observable<Repartidor> {
-    return this.httpClient.put<Repartidor>(environment.serverUrl + 'repartidores', repartidor)
+    return this.httpClient.put<Repartidor>(environment.serverUrl + 'repartidores/' + repartidor.id, repartidor)
   }
   create(repartidor: Repartidor): Observable<Repartidor> {
     return this.httpClient.post<Repartidor>(environment.serverUrl + 'repartidores', repartidor)

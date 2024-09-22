@@ -13,5 +13,5 @@ export class Entrega {
 
     repartidor!: Repartidor;
 
-    pedidos!: Pedido
+    //pedidos!: Pedido
 }
