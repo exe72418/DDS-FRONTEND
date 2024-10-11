@@ -16,10 +16,16 @@ export class EntregaService {
       .pipe(
         map((response: any) => response.entregas))
   }
+  // ARMAR EL UPDATE CON UN ID
   update(entrega: Entrega): Observable<Entrega> {
-    return this.httpClient.put<Entrega>(environment.serverUrl + 'entregas', entrega)
+    return this.httpClient.put<Entrega>(environment.serverUrl + 'entregas/' + entrega.id, entrega)
   }
   save(entrega: Entrega): Observable<Entrega> {
     return this.httpClient.post<Entrega>(environment.serverUrl + 'entregas', entrega)
+  }
+  //FALTA DELETE
+
+  delete(idEntrega: number): Observable<void> {
+    return this.httpClient.delete<void>(environment.serverUrl + 'entregas/' + idEntrega);
   }
 }

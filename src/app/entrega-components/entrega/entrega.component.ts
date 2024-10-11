@@ -3,6 +3,7 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CrearEntregaComponent } from "../crear-entrega/crear-entrega.component";
 import { EntregaService } from '../../services/entrega.service';
 import { Entrega } from '../../models/entrega';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class EntregaComponent {
   deleteEntrega(_t17: any) {
     throw new Error('Method not implemented.');
   }
+
   editEntrega(ent: Entrega) {
     this.crearEditarMode = true;
     this.entSelected = ent;
