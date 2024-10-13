@@ -1,8 +1,8 @@
-<div *ngIf="crearEditarMode == false" style="display: flex; justify-content: center; margin-bottom: 10px;">
+<div *ngIf="crearEditarModeEntrega == false" style="display: flex; justify-content: center; margin-bottom: 10px;">
   <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
 </div>
 <div style="width: 100%; display: flex; justify-content: center;">
-  <p-table *ngIf="crearEditarMode == false" [value]="entregas" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table *ngIf="crearEditarModeEntrega == false" [value]="entregas" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th>Fecha</th>
@@ -17,7 +17,7 @@
         <td>{{ entrega.fecha }}</td>
         <td>{{ entrega.lote }}</td>
         <td>{{ entrega.zona }}</td>
-        <td>{{ entrega.repartidor.apellidoNombre }}</td>
+        <td>{{ entrega.repartidor }}</td>
 
         <td>
           <div style="margin-right: 10px; display: flex;justify-content: space-around;">
@@ -35,5 +35,5 @@
 
 <div>
   <app-crear-entrega (editCrear)="changeEditCreate()" [entrega]="entSelected"
-    *ngIf="crearEditarMode"></app-crear-entrega>
+    *ngIf="crearEditarModeEntrega"></app-crear-entrega>
 </div>

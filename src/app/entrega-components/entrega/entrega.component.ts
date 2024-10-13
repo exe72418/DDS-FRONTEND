@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 export class EntregaComponent {
 
   entSelected!: Entrega;
-  crearEditarMode: boolean = false;
+  crearEditarModeEntrega: boolean = false;
   entregas!: Entrega[];
 
   constructor(private _entregaService: EntregaService) {
@@ -29,7 +29,7 @@ export class EntregaComponent {
     })
   }
   changeEditCreate() {
-    this.crearEditarMode = false;
+    this.crearEditarModeEntrega = false;
   }
 
   deleteEntrega(_t17: any) {
@@ -37,11 +37,11 @@ export class EntregaComponent {
   }
 
   editEntrega(ent: Entrega) {
-    this.crearEditarMode = true;
+    this.crearEditarModeEntrega = true;
     this.entSelected = ent;
   }
   new() {
-    this.crearEditarMode = true;
+    this.crearEditarModeEntrega = true;
   }
 
 }
