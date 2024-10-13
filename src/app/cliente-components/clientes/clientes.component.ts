@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { Cliente } from '../../models/cliente';
 import { CrearClientesComponent } from "../crear-clientes/crear-clientes.component";
 import Swal from 'sweetalert2'
@@ -24,9 +24,9 @@ export class ClientesComponent implements OnInit {
   ) { }
 
   //swal = require('sweetalert2');
-  clientes!:Cliente [];
-  editCreateMode:boolean = false
-  clienteSelected! : Cliente;
+  clientes!: Cliente[];
+  editCreateMode: boolean = false
+  clienteSelected!: Cliente;
 
   ngOnInit(): void {
     this.llenarData();
@@ -39,17 +39,17 @@ export class ClientesComponent implements OnInit {
     console.log(this.editCreateMode)
   }
 
-  navegarEdit(cliente:Cliente){
+  navegarEdit(cliente: Cliente) {
 
     this.clienteSelected = cliente;
     console.log(cliente)
     this.editCreateMode = true
   }
 
-  borrarCliente(cliente:Cliente){
+  borrarCliente(cliente: Cliente) {
     Swal.fire({
       title: "Atencion?",
-      text: "Deseas borrar el cliente " + cliente.apellidoNombre,
+      text: "Deseas dar de baja el cliente " + cliente.apellidoNombre,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -57,15 +57,15 @@ export class ClientesComponent implements OnInit {
       confirmButtonText: "Si"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.apiService.deleteClient(cliente.id).subscribe((cliente)=>{
+        this.apiService.deleteClient(cliente.id).subscribe((cliente) => {
           Swal.fire({
-            title: "Cliente borrado",
+            title: "Cliente Dado de baja",
             text: "",
             icon: "success"
           });
-        },(error)=>{
+        }, (error) => {
           Swal.fire({
-            title: "Cliente no se borro",
+            title: "no se pudo dar de baja el cliente",
             text: error.message,
             icon: "error"
           });
@@ -84,8 +84,8 @@ export class ClientesComponent implements OnInit {
           email: cliente.email,
           domicilio: cliente.domicilio,
           cuit: cliente.cuit,
-          disponible:cliente.disponible,
-          zona:cliente.zona
+          disponible: cliente.disponible,
+          zona: cliente.zona
         };
         return clienteFormateado;
       });
