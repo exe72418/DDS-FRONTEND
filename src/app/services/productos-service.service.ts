@@ -11,15 +11,15 @@ export class ProductosServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAll():Observable<Producto[]>{
-    return this.httpClient.get<Producto[]>(environment.serverUrl+'producto')
-    .pipe(
-      map((response: any) => response.productos))
+  getAll(): Observable<Producto[]> {
+    return this.httpClient.get<Producto[]>(environment.serverUrl + 'producto')
+      .pipe(
+        map((response: any) => response.productos))
   }
-  update(producto:Producto):Observable<Producto>{
-    return this.httpClient.put<Producto>(environment.serverUrl+'producto',producto)
+  update(producto: Producto): Observable<Producto> {
+    return this.httpClient.put<Producto>(environment.serverUrl + 'producto/' + producto.codigo, producto)
   }
-  save(producto:Producto):Observable<Producto>{
-    return this.httpClient.post<Producto>(environment.serverUrl+'producto',producto)
+  save(producto: Producto): Observable<Producto> {
+    return this.httpClient.post<Producto>(environment.serverUrl + 'producto', producto)
   }
 }
