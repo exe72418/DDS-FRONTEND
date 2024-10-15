@@ -1,0 +1,28 @@
+
+<div *ngIf="pedidoSelectSnapShot != undefined || pedidoSelectSnapShot != null">
+    <div *ngIf="pedidoSelectSnapShot.lineas != null" class="div">
+    
+        <p-card header="Productos"  class="card">
+            <div *ngFor="let linea of pedidoSelectSnapShot.lineas" class="divdentrocard">
+                <ng-template pTemplate="header">
+                </ng-template>
+                <p>
+                    {{linea.cantidad}} de {{linea.producto.descripcion}}
+                </p>
+                
+                <ng-template pTemplate="footer">
+                    <div class="flex gap-3 mt-1">
+                    </div>
+                </ng-template>
+            </div>
+            <p-dropdown 
+                    id="tipodeprod"
+                    [options]="clientes" 
+                    optionLabel="apellidoNombre" 
+                    (onChange)="setearCliente($event.value)"
+                    placeholder="Clientes" />
+          </p-card>
+    <p-button label="Pagar" (click)="pagar()" class="button" styleClass="w-full" />
+    </div>
+
+</div>

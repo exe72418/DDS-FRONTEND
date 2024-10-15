@@ -1,0 +1,52 @@
+<div>
+    <p-table [value]="pedidos" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Cliente</th>
+                <th>Entrega</th>
+                <th>Fecha</th>
+                <th>Pago</th>                
+                <th>Total</th>
+                <th>Lineas</th>
+                <th style="text-align: center;">Editar/Borrar</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-pedido of pedidos>
+            <tr>
+                <td>{{ pedido.cliente.apellidoNombre }}</td>
+                <td>
+                    <div *ngIf="pedido.entrega != null">
+                    {{ pedido.entrega.id }}
+                    </div>
+                </td>
+                <td>{{ pedido.fecha }}</td>
+                <td>{{ pedido.pago }}</td>
+                <td>{{ pedido.total }}</td>
+                <td>
+                    <div *ngFor="let linea of pedido.lineas">
+                        {{linea.producto}}
+                    </div>
+                </td>
+                <td >
+                    <div style="margin-right: 10px; display: flex;justify-content: space-around;">
+                        <p-button 
+                        icon="pi pi-pencil" 
+                        class="mr-2" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        severity="success" 
+                        (onClick)="editProduct(pedido)" />
+                        <p-button 
+                     
+                        icon="pi pi-trash" 
+                        severity="danger" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        (onClick)="deleteProduct(pedido)" />
+                    </div>
+                    
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

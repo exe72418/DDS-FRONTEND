@@ -1,0 +1,24 @@
+<div style="display: grid; justify-content: center; grid-template-columns: 300px 300px 300px;">
+    <div style="margin-left: 10px; margin-bottom: 10px;"  *ngFor="let product of productos">
+      <p-card header=""  [style]="{ width: '250px' }">
+        <ng-template pTemplate="header">
+        </ng-template>
+        <p>
+            {{product.descripcion}}
+        </p>
+        <div *ngFor="let linea of this.pedido.lineas">
+            <div *ngIf="product.codigo == linea.producto.codigo">
+                {{linea.cantidad}}
+            </div>
+        </div>
+        <ng-template pTemplate="footer">
+            <div class="flex gap-3 mt-1">
+                <p-button (click)="agregar(product)" label="Comprar" class="w-full" styleClass="w-full" />
+            </div>
+        </ng-template>
+        
+      </p-card>
+    </div>
+
+</div>
+
