@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PedidoServiceService } from '../services/pedido-service.service';
-import { Pedido } from '../models/pedido';
+import { Pedido } from '../../../../src/app/models/pedido';
+import { PedidoServiceService } from '../../../../src/app/services/pedido-service.service';
+
 
 @Component({
   selector: 'app-pedidos',

@@ -14,8 +14,6 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-tipoproducto',
-  standalone: true,
-  imports: [CustomComponentsModule, CrearTipoProdComponent],
   templateUrl: './tipoproducto.component.html',
   styleUrl: './tipoproducto.component.css'
 })

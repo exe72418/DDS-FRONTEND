@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { PedidoState } from '../states/pedido.state';
 import { Observable } from 'rxjs';
-import { Pedido } from '../models/pedido';
 import Swal from 'sweetalert2';
-import { Cliente } from '../models/cliente';
-import { ClienteService } from '../services/cliente.service';
 import _ from 'lodash';
-import { PedidoServiceService } from '../services/pedido-service.service';
+import { Pedido } from '../../../../src/app/models/pedido';
+import { Cliente } from '../../../../src/app/models/cliente';
+import { ClienteService } from '../../../../src/app/services/cliente.service';
+import { PedidoServiceService } from '../../../../src/app/services/pedido-service.service';
 
 
 @Component({

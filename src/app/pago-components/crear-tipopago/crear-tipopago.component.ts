@@ -7,8 +7,6 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-crear-tipopago',
-  standalone: true,
-  imports: [CustomComponentsModule],
   templateUrl: './crear-tipopago.component.html',
   styleUrls: ['./crear-tipopago.component.css']
 })

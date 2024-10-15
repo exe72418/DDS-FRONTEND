@@ -1,5 +1,7 @@
 import { Cliente } from "./cliente";
+import { Entrega } from "./entrega";
 import { LineaDeProducto } from "./lineaProducto";
+import { Pago } from "./pago";
 
 export class Pedido {
     nroPedido?: number
@@ -10,9 +12,9 @@ export class Pedido {
 
     cliente!: Cliente;
 
-    //entrega!: Entrega;
+    entrega!: Entrega;
 
-    //pago!: Pago;
+    pago!: Pago;
 
     lineas! : LineaDeProducto[];
 }

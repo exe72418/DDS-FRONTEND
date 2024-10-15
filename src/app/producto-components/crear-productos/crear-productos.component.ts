@@ -9,8 +9,6 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-productos',
-  standalone: true,
-  imports: [CustomComponentsModule],
   templateUrl: './crear-productos.component.html',
   styleUrl: './crear-productos.component.css'
 })
@@ -37,6 +35,7 @@ export class CrearProductosComponent implements OnInit {
       this.prodForm.patchValue(this.producto)
     }
     this.tipoproductoService.getAll().subscribe((data:any)=>{
+      console.log(data)
       this.tiposProducto =data['data'].map((tipoprod: TipoProducto) => {
         const tipoProductoFormateado: TipoProducto = {
           id: tipoprod.id,
@@ -44,6 +43,7 @@ export class CrearProductosComponent implements OnInit {
         };
         return tipoProductoFormateado;
       });
+      console.log(this.tiposProducto)
     })
   }
 

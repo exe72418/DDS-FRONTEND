@@ -7,8 +7,6 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-crear-repartidores',
-  standalone: true,
-  imports: [CustomComponentsModule],
   templateUrl: './crear-repartidores.component.html',
   styleUrl: './crear-repartidores.component.css'
 })

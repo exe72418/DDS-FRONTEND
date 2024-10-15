@@ -14,8 +14,6 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-repartidor',
-  standalone: true,
-  imports: [CustomComponentsModule, CrearRepartidoresComponent],
   templateUrl: './repartidor.component.html',
   styleUrl: './repartidor.component.css'
 })
@@ -73,7 +71,7 @@ export class RepartidorComponent implements OnInit {
   deleteRepartidor(repartidor: Repartidor) {
     Swal.fire({
       title: "Atencion?",
-      text: "Deseas borrar el cliente " + repartidor.apellidoNombre,
+      text: "Deseas borrar el repartidor " + repartidor.apellidoNombre,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

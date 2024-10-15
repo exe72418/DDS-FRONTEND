@@ -14,8 +14,6 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-tipopago',
-  standalone: true,
-  imports: [CustomComponentsModule, CrearTipoPagoComponent],
   templateUrl: './tipopago.component.html',
   styleUrl: './tipopago.component.css'
 })

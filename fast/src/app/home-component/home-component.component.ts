@@ -1,13 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ProductosComponent } from '../producto-components/productos/productos.component';
-import { Producto } from '../models/producto';
-import { CustomComponentsModule } from '../modules/custom-components.module';
-import { Pedido } from '../models/pedido';
-import { LineaDeProducto } from '../models/lineaProducto';
-import { ProductosServiceService } from '../services/productos-service.service';
 import { Store } from '@ngxs/store';
 import { PedidoState, SetPedidosAction } from '../states/pedido.state';
 import _ from 'lodash';
+import { ProductosServiceService } from '../../../../src/app/services/productos-service.service';
+import { Producto } from '../../../../src/app/models/producto';
+import { Pedido } from '../../../../src/app/models/pedido';
+import { LineaDeProducto } from '../../../../src/app/models/lineaProducto';
 
 
 @Component({

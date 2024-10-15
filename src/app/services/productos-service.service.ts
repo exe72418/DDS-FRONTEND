@@ -22,4 +22,7 @@ export class ProductosServiceService {
   save(producto: Producto): Observable<Producto> {
     return this.httpClient.post<Producto>(environment.serverUrl + 'producto', producto)
   }
+  delete(producto:Producto):Observable<Producto>{
+    return this.httpClient.delete<Producto>(environment.serverUrl+'producto/'+producto.codigo)
+  }
 }

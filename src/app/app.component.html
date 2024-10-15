@@ -1,27 +1,39 @@
 <div class="container">
   <nav class="navbar">
-    <a href="#" class="navbar-brand">FAST</a>
+    <a routerLink="/home" class="navbar-brand">FAST</a>
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a href="/clientes" class="nav-link">Clientes</a>
+        <a routerLink="/clientes" class="nav-link">Clientes</a>
       </li>
       <li class="nav-item">
-        <a href="/repartidores" class="nav-link">Repartidores</a>
+        <a routerLink="/repartidores" class="nav-link">Repartidores</a>
       </li>
       <li class="nav-item">
-        <a href="/entregas" class="nav-link">Entregas</a>
+        <a routerLink="/crearTipoProducto" class="nav-link">Tipos de productos</a>
       </li>
       <li class="nav-item">
-        <a href="/crearTipoProducto" class="nav-link">Tipos de productos</a>
+        <a routerLink="/productos" class="nav-link">Productos</a>
       </li>
       <li class="nav-item">
-        <a href="/productos" class="nav-link">Productos</a>
+        <a routerLink="/entregas" class="nav-link">Entregas</a>
       </li>
       <li class="nav-item">
-        <a href="/tiposDePago" class="nav-link">Tipo de Pagos</a>
+        <a routerLink="/tiposDePago" class="nav-link">Tipo de Pagos</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/pedidos" class="nav-link">Pedidos</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/carrito">
+          <p-button icon="pi pi-shopping-cart" [rounded]="true" [outlined]="true"></p-button>
+        </a>
       </li>
     </ul>
   </nav>
+  
+</div>
+<div>
+  <!-- <app-home-component></app-home-component> -->
 </div>
 <footer>
   <div class="container">

@@ -9,8 +9,6 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-clientes',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './crear-clientes.component.html',
   styleUrl: './crear-clientes.component.css'
 })

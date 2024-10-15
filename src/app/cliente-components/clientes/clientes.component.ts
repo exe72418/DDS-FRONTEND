@@ -11,8 +11,6 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-clientes',
-  standalone: true,
-  imports: [CommonModule, MatIconModule, CrearClientesComponent, CustomComponentsModule],
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.css'
 })

@@ -7,8 +7,6 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-crear-tipo-prod',
-  standalone: true,
-  imports: [CustomComponentsModule],
   templateUrl: './crear-tipo-prod.component.html',
   styleUrl: './crear-tipo-prod.component.css'
 })
