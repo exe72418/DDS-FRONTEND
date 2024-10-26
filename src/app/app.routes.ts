@@ -12,6 +12,8 @@ import { CarritoComponent } from '../../fast/src/app/carrito/carrito.component';
 import { NgModule } from '@angular/core';
 import { EntregaComponent } from './entrega-components/entrega/entrega.component';
 import { CrearEntregaComponent } from './entrega-components/crear-entrega/crear-entrega.component';
+import { PagoComponent } from './pago-components/pago/pago.component';
+import { CrearPagoComponent } from './pago-components/crear-pago/crear-pago.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponentComponent },
@@ -20,6 +22,8 @@ export const routes: Routes = [
   { path: "productos", component: ProductosComponent },
   { path: "entregas", component: EntregaComponent },
   { path: "crearEntrega", component: CrearEntregaComponent },
+  { path: "pago", component: PagoComponent },
+  { path: "crearPago", component: CrearPagoComponent },
   { path: "repartidores", component: RepartidorComponent },
   { path: "tiposDePago", component: TipopagoComponent },
   { path: "crearTipoPago", component: CrearTipoPagoComponent },

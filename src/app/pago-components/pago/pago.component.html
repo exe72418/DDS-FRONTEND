@@ -1,1 +1,36 @@
-<p>pago works!</p>
+<div *ngIf="crearEditarModePago == false" style="display: flex; justify-content: center; margin-bottom: 10px;">
+  <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
+</div>
+<div style="width: 100%; display: flex; justify-content: center;">
+  <p-table *ngIf="crearEditarModePago == false" [value]="pagos" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>Fecha</th>
+        <th>TipoPago</th>
+        <th style="text-align: center;">Editar/Borrar</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pago of pagos>
+      <tr>
+        <td>{{ pago.id }}</td>
+        <td>{{ pago.fecha }}</td>
+        <td>{{ pago.tipoPago }}</td>
+
+        <td>
+          <div style="margin-right: 10px; display: flex;justify-content: space-around;">
+            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
+              (onClick)="editPago(pago)" />
+            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+              (onClick)="deletePago(pago)" />
+          </div>
+
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div>
+  <app-crear-pago (editCrear)="changeEditCreate()" [pago]="pagoSelected" *ngIf="crearEditarModePago"></app-crear-pago>
+</div>

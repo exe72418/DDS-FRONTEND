@@ -30,6 +30,8 @@ import { PedidosComponent } from "../../../fast/src/app/pedidos/pedidos.componen
 import { PedidoState } from "../../../fast/src/app/states/pedido.state";
 import { EntregaComponent } from '../entrega-components/entrega/entrega.component';
 import { CrearEntregaComponent } from '../entrega-components/crear-entrega/crear-entrega.component';
+import { PagoComponent } from '../pago-components/pago/pago.component';
+import { CrearPagoComponent } from '../pago-components/crear-pago/crear-pago.component';
 
 @NgModule({
     declarations: [AppComponent,
@@ -38,6 +40,8 @@ import { CrearEntregaComponent } from '../entrega-components/crear-entrega/crear
         TipoproductoComponent,
         ProductosComponent,
         RepartidorComponent,
+        PagoComponent,
+        CrearPagoComponent,
         TipopagoComponent,
         CrearTipoPagoComponent,
         CrearClientesComponent,
