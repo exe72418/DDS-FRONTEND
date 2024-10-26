@@ -28,9 +28,11 @@ import { HomeComponentComponent } from "../../../fast/src/app/home-component/hom
 import { CarritoComponent } from "../../../fast/src/app/carrito/carrito.component";
 import { PedidosComponent } from "../../../fast/src/app/pedidos/pedidos.component";
 import { PedidoState } from "../../../fast/src/app/states/pedido.state";
+import { EntregaComponent } from '../entrega-components/entrega/entrega.component';
+import { CrearEntregaComponent } from '../entrega-components/crear-entrega/crear-entrega.component';
 
 @NgModule({
-    declarations:[AppComponent,
+    declarations: [AppComponent,
         HomeComponentComponent,
         ClientesComponent,
         TipoproductoComponent,
@@ -39,46 +41,48 @@ import { PedidoState } from "../../../fast/src/app/states/pedido.state";
         TipopagoComponent,
         CrearTipoPagoComponent,
         CrearClientesComponent,
+        EntregaComponent,
+        CrearEntregaComponent,
         CrearProductosComponent,
         CrearRepartidoresComponent,
         CrearTipoProdComponent,
         CarritoComponent,
         PedidosComponent,
     ],
-    imports:[
+    imports: [
         NgxsModule.forRoot([PedidoState], { developmentMode: true }),
         AppRoutingModule,
-        TableModule, 
+        TableModule,
         InputTextModule,
-        CardModule,  
-        CommonModule, 
+        CardModule,
+        CommonModule,
         ReactiveFormsModule,
-        MatTable, 
-        MatTableModule, 
-        CommonModule, 
-        ButtonModule, 
+        MatTable,
+        MatTableModule,
+        CommonModule,
+        ButtonModule,
         CardModule,
         DropdownModule,
         BrowserModule,
         HttpClientModule,
         BrowserAnimationsModule,
     ],
-    exports:[
+    exports: [
         TableModule,
         InputTextModule,
-        CardModule,  
-        CommonModule, 
+        CardModule,
+        CommonModule,
         ReactiveFormsModule,
-        MatTable, 
-        MatTableModule, 
-        CommonModule, 
-        ButtonModule, 
+        MatTable,
+        MatTableModule,
+        CommonModule,
+        ButtonModule,
         CardModule,
         DropdownModule,
         PedidosComponent,
     ],
-    schemas:[CUSTOM_ELEMENTS_SCHEMA],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent]
 
 })
-export class CustomComponentsModule{}
+export class CustomComponentsModule { }

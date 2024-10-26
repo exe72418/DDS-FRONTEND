@@ -8,12 +8,10 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-entrega',
-  standalone: true,
-  imports: [CustomComponentsModule, CrearEntregaComponent],
   templateUrl: './entrega.component.html',
   styleUrl: './entrega.component.css'
 })
-export class EntregaComponent {
+export class EntregaComponent implements OnInit {
 
   entSelected!: Entrega;
   crearEditarModeEntrega: boolean = false;
@@ -22,7 +20,11 @@ export class EntregaComponent {
   constructor(private _entregaService: EntregaService) {
 
   }
+
   ngOnInit(): void {
+    this.search();
+  }
+  search() {
     this._entregaService.getAll().subscribe((entregas) => {
       console.log(entregas)
       this.entregas = entregas;

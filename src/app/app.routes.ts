@@ -5,17 +5,21 @@ import { TipoproductoComponent } from './producto-components/tipoproducto/tipopr
 import { ProductosComponent } from './producto-components/productos/productos.component';
 import { RepartidorComponent } from './repartidor-components/repartidor/repartidor.component';
 import { TipopagoComponent } from './pago-components/tipopago/tipopago.component';
-import { CrearTipoPagoComponent } from  './pago-components/crear-tipopago/crear-tipopago.component';
+import { CrearTipoPagoComponent } from './pago-components/crear-tipopago/crear-tipopago.component';
 import { HomeComponentComponent } from '../../fast/src/app/home-component/home-component.component';
 import { PedidosComponent } from '../../fast/src/app/pedidos/pedidos.component';
 import { CarritoComponent } from '../../fast/src/app/carrito/carrito.component';
 import { NgModule } from '@angular/core';
+import { EntregaComponent } from './entrega-components/entrega/entrega.component';
+import { CrearEntregaComponent } from './entrega-components/crear-entrega/crear-entrega.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponentComponent },
   { path: "clientes", component: ClientesComponent },
   { path: "crearTipoProducto", component: TipoproductoComponent },
   { path: "productos", component: ProductosComponent },
+  { path: "entregas", component: EntregaComponent },
+  { path: "crearEntrega", component: CrearEntregaComponent },
   { path: "repartidores", component: RepartidorComponent },
   { path: "tiposDePago", component: TipopagoComponent },
   { path: "crearTipoPago", component: CrearTipoPagoComponent },
@@ -26,4 +30,4 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

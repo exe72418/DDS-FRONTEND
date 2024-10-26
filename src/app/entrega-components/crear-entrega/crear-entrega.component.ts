@@ -9,8 +9,6 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-entrega',
-  standalone: true,
-  imports: [CustomComponentsModule],
   templateUrl: './crear-entrega.component.html',
   styleUrl: './crear-entrega.component.css'
 })
