@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Pago } from '../models/pago';
+import { Pedido } from '../models/pedido';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
@@ -27,5 +28,11 @@ export class PagoService {
 
   delete(idPago: number): Observable<void> {
     return this.httpClient.delete<void>(environment.serverUrl + 'pago/' + idPago);
+  }
+
+  getPedidosSinPago(): Observable<Pedido[]> {
+    return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/no-pago')
+      .pipe(
+        map((response: any) => response.pedidos))
   }
 }
