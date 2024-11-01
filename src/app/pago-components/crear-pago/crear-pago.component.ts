@@ -19,13 +19,14 @@ export class CrearPagoComponent implements OnInit {
   pagoForm!: FormGroup;
   tiposPago: TipoPago[] = [];
   pedidosSinPago: Pedido[] = [];
-  selectedPedido: Pedido | null = null; // Cambia a null al inicio
+  selectedPedido: Pedido | null = null;
 
-  constructor(private tipopagoService: TipopagoService, private _pagoService: PagoService) {
+  constructor(private tipopagoService: TipopagoService, private pagoService: PagoService) {
     this.pagoForm = new FormGroup({
       id: new FormControl(''),
       fecha: new FormControl('', [Validators.required]),
       tipoPago: new FormControl('', [Validators.required]),
+      pedido: new FormControl('', [Validators.required])
     });
   }
 
@@ -42,57 +43,57 @@ export class CrearPagoComponent implements OnInit {
       }));
     });
 
-    this._pagoService.getPedidosSinPago().subscribe((data: any) => {
-      this.pedidosSinPago = data['data'];
-    }, error => {
-      console.error('Error al cargar pedidos sin pago:', error);
+    this.pagoService.getPedidosSinPago().subscribe((data: any) => {
+      this.pedidosSinPago = data;
     });
   }
 
-  onCheckboxChange(pedido: Pedido) {
-    // Si ya hay un pedido seleccionado, lo deseleccionamos
-    if (this.selectedPedido === pedido) {
-      this.selectedPedido = null; // Deseleccionar si es el mismo
-    } else {
-      this.selectedPedido = pedido; // Seleccionar el nuevo pedido
-    }
-  }
+  guardar() {
+    const tipoPagoSeleccionado = this.pagoForm.get('tipoPago')?.value;
+    const pedidoSeleccionado = this.selectedPedido;
 
-  guardar(pag: Pago) {
-    if (this.selectedPedido) {
-      pag.pedido = this.selectedPedido; // Asigna el pedido seleccionado
-    } else {
-      console.error('No se ha seleccionado un pedido válido.');
-      return; // Sal del método si no hay un pedido seleccionado
+    if (!tipoPagoSeleccionado) {
+      Swal.fire('Error', 'Debe seleccionar un tipo de pago.', 'error');
+      return;
     }
 
-    // Continúa con la lógica de guardado como antes
-    if (this.pago != undefined || this.pago != null) {
-      if (this.pago.id) {
-        this._pagoService.update(pag).subscribe(pagBackend => {
-          Swal.fire({
-            title: "Guardado",
-            text: "Pago actualizado",
-            icon: "success"
-          });
+    if (!pedidoSeleccionado) {
+      Swal.fire('Error', 'Debe seleccionar un pedido.', 'error');
+      return;
+    }
+
+    // Solo asigna el pedido seleccionado al nuevo pago
+    const nuevoPago: Partial<Pago> = {
+      ...this.pagoForm.value,
+      tipoPago: tipoPagoSeleccionado,
+      pedido: { nro_pedido: pedidoSeleccionado.nroPedido } // Asigna el pedido existente
+    };
+
+    // Guarda el pago
+    if (!this.pago || !this.pago.id) {
+      delete nuevoPago.id; // Elimina el id si es un nuevo pago
+      this.pagoService.save(nuevoPago as Pago).subscribe(
+        response => {
           this.editCrear.emit(false);
-        }, error => {
-          console.error('Error al modificar el pago:', error);
-        });
-      }
+          Swal.fire('Guardado', 'Pago creado y asociado al pedido', 'success');
+        },
+        error => {
+          console.error(error);
+          Swal.fire('Error', 'No se pudo crear el pago', 'error');
+        }
+      );
     } else {
-      pag.id = 0;
-      this._pagoService.save(pag).subscribe(pagBackend => {
-        Swal.fire({
-          title: "Guardado",
-          text: "Pago creado",
-          icon: "success"
-        });
-        this.editCrear.emit(false);
-      }, error => {
-        console.error('Error al crear el pago:', error);
-      });
+      nuevoPago.id = this.pago.id;
+      this.pagoService.update(nuevoPago as Pago).subscribe(
+        response => {
+          this.editCrear.emit(false);
+          Swal.fire('Guardado', 'Pago actualizado y asociado al pedido', 'success');
+        },
+        error => {
+          console.error(error);
+          Swal.fire('Error', 'No se pudo actualizar el pago', 'error');
+        }
+      );
     }
   }
-
 }

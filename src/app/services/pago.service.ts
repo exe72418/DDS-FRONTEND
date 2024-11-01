@@ -21,18 +21,23 @@ export class PagoService {
   update(pago: Pago): Observable<Pago> {
     return this.httpClient.put<Pago>(environment.serverUrl + 'pago/' + pago.id, pago)
   }
+
   save(pago: Pago): Observable<Pago> {
     return this.httpClient.post<Pago>(environment.serverUrl + 'pago', pago)
   }
-  //FALTA DELETE EN EL COMPONENTE
 
   delete(idPago: number): Observable<void> {
     return this.httpClient.delete<void>(environment.serverUrl + 'pago/' + idPago);
   }
 
   getPedidosSinPago(): Observable<Pedido[]> {
-    return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/no-pago')
+    return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/pedidos/impagos')
       .pipe(
-        map((response: any) => response.pedidos))
+        map((response: any) => response.data))
   }
+
+  updatePedido(pedido: Partial<Pedido>): Observable<Pedido> {
+    return this.httpClient.put<Pedido>(`${environment.serverUrl}/pedidos/${pedido.nroPedido}`, pedido);
+  }
+
 }

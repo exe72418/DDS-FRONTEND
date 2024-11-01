@@ -11,13 +11,13 @@ export class PedidoServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  guardar(pedido:Pedido):Observable<Pedido>{
+  guardar(pedido: Pedido): Observable<Pedido> {
     return this.httpClient.post<Pedido>(environment.serverUrl + 'pedido', pedido)
   }
-  getAll():Observable<Pedido[]>{
+  getAll(): Observable<Pedido[]> {
     console.log('yendo a buscar')
-    return this.httpClient.get<Pedido[]>(environment.serverUrl+'pedido')
-    .pipe(
-      map((response: any) => response.data))
+    return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido')
+      .pipe(
+        map((response: any) => response.data))
   }
 }

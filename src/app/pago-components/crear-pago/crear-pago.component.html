@@ -2,7 +2,7 @@
   <p-card>
     <div>
       <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="pagoForm"
-        (ngSubmit)="guardar(pagoForm.value)">
+        (ngSubmit)="guardar()">
 
         <h4 *ngIf="pago != null">Modificar</h4>
         <h4 *ngIf="pago == null">Crear</h4>
@@ -14,10 +14,10 @@
         <p-dropdown id="tipoPago" [options]="tiposPago" formControlName="tipoPago" optionLabel="nombre"
           placeholder="Tipo de Pago"></p-dropdown>
 
-        <label>Seleccionar Pedido Sin Pago:</label>
+        <label>Seleccione un pedido</label>
         <div *ngFor="let pedido of pedidosSinPago">
-          <input type="checkbox" (change)="onCheckboxChange(pedido)" [checked]="selectedPedido === pedido" />
-          {{pedido.nroPedido}}
+          <input type="radio" [value]="pedido" name="pedido" (change)="selectedPedido = pedido">
+          Pedido {{ pedido.nroPedido }} - {{ pedido.cliente.apellidoNombre }}
         </div>
 
         <button style="margin-top: 10px;" pButton type="submit" class="btn btn-primary">Guardar</button>
