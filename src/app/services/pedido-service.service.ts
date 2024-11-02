@@ -16,8 +16,9 @@ export class PedidoServiceService {
   }
   getAll(): Observable<Pedido[]> {
     console.log('yendo a buscar')
-    return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido')
+    return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/')
       .pipe(
         map((response: any) => response.data))
   }
+
 }

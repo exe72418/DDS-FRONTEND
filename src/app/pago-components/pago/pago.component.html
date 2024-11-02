@@ -8,6 +8,7 @@
         <th>Id</th>
         <th>Fecha</th>
         <th>TipoPago</th>
+        <th>Pedido</th>
         <th style="text-align: center;">Editar/Borrar</th>
       </tr>
     </ng-template>
@@ -16,7 +17,7 @@
         <td>{{ pago.id }}</td>
         <td>{{ pago.fecha }}</td>
         <td>{{ pago.tipoPago }}</td>
-
+        <td>{{ pago.pedido }}</td>
         <td>
           <div style="margin-right: 10px; display: flex;justify-content: space-around;">
             <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"

@@ -16,5 +16,5 @@ export class Pedido {
 
     pago!: Pago;
 
-    lineas! : LineaDeProducto[];
+    lineas!: LineaDeProducto[];
 }

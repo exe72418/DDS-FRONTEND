@@ -34,8 +34,32 @@ export class PagoComponent implements OnInit {
     this.crearEditarModePago = false;
   }
 
-  deletePago(_t17: any) {
-    throw new Error('Method not implemented.');
+  deletePago(pag: Pago) {
+    Swal.fire({
+      title: "Atencion?",
+      text: "Deseas dar de baja pago " + pag.id,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._pagoService.delete(pag.id).subscribe((pag) => {
+          Swal.fire({
+            title: "Pago borrado",
+            text: "",
+            icon: "success"
+          });
+        }, (error) => {
+          Swal.fire({
+            title: "no se pudo borrar el pago",
+            text: error.message,
+            icon: "error"
+          });
+        })
+      }
+    });
   }
 
   editPago(pag: Pago) {

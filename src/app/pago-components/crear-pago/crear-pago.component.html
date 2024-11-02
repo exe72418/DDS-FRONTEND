@@ -1,26 +1,23 @@
 <div style="display: flex; justify-content: center;">
   <p-card>
     <div>
-      <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="pagoForm"
-        (ngSubmit)="guardar()">
-
-        <h4 *ngIf="pago != null">Modificar</h4>
-        <h4 *ngIf="pago == null">Crear</h4>
-
+      <form style="display: flex;flex-direction: column; justify-content: center;" [formGroup]="pagoForm"
+        (ngSubmit)="guardar(pagoForm.value)">
+        <h4 *ngIf="pago != null || pago != undefined ">Modificar</h4>
+        <h4 *ngIf="pago == null || pago == undefined ">Crear</h4>
         <label for="fecha">Fecha</label>
         <input pInputText id="fecha" type="text" formControlName="fecha" [disabled]="true">
 
         <label for="tipoPago">Tipo Pago</label>
         <p-dropdown id="tipoPago" [options]="tiposPago" formControlName="tipoPago" optionLabel="nombre"
-          placeholder="Tipo de Pago"></p-dropdown>
+          placeholder="TipoPago" />
 
-        <label>Seleccione un pedido</label>
-        <div *ngFor="let pedido of pedidosSinPago">
-          <input type="radio" [value]="pedido" name="pedido" (change)="selectedPedido = pedido">
-          Pedido {{ pedido.nroPedido }} - {{ pedido.cliente.apellidoNombre }}
-        </div>
+        <label for="pedido">Pedido</label>
+        <p-dropdown id="pedido" [options]="pedidosSinPago" formControlName="pedido" optionLabel="nroPedido"
+          placeholder="Pedido" />
 
         <button style="margin-top: 10px;" pButton type="submit" class="btn btn-primary">Guardar</button>
+
       </form>
     </div>
   </p-card>

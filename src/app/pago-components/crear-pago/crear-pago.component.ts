@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Pago } from '../../models/pago';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PagoService } from '../../services/pago.service';
+import { PedidoServiceService } from '../../services/pedido-service.service';
 import { TipoPago } from '../../models/tipopago';
 import { Pedido } from '../../models/pedido';
 import { TipopagoService } from '../../services/tipopago.service';
@@ -19,7 +20,6 @@ export class CrearPagoComponent implements OnInit {
   pagoForm!: FormGroup;
   tiposPago: TipoPago[] = [];
   pedidosSinPago: Pedido[] = [];
-  selectedPedido: Pedido | null = null;
 
   constructor(private tipopagoService: TipopagoService, private pagoService: PagoService) {
     this.pagoForm = new FormGroup({
@@ -32,68 +32,66 @@ export class CrearPagoComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.pago != null) {
-      this.pagoForm.patchValue(this.pago);
+      this.pagoForm.patchValue(this.pago)
     }
-
     this.tipopagoService.getAll().subscribe((data: any) => {
-      this.tiposPago = data['data'].map((tipoPago: TipoPago) => ({
-        id: tipoPago.id,
-        nombre: tipoPago.nombre,
-        descripcion: tipoPago.descripcion,
-      }));
-    });
-
+      this.tiposPago = data['data'].map((tipoPago: TipoPago) => {
+        const tipoPagoFormateado: TipoPago = {
+          id: tipoPago.id,
+          nombre: tipoPago.nombre,
+          descripcion: tipoPago.descripcion,
+        };
+        return tipoPagoFormateado;
+      });
+    })
     this.pagoService.getPedidosSinPago().subscribe((data: any) => {
-      this.pedidosSinPago = data;
-    });
+      this.pedidosSinPago = data['data'].map((pedido: Pedido) => {
+        const pedidoFormateado: Pedido = {
+          nroPedido: pedido.nroPedido,
+          fecha: pedido.fecha,
+          total: pedido.total,
+          cliente: pedido.cliente,
+          entrega: pedido.entrega,
+          pago: pedido.pago,
+          lineas: pedido.lineas
+        };
+        return pedidoFormateado;
+      });
+    })
   }
 
-  guardar() {
-    const tipoPagoSeleccionado = this.pagoForm.get('tipoPago')?.value;
-    const pedidoSeleccionado = this.selectedPedido;
 
-    if (!tipoPagoSeleccionado) {
-      Swal.fire('Error', 'Debe seleccionar un tipo de pago.', 'error');
-      return;
-    }
-
-    if (!pedidoSeleccionado) {
-      Swal.fire('Error', 'Debe seleccionar un pedido.', 'error');
-      return;
-    }
-
-    // Solo asigna el pedido seleccionado al nuevo pago
-    const nuevoPago: Partial<Pago> = {
-      ...this.pagoForm.value,
-      tipoPago: tipoPagoSeleccionado,
-      pedido: { nro_pedido: pedidoSeleccionado.nroPedido } // Asigna el pedido existente
-    };
-
-    // Guarda el pago
-    if (!this.pago || !this.pago.id) {
-      delete nuevoPago.id; // Elimina el id si es un nuevo pago
-      this.pagoService.save(nuevoPago as Pago).subscribe(
-        response => {
+  guardar(pag: Pago) {
+    if (this.pago != undefined || this.pago != null) {
+      if (this.pago.id) {
+        this.pagoService.update(pag).subscribe(pagBackend => {
+          Swal.fire({
+            title: "Guardado",
+            text: "Pago actualizado",
+            icon: "success"
+          });
           this.editCrear.emit(false);
-          Swal.fire('Guardado', 'Pago creado y asociado al pedido', 'success');
-        },
-        error => {
-          console.error(error);
-          Swal.fire('Error', 'No se pudo crear el pago', 'error');
-        }
-      );
+
+          console.log(pagBackend)
+        }, error => {
+          console.error('Error al modificar el pago:', error);
+        })
+      }
     } else {
-      nuevoPago.id = this.pago.id;
-      this.pagoService.update(nuevoPago as Pago).subscribe(
-        response => {
-          this.editCrear.emit(false);
-          Swal.fire('Guardado', 'Pago actualizado y asociado al pedido', 'success');
-        },
-        error => {
-          console.error(error);
-          Swal.fire('Error', 'No se pudo actualizar el pago', 'error');
-        }
-      );
+      console.log(pag)
+      pag.id = 0;
+      this.pagoService.save(pag).subscribe(pagBackend => {
+        Swal.fire({
+          title: "Guardado",
+          text: "Pago creado",
+          icon: "success"
+        });
+        this.editCrear.emit(false);
+
+        console.log(pagBackend)
+      }, error => {
+        console.error('Error al crear el pago:', error);
+      });
     }
   }
 }
