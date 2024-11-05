@@ -4,10 +4,10 @@ import { PedidoState } from '../states/pedido.state';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import _ from 'lodash';
-import { Pedido } from '../../../../src/app/models/pedido';
-import { Cliente } from '../../../../src/app/models/cliente';
-import { ClienteService } from '../../../../src/app/services/cliente.service';
-import { PedidoServiceService } from '../../../../src/app/services/pedido-service.service';
+import { Pedido } from '../../../src/app/models/pedido';
+import { Cliente } from '../../../src/app/models/cliente';
+import { ClienteService } from '../../../src/app/services/cliente.service';
+import { PedidoServiceService } from '../../../src/app/services/pedido-service.service';
 
 
 @Component({
