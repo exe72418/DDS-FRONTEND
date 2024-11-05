@@ -2,10 +2,10 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { PedidoState, SetPedidosAction } from '../states/pedido.state';
 import _ from 'lodash';
-import { ProductosServiceService } from '../../../../src/app/services/productos-service.service';
-import { Producto } from '../../../../src/app/models/producto';
-import { Pedido } from '../../../../src/app/models/pedido';
-import { LineaDeProducto } from '../../../../src/app/models/lineaProducto';
+import { ProductosServiceService } from '../services/productos-service.service';
+import { Producto } from '../models/producto';
+import { Pedido } from '../models/pedido';
+import { LineaDeProducto } from '../models/lineaProducto';
 
 
 @Component({
@@ -15,23 +15,23 @@ import { LineaDeProducto } from '../../../../src/app/models/lineaProducto';
 })
 export class HomeComponentComponent implements OnInit, OnDestroy{
 
-  
+
   constructor(    private _productoService: ProductosServiceService, private store: Store,
   ){
   }
-  
-  
+
+
   @Input() productos!:Producto[];
   pedido! : Pedido;
 
 
   ngOnInit(): void {
-    
+
     console.log('se ejecuta el console.log')
     this._productoService.getAll().subscribe((productos)=>{
       console.log(productos)
       this.productos = productos;
-    }) 
+    })
     this.pedido = new Pedido()
     this.pedido.lineas = []
     this.pedido.total = 0;
@@ -66,12 +66,12 @@ export class HomeComponentComponent implements OnInit, OnDestroy{
 
 
     }
-    
+
 
     console.log(this.pedido)
     let pedidoState = this.pedido;
     this.store.dispatch(new SetPedidosAction(_.cloneDeep(this.pedido)))
-    
+
   }
 
   consolelog(){

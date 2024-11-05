@@ -1,7 +1,7 @@
   // Importa el modelo de Pedido
   import { State, StateContext, Selector, Store, Action } from '@ngxs/store';
 import { Injectable } from "@angular/core";
-import { Pedido } from '../../../../src/app/models/pedido';
+import { Pedido } from '../models/pedido';
 
 // Acciones
 export class SetPedidosAction {
@@ -45,5 +45,5 @@ export class PedidoState {
     @Action(SetPedidosAction)
     setPedidos(ctx: StateContext<PedidoStateModel>, action: SetPedidosAction) {
         ctx.setState({ pedido: action.pedido });
-    }   
+    }
 }

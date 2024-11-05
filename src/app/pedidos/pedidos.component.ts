@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Pedido } from '../../../../src/app/models/pedido';
-import { PedidoServiceService } from '../../../../src/app/services/pedido-service.service';
+import { Pedido } from '../models/pedido';
+import { PedidoServiceService } from '../services/pedido-service.service';
 
 
 @Component({
@@ -26,8 +26,8 @@ throw new Error('Method not implemented.');
     this._pedidoService.getAll().subscribe((pedidos)=>{
       console.log(pedidos)
       this.pedidos = pedidos
-      
+
     })
-  
+
   }
 }

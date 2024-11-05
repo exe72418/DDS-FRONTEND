@@ -30,7 +30,7 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
 
   ngOnInit(): void {
     this.llenarData();
-    
+
     /* this.pedido$.subscribe(
       pedido => {
         this.pedidoSelectSnapShot = pedido
@@ -87,6 +87,6 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
         icon: "error"
       });
     });
-    
+
   }
 }

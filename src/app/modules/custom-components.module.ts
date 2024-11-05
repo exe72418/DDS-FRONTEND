@@ -24,10 +24,10 @@ import { CrearProductosComponent } from "../producto-components/crear-productos/
 import { CrearRepartidoresComponent } from "../repartidor-components/crear-repartidores/crear-repartidores.component";
 import { CrearTipoProdComponent } from "../producto-components/crear-tipo-prod/crear-tipo-prod.component";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HomeComponentComponent } from "../../../fast/src/app/home-component/home-component.component";
-import { CarritoComponent } from "../../../fast/src/app/carrito/carrito.component";
-import { PedidosComponent } from "../../../fast/src/app/pedidos/pedidos.component";
-import { PedidoState } from "../../../fast/src/app/states/pedido.state";
+import { HomeComponentComponent } from "../home-component/home-component.component";
+import { CarritoComponent } from "../carrito/carrito.component";
+import { PedidosComponent } from "../pedidos/pedidos.component";
+import { PedidoState } from "../states/pedido.state";
 import { EntregaComponent } from '../entrega-components/entrega/entrega.component';
 import { CrearEntregaComponent } from '../entrega-components/crear-entrega/crear-entrega.component';
 import { PagoComponent } from '../pago-components/pago/pago.component';
