@@ -1,0 +1,9 @@
+.table-striped {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+}
+
+.table-striped th,
+.table-striped td {
+  padding: 10px;
+}

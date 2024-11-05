@@ -1,7 +1,7 @@
-<div *ngIf="editCreateMode == false" style="display: flex; justify-content: center; margin-bottom: 10px;">
-  <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
-</div>
 <div *ngIf="!editCreateMode" class="container">
+  <div *ngIf="editCreateMode == false" style="display: flex; justify-content: center;">
+    <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
+  </div>
   <div class="tabla-centrada">
     <table>
       <thead>

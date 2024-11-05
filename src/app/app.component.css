@@ -18,19 +18,25 @@ footer {
 
 /* Estilos para el título "FAST" */
 .navbar-brand {
-  margin-left: 5%;
   font-family: 'Arial', sans-serif; /* Ejemplo: Cambiar a Arial */
   font-size: 24px; /* Ajustar el tamaño */
   font-weight: bold; /* Cambiar el peso */
   color: #2196F3; /* Color azul */
+  margin: auto;
   text-transform: uppercase; /* Texto en mayúsculas */
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  animation: pulse 2s infinite;
 }
 
 
 /* Estilos para la navbar */
 .navbar {
   background-color: #f0f0f0; /* Color de fondo de la navbar */
-  padding: 15px 0;
+  padding: 10px 0;
+  margin: 0 0 15px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -63,3 +69,14 @@ footer {
   background-color: #eee;
 }
 
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

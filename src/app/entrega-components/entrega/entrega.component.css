@@ -1,0 +1,17 @@
+/* Estilos generales */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Estilos para el título "FAST" */
+.tabla-centrada {
+  margin-left: 5%;
+  margin-top: 20px;
+  font-family: 'Arial', sans-serif; /* Ejemplo: Cambiar a Arial */
+  font-size: 24px; /* Ajustar el tamaño */
+  font-weight: bold; /* Cambiar el peso */
+  color: #2196F3; /* Color azul */
+  text-transform: uppercase; /* Texto en mayúsculas */
+}

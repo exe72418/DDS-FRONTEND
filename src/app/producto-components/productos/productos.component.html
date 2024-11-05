@@ -1,7 +1,7 @@
-<div *ngIf="crearEditarMode == false" style="display: flex; justify-content: center; margin-bottom: 10px;">
-    <p-button 
-    label="Nuevo" 
-    icon="pi pi-plus" 
+<div *ngIf="crearEditarMode == false" style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <p-button
+    label="Nuevo"
+    icon="pi pi-plus"
     (onClick)="new()" />
 </div>
 <div style="width: 100%; display: flex; justify-content: center;">
@@ -21,25 +21,25 @@
                 <td>{{ product.stock }}</td>
                 <td>{{ product.precio }}</td>
                 <td>{{ product.tipoProducto }}</td>
-    
+
                 <td >
                     <div style="margin-right: 10px; display: flex;justify-content: space-around;">
-                        <p-button 
-                        icon="pi pi-pencil" 
-                        class="mr-2" 
-                        [rounded]="true" 
-                        [outlined]="true" 
-                        severity="success" 
+                        <p-button
+                        icon="pi pi-pencil"
+                        class="mr-2"
+                        [rounded]="true"
+                        [outlined]="true"
+                        severity="success"
                         (onClick)="editProduct(product)" />
-                        <p-button 
-                     
-                        icon="pi pi-trash" 
-                        severity="danger" 
-                        [rounded]="true" 
-                        [outlined]="true" 
+                        <p-button
+
+                        icon="pi pi-trash"
+                        severity="danger"
+                        [rounded]="true"
+                        [outlined]="true"
                         (onClick)="deleteProduct(product)" />
                     </div>
-                    
+
                 </td>
             </tr>
         </ng-template>
