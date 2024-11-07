@@ -4,7 +4,7 @@ import { TableModule } from "primeng/table";
 import { InputTextModule } from "primeng/inputtext";
 import { CardModule } from "primeng/card";
 import { CommonModule } from "@angular/common";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatTable, MatTableModule } from "@angular/material/table";
 import { ButtonModule } from "primeng/button";
 import { DropdownModule } from 'primeng/dropdown';
@@ -32,6 +32,8 @@ import { EntregaComponent } from '../entrega-components/entrega/entrega.componen
 import { CrearEntregaComponent } from '../entrega-components/crear-entrega/crear-entrega.component';
 import { PagoComponent } from '../pago-components/pago/pago.component';
 import { CrearPagoComponent } from '../pago-components/crear-pago/crear-pago.component';
+import { CrearPedidoComponent } from "../crear-pedido/crear-pedido.component";
+import { CalendarModule } from "primeng/calendar";
 
 @NgModule({
     declarations: [AppComponent,
@@ -52,6 +54,7 @@ import { CrearPagoComponent } from '../pago-components/crear-pago/crear-pago.com
         CrearTipoProdComponent,
         CarritoComponent,
         PedidosComponent,
+        CrearPedidoComponent,
     ],
     imports: [
         NgxsModule.forRoot([PedidoState], { developmentMode: true }),
@@ -70,6 +73,7 @@ import { CrearPagoComponent } from '../pago-components/crear-pago/crear-pago.com
         BrowserModule,
         HttpClientModule,
         BrowserAnimationsModule,
+        CalendarModule,
     ],
     exports: [
         TableModule,
@@ -84,6 +88,8 @@ import { CrearPagoComponent } from '../pago-components/crear-pago/crear-pago.com
         CardModule,
         DropdownModule,
         PedidosComponent,
+        CrearPedidoComponent,
+        CalendarModule,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent]

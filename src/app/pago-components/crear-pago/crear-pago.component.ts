@@ -57,6 +57,7 @@ export class CrearPagoComponent implements OnInit {
         };
         return pedidoFormateado;
       });
+      console.log(this.pedidosSinPago)
     })
   }
 
