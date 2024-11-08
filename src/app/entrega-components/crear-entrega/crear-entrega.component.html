@@ -20,8 +20,13 @@
           placeholder="Repartidor"></p-dropdown>
 
         <label for="pedidos">Pedidos</label>
-        <p-multiSelect id="pedidos" [options]="pedidos" formControlName="pedidos" optionLabel="nroPedido"
-          placeholder="Seleccione los pedidos" [disabled]="false" display="chip"></p-multiSelect>
+        <p-multiSelect *ngIf="!entrega" id="pedidos" [options]="pedidos" formControlName="pedidos"
+          optionLabel="nroPedido" placeholder="Seleccione los pedidos" [disabled]="false"
+          display="chip"></p-multiSelect>
+
+        <p-multiSelect *ngIf="entrega" id="pedidos" [options]="pedidos" formControlName="pedidos"
+          optionLabel="nroPedido" placeholder="Seleccione los pedidos" [disabled]="false"
+          display="chip"></p-multiSelect>
 
         <button style="margin-top: 10px;" pButton type="submit" class="btn btn-primary">Guardar</button>
       </form>

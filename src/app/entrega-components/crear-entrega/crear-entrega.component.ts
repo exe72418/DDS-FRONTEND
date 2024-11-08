@@ -36,42 +36,74 @@ export class CrearEntregaComponent {
   }
   ngOnInit(): void {
     if (this.entrega) {
+      // Carga los datos de la entrega existente en el formulario
       this.entregaForm.patchValue(this.entrega);
-    }
 
-    // Obtener los repartidores
-    this.repartidorService.getAll().subscribe((data: any) => {
-      this.repartidores = data['data'].map((repartidor: Repartidor) => {
-        return {
-          id: repartidor.id,
-          cuit: repartidor.cuit,
-          apellidoNombre: repartidor.apellidoNombre,
-          vehiculo: repartidor.vehiculo,
-          zona: repartidor.zona
-        };
+      // Al editar, incluir los pedidos de la entrega actual
+      this.pedidos = [...this.entrega.pedidos]; // Inicialmente cargamos los pedidos de la entrega
+
+      // Obtener los repartidores
+      this.repartidorService.getAll().subscribe((data: any) => {
+        this.repartidores = data['data'].map((repartidor: Repartidor) => {
+          return {
+            id: repartidor.id,
+            cuit: repartidor.cuit,
+            apellidoNombre: repartidor.apellidoNombre,
+            vehiculo: repartidor.vehiculo,
+            zona: repartidor.zona
+          };
+        });
       });
-    });
 
-    // Obtener los pedidos que no tienen entrega
-    this._entregaService.getPedidosPagosSinEntrega().subscribe((data: any) => {
-      this.pedidos = data['data'].map((pedido: Pedido) => {
-        return {
+      // Obtener los pedidos sin entrega
+      this._entregaService.getPedidosPagosSinEntrega().subscribe((data: any) => {
+        const pedidosSinEntrega = data['data'].map((pedido: Pedido) => ({
           nroPedido: pedido.nroPedido,
           fecha: pedido.fecha,
           total: pedido.total,
           cliente: pedido.cliente,
-          entrega: pedido.entrega,  // Aquí las entregas estarán vacías, porque son pedidos sin entrega
+          entrega: pedido.entrega,
           pago: pedido.pago,
           lineas: pedido.lineas
-        };
-      });
+        }));
 
-      // Actualizar el control 'pedidos' en el formulario con los pedidos obtenidos
-      this.entregaForm.patchValue({
-        pedidos: this.pedidos  // Aquí agregamos los pedidos al formulario
+        // Combinar pedidos de la entrega actual con los pedidos sin entrega
+        this.pedidos = [...pedidosSinEntrega, ...this.entrega.pedidos];
+
+        // Actualizar el control 'pedidos' en el formulario con los pedidos seleccionados
+        this.entregaForm.patchValue({
+          pedidos: this.entrega.pedidos // Seleccionar los pedidos de la entrega actual
+        });
       });
-    });
+    } else {
+
+      // Obtener los repartidores
+      this.repartidorService.getAll().subscribe((data: any) => {
+        this.repartidores = data['data'].map((repartidor: Repartidor) => {
+          return {
+            id: repartidor.id,
+            cuit: repartidor.cuit,
+            apellidoNombre: repartidor.apellidoNombre,
+            vehiculo: repartidor.vehiculo,
+            zona: repartidor.zona
+          };
+        });
+      });
+      // Si estamos creando una nueva entrega, solo obtener los pedidos sin entrega
+      this._entregaService.getPedidosPagosSinEntrega().subscribe((data: any) => {
+        this.pedidos = data['data'].map((pedido: Pedido) => ({
+          nroPedido: pedido.nroPedido,
+          fecha: pedido.fecha,
+          total: pedido.total,
+          cliente: pedido.cliente,
+          entrega: pedido.entrega,
+          pago: pedido.pago,
+          lineas: pedido.lineas
+        }));
+      });
+    }
   }
+
 
 
 
