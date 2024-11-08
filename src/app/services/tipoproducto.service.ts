@@ -12,7 +12,6 @@ export class TipoproductoService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<TipoProducto[]>{
-    console.log('yendo a buscar los tipos de productos')
     return this.httpClient.get<TipoProducto[]>(environment.serverUrl+'tiposDeProducto/');
   }
   delete(idTipoProd:number):Observable<void>{

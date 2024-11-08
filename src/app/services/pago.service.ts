@@ -31,7 +31,6 @@ export class PagoService {
   }
 
   getPedidosSinPago(): Observable<Pedido[]> {
-    console.log('yendo a buscar los pedidos sin pago')
     return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/pedidos/impagos/');
   }
 

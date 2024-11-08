@@ -86,13 +86,11 @@ export class CrearEntregaComponent {
           });
           this.editCrear.emit(false);
 
-          console.log(entBackend)
         }, error => {
           console.error('Error al modificar la entrega:', error);
         })
       }
     } else {
-      console.log(ent)
       ent.id = 0;
       this._entregaService.save(ent).subscribe(entBackend => {
         Swal.fire({
@@ -102,7 +100,6 @@ export class CrearEntregaComponent {
         });
         this.editCrear.emit(false);
 
-        console.log(entBackend)
       }, error => {
         console.error('Error al crear la entrega:', error);
       });

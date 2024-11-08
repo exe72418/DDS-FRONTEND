@@ -27,9 +27,7 @@ export class HomeComponentComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
 
-    console.log('se ejecuta el console.log')
     this._productoService.getAll().subscribe((productos)=>{
-      console.log(productos)
       this.productos = productos;
     })
     this.pedido = new Pedido()
@@ -68,7 +66,6 @@ export class HomeComponentComponent implements OnInit, OnDestroy{
     }
 
 
-    console.log(this.pedido)
     let pedidoState = this.pedido;
     this.store.dispatch(new SetPedidosAction(_.cloneDeep(this.pedido)))
 

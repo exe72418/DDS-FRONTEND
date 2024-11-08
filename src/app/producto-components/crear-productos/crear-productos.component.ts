@@ -32,10 +32,11 @@ export class CrearProductosComponent implements OnInit {
   }
   ngOnInit(): void {
     if(this.producto !=null){
-      this.prodForm.patchValue(this.producto)
+      this._productoService.findOne(this.producto.codigo).subscribe((prodBackend)=>{
+        this.prodForm.patchValue(prodBackend)
+      })
     }
     this.tipoproductoService.getAll().subscribe((data:any)=>{
-      console.log(data)
       this.tiposProducto =data['data'].map((tipoprod: TipoProducto) => {
         const tipoProductoFormateado: TipoProducto = {
           id: tipoprod.id,
@@ -43,7 +44,6 @@ export class CrearProductosComponent implements OnInit {
         };
         return tipoProductoFormateado;
       });
-      console.log(this.tiposProducto)
     })
   }
 
@@ -59,13 +59,11 @@ export class CrearProductosComponent implements OnInit {
           });
           this.editCrear.emit(false);
 
-          console.log(prodBackend)
         },error =>{
           console.error('Error al modificar el producto:', error);
         })
       }
     }else{
-      console.log(prod)
       prod.codigo = 0;
       this._productoService.save(prod).subscribe(prodBackend=>{
         Swal.fire({
@@ -75,7 +73,6 @@ export class CrearProductosComponent implements OnInit {
             });
         this.editCrear.emit(false);
 
-        console.log(prodBackend)
       }, error => {
           console.error('Error al crear el producto:', error);
         });

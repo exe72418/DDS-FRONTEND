@@ -12,7 +12,6 @@ export class RepartidorService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<Repartidor[]> {
-    console.log('yendo a buscar los repartidores')
     return this.httpClient.get<Repartidor[]>(environment.serverUrl + 'repartidores/');
   }
   delete(idRepartidor: number): Observable<void> {

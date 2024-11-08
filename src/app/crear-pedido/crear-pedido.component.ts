@@ -49,7 +49,6 @@ export class CrearPedidoComponent implements OnInit {
       this.entregaSelected = this.pedido.entrega? true : false;
     }
 
-    console.log(this.pedidoForm.value)
     
     
 
@@ -67,10 +66,8 @@ export class CrearPedidoComponent implements OnInit {
         };
         return clienteFormateado;
       });
-      console.log(data['data'][0]);
     });
     this._pagoService.getAll().subscribe((pagos)=>{
-      console.log(pagos)
       this.pagos = pagos
     })
   }
@@ -85,12 +82,9 @@ export class CrearPedidoComponent implements OnInit {
     if (!isNaN(totalInteger)) {
       this.pedidoForm.controls['total'].setValue(totalInteger);
     }
-    console.log(this.pedidoForm.value)
     this._pedidoService.guardar(this.pedidoForm.value).subscribe((ped)=>{
-      console.log(ped)
     }, 
     (err: any) => {
-        console.log(err);    
       });
     
   }

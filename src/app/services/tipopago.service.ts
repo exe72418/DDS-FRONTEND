@@ -11,7 +11,6 @@ export class TipopagoService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<TipoPago[]> {
-    console.log('yendo a buscar los tipos de pago')
     return this.httpClient.get<TipoPago[]>(environment.serverUrl + 'tiposDePago/');
   }
   delete(idTipoPago: number): Observable<void> {

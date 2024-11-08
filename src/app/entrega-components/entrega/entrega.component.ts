@@ -26,7 +26,6 @@ export class EntregaComponent implements OnInit {
   }
   search() {
     this._entregaService.getAll().subscribe((entregas) => {
-      console.log(entregas)
       this.entregas = entregas;
     })
   }

@@ -26,7 +26,6 @@ export class PagoComponent implements OnInit {
   }
   search() {
     this._pagoService.getAll().subscribe((pagos) => {
-      console.log(pagos)
       this.pagos = pagos;
     })
   }

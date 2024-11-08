@@ -30,7 +30,6 @@ export class ProductosComponent implements OnInit {
   }
   search(){
     this._productoService.getAll().subscribe((productos)=>{
-      console.log(productos)
       this.productos = productos;
     })
   }

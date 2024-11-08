@@ -34,13 +34,11 @@ export class ClientesComponent implements OnInit {
   }
   changeEditCrear() {
     this.editCreateMode = false
-    console.log(this.editCreateMode)
   }
 
   navegarEdit(cliente: Cliente) {
 
     this.clienteSelected = cliente;
-    console.log(cliente)
     this.editCreateMode = true
   }
 
@@ -87,7 +85,6 @@ export class ClientesComponent implements OnInit {
         };
         return clienteFormateado;
       });
-      console.log(data['data'][0]);
     });
   }
 }

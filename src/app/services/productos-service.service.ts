@@ -25,4 +25,9 @@ export class ProductosServiceService {
   delete(producto:Producto):Observable<Producto>{
     return this.httpClient.delete<Producto>(environment.serverUrl+'producto/'+producto.codigo)
   }
+  findOne(codigo: number):Observable<Producto> {
+    return this.httpClient.get<Producto>(environment.serverUrl+'producto/' + codigo)
+      .pipe(
+        map((response: any) => response.data))
+  }
 }

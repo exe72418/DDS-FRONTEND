@@ -27,7 +27,6 @@ export class PedidosComponent implements OnInit{
 
   search(){
     this._pedidoService.getAll().subscribe((pedidos)=>{
-      console.log(pedidos)
       this.pedidos = pedidos
 
     })

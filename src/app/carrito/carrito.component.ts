@@ -35,12 +35,10 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
     this.llenarData();
 
     this.pedidoSelectSnapShot = _.cloneDeep(this.store.selectSnapshot(PedidoState.getPedido))
-    console.log(this.pedidoSelectSnapShot)
   }
 
   setearCliente(cliente: Cliente) {
     this.pedidoSelectSnapShot.cliente = cliente;
-    console.log(this.pedidoSelectSnapShot)
 
   }
 
@@ -59,14 +57,12 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
         };
         return clienteFormateado;
       });
-      console.log(data['data'][0]);
     });
   }
 
   pagar(){
     this.pedidoSelectSnapShot.fecha = this.fechaSelected;
 
-    console.log(this.pedidoSelectSnapShot)
 
     this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe((ped)=>{
       Swal.fire({
@@ -74,7 +70,6 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
         text: "",
         icon: "success"
       });
-      console.log(ped)
     }, 
     (err: any) => {
       Swal.fire({
@@ -82,7 +77,6 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
         text: "",
         icon: "error"
       });
-        console.log(err);    
       });
   }
 }

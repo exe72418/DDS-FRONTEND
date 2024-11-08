@@ -31,7 +31,6 @@ export class EntregaService {
   }
 
   getPedidosPagosSinEntrega(): Observable<Pedido[]> {
-    console.log('yendo a buscar los pedidos pagos, sin entrega')
     return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/pedidos/noentregados/');
   }
 }

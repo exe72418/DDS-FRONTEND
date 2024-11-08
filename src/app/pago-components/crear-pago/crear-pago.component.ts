@@ -33,6 +33,7 @@ export class CrearPagoComponent implements OnInit {
   ngOnInit(): void {
     if (this.pago != null) {
       this.pagoForm.patchValue(this.pago)
+      this.pagoForm.controls['pedido'].setValue(this.pago.pedido)
     }
     this.tipopagoService.getAll().subscribe((data: any) => {
       this.tiposPago = data['data'].map((tipoPago: TipoPago) => {
@@ -57,7 +58,6 @@ export class CrearPagoComponent implements OnInit {
         };
         return pedidoFormateado;
       });
-      console.log(this.pedidosSinPago)
     })
   }
 
@@ -73,13 +73,11 @@ export class CrearPagoComponent implements OnInit {
           });
           this.editCrear.emit(false);
 
-          console.log(pagBackend)
         }, error => {
           console.error('Error al modificar el pago:', error);
         })
       }
     } else {
-      console.log(pag)
       pag.id = 0;
       this.pagoService.save(pag).subscribe(pagBackend => {
         Swal.fire({
@@ -89,7 +87,6 @@ export class CrearPagoComponent implements OnInit {
         });
         this.editCrear.emit(false);
 
-        console.log(pagBackend)
       }, error => {
         console.error('Error al crear el pago:', error);
       });

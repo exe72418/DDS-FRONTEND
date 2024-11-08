@@ -30,7 +30,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
 
-    console.log('se ejecuta el console.log')
 
   }
   

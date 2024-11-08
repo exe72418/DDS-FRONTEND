@@ -53,7 +53,6 @@ export class CrearClientesComponent implements OnInit {
             });
             this.editCrear.emit(false);
 
-            console.log('Cliente creado exitosamente:', response);
             // Puedes realizar acciones adicionales después de crear el cliente
           }, error => {
             console.error('Error al crear el cliente:', error);
@@ -70,7 +69,6 @@ export class CrearClientesComponent implements OnInit {
             });
             this.editCrear.emit(false);
 
-            console.log('Cliente creado exitosamente:', response);
             // Puedes realizar acciones adicionales después de crear el cliente
           }, error => {
             console.error('Error al crear el cliente:', error);
@@ -80,7 +78,6 @@ export class CrearClientesComponent implements OnInit {
     } else {
       // Manejar errores de validación
       console.error('Formulario inválido');
-      console.log ( this.clienteForm)
     }
   }
 }
