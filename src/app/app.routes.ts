@@ -9,6 +9,7 @@ import { CrearTipoPagoComponent } from './pago-components/crear-tipopago/crear-t
 import { HomeComponentComponent } from './home-component/home-component.component';
 import { PedidosComponent } from './pedidos/pedidos.component';
 import { CarritoComponent } from './carrito/carrito.component';
+
 import { NgModule } from '@angular/core';
 import { EntregaComponent } from './entrega-components/entrega/entrega.component';
 import { CrearEntregaComponent } from './entrega-components/crear-entrega/crear-entrega.component';

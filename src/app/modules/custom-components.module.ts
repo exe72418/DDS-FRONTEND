@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponentComponent } from "../home-component/home-component.component";
 import { CarritoComponent } from "../carrito/carrito.component";
 import { PedidosComponent } from "../pedidos/pedidos.component";
+import { MultiSelectModule } from 'primeng/multiselect';
 import { PedidoState } from "../states/pedido.state";
 import { EntregaComponent } from '../entrega-components/entrega/entrega.component';
 import { CrearEntregaComponent } from '../entrega-components/crear-entrega/crear-entrega.component';
@@ -69,6 +70,7 @@ import { CalendarModule } from "primeng/calendar";
         CommonModule,
         ButtonModule,
         CardModule,
+        MultiSelectModule,
         DropdownModule,
         BrowserModule,
         HttpClientModule,

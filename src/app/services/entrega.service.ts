@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Entrega } from '../models/entrega';
+import { Pedido } from '../models/pedido';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
@@ -27,5 +28,10 @@ export class EntregaService {
 
   delete(idEntrega: number): Observable<void> {
     return this.httpClient.delete<void>(environment.serverUrl + 'entregas/' + idEntrega);
+  }
+
+  getPedidosPagosSinEntrega(): Observable<Pedido[]> {
+    console.log('yendo a buscar los pedidos pagos, sin entrega')
+    return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/pedidos/noentregados/');
   }
 }

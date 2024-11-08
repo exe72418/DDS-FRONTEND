@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Entrega } from '../../models/entrega';
+import { Pedido } from '../../models/pedido';
 import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RepartidorService } from '../../services/repartidor.service';
@@ -19,6 +20,8 @@ export class CrearEntregaComponent {
 
   entregaForm!: FormGroup;
   repartidores: Repartidor[] = [];
+  pedidos: Pedido[] = [];
+
 
   constructor(private repartidorService: RepartidorService, private _entregaService: EntregaService) {
     this.entregaForm = new FormGroup({
@@ -27,26 +30,49 @@ export class CrearEntregaComponent {
       lote: new FormControl('', [Validators.required]),
       zona: new FormControl('', [Validators.required]),
       repartidor: new FormControl('', [Validators.required]),
+      pedidos: new FormControl([])
 
     })
   }
   ngOnInit(): void {
-    if (this.entrega != null) {
-      this.entregaForm.patchValue(this.entrega)
+    if (this.entrega) {
+      this.entregaForm.patchValue(this.entrega);
     }
+
+    // Obtener los repartidores
     this.repartidorService.getAll().subscribe((data: any) => {
       this.repartidores = data['data'].map((repartidor: Repartidor) => {
-        const repartidorFormateado: Repartidor = {
+        return {
           id: repartidor.id,
           cuit: repartidor.cuit,
           apellidoNombre: repartidor.apellidoNombre,
           vehiculo: repartidor.vehiculo,
           zona: repartidor.zona
         };
-        return repartidorFormateado;
       });
-    })
+    });
+
+    // Obtener los pedidos que no tienen entrega
+    this._entregaService.getPedidosPagosSinEntrega().subscribe((data: any) => {
+      this.pedidos = data['data'].map((pedido: Pedido) => {
+        return {
+          nroPedido: pedido.nroPedido,
+          fecha: pedido.fecha,
+          total: pedido.total,
+          cliente: pedido.cliente,
+          entrega: pedido.entrega,  // Aquí las entregas estarán vacías, porque son pedidos sin entrega
+          pago: pedido.pago,
+          lineas: pedido.lineas
+        };
+      });
+
+      // Actualizar el control 'pedidos' en el formulario con los pedidos obtenidos
+      this.entregaForm.patchValue({
+        pedidos: this.pedidos  // Aquí agregamos los pedidos al formulario
+      });
+    });
   }
+
 
 
   guardar(ent: Entrega) {
@@ -83,5 +109,5 @@ export class CrearEntregaComponent {
     }
   }
 
-}
 
+}

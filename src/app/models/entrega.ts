@@ -1,4 +1,5 @@
 import { Repartidor } from "./repartidor";
+import { Pedido } from "./pedido";
 
 export class Entrega {
 
@@ -11,4 +12,6 @@ export class Entrega {
     zona!: string;
 
     repartidor!: Repartidor;
+
+    pedidos: Pedido[] = [];
 }
