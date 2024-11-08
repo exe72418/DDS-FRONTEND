@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Producto } from '../models/producto';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -15,6 +15,19 @@ export class ProductosServiceService {
     return this.httpClient.get<Producto[]>(environment.serverUrl + 'producto')
       .pipe(
         map((response: any) => response.productos))
+  }
+  getProductosByName(descripcion: string = ''): Observable<Producto[]> {
+    let params = new HttpParams();
+
+    // Solo añadimos el filtro si la descripción está presente
+    if (descripcion) {
+      params = params.set('descripcion', descripcion);
+    }
+
+    // Realizamos la solicitud GET
+    return this.httpClient.get<Producto[]>(environment.serverUrl+'producto/ByName', { params })
+    .pipe(
+      map((response: any) => response.productos));
   }
   update(producto: Producto): Observable<Producto> {
     return this.httpClient.put<Producto>(environment.serverUrl + 'producto/' + producto.codigo, producto)
