@@ -4,6 +4,8 @@ import { CrearProductosComponent } from "../crear-productos/crear-productos.comp
 import { ProductosServiceService } from '../../services/productos-service.service';
 import { Producto } from '../../models/producto';
 import Swal from 'sweetalert2';
+import { TipoProducto } from '../../models/tipoProducto';
+import { TipoproductoService } from '../../services/tipoproducto.service';
 
 //import { addIcons } from "ionicons";
 
@@ -14,20 +16,47 @@ import Swal from 'sweetalert2';
 })
 export class ProductosComponent implements OnInit {
 
+  tiposProducto: TipoProducto[]|undefined;
+
+
 
   prodSelected!: Producto;
   crearEditarMode: boolean = false;
   productos! : Producto[];
+  nombreString!: string;
 
-  constructor(private _productoService : ProductosServiceService){
+  constructor(private _productoService : ProductosServiceService, private tipoproductoService:TipoproductoService){
 
   }
   ngOnInit(): void {
     this.search();
+    this.tipoproductoService.getAll().subscribe((data:any)=>{
+      this.tiposProducto =data['data'].map((tipoprod: TipoProducto) => {
+        const tipoProductoFormateado: TipoProducto = {
+          id: tipoprod.id,
+          nombre: tipoprod.nombre,
+        };
+        return tipoProductoFormateado;
+      });
+    })
   }
   changeEditCreate() {
     this.crearEditarMode = false;
   }
+
+  buscarPorPrecio() {
+  }
+  buscarPorNombre() {
+    console.log(this.nombreString)
+    this._productoService.getProductosByName(this.nombreString).subscribe((prodFiltrado)=>{
+      console.log(prodFiltrado)
+      this.productos = prodFiltrado
+    })
+  }
+  buscarPorTipo() {
+    throw new Error('Method not implemented.');
+  }
+
   search(){
     this._productoService.getAll().subscribe((productos)=>{
       this.productos = productos;
