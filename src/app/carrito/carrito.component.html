@@ -21,8 +21,17 @@
                     optionLabel="apellidoNombre" 
                     (onChange)="setearCliente($event.value)"
                     placeholder="Clientes" />
-          </p-card>
-    <p-button label="Pagar" (click)="pagar()" class="button" styleClass="w-full" />
+            <div class="card flex justify-content-center">
+                        <label for="fecha">Fecha</label>
+                        <p-calendar 
+                            id="fecha"
+                            [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="fechaSelected"
+                            dateFormat="dd/mm/yy" />
+            </div>
+        </p-card>
+            
+    <p-button [disabled]="fechaSelected ==null || this.pedidoSelectSnapShot.cliente ==null" label="Guardar" (click)="pagar()" class="button" styleClass="w-full" />
     </div>
 
 </div>

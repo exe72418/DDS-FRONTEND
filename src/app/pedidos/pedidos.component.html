@@ -1,6 +1,6 @@
 <div>
   <div style="display: flex; justify-content: center; width: 100%;">
-    <button pButton icon="pi pi-plus" (click)="new()">Crear</button>
+    <button pButton icon="pi pi-plus" routerLink="/home">Crear</button>
   </div>
   <div>
     <p-table *ngIf="!crearMode" [value]="pedidos" [tableStyle]="{ 'min-width': '50rem' }" class="table-striped">

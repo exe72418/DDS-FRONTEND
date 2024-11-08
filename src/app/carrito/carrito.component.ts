@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { PedidoState } from '../states/pedido.state';
 import { Observable } from 'rxjs';
@@ -9,7 +9,9 @@ import { Cliente } from '../../../src/app/models/cliente';
 import { ClienteService } from '../../../src/app/services/cliente.service';
 import { PedidoServiceService } from '../../../src/app/services/pedido-service.service';
 
-
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-carrito',
   templateUrl: './carrito.component.html',
@@ -22,6 +24,7 @@ export class  CarritoComponent implements OnInit {
   pedidoSelectSnapShot!: Pedido;
   clientes: Cliente[]|undefined;
   clienteSelected!: Cliente;
+  fechaSelected!: Date; 
 
 
 constructor(private store:Store, private apiService:ClienteService , private _pedidoService: PedidoServiceService){
@@ -31,15 +34,6 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
   ngOnInit(): void {
     this.llenarData();
 
-    /* this.pedido$.subscribe(
-      pedido => {
-        this.pedidoSelectSnapShot = pedido
-        console.log('Pedido en CarritoComponent:', pedido);
-      },
-      error => {
-        console.error('Error al suscribirse a pedido$', error);
-      }
-    );  */
     this.pedidoSelectSnapShot = _.cloneDeep(this.store.selectSnapshot(PedidoState.getPedido))
     console.log(this.pedidoSelectSnapShot)
   }
@@ -70,23 +64,25 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
   }
 
   pagar(){
-                                                                                                                      this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe(response => {
-      console.log(response)
+    this.pedidoSelectSnapShot.fecha = this.fechaSelected;
+
+    console.log(this.pedidoSelectSnapShot)
+
+    this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe((ped)=>{
       Swal.fire({
-        title: "Listo!",
-        text: "Pago realizado",
+        title: "Pedido guardado",
+        text: "",
         icon: "success"
       });
-
-    }, error => {
-
-      console.error('Error al crear el pedido', error);
+      console.log(ped)
+    }, 
+    (err: any) => {
       Swal.fire({
-        title: "Error",
-        text: 'Error al crear el pedido',
+        title: "No se pudo guardar el pedido",
+        text: "",
         icon: "error"
       });
-    });
-
+        console.log(err);    
+      });
   }
 }

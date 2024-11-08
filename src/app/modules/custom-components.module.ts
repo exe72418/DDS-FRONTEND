@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, Injectable, NgModule } from "@angular/core";
 import { NGXS_PLUGINS } from '@ngxs/store';
 import { TableModule } from "primeng/table";
 import { InputTextModule } from "primeng/inputtext";
@@ -36,6 +36,10 @@ import { CrearPagoComponent } from '../pago-components/crear-pago/crear-pago.com
 import { CrearPedidoComponent } from "../crear-pedido/crear-pedido.component";
 import { CalendarModule } from "primeng/calendar";
 
+
+@Injectable({
+    providedIn: 'root'
+  })
 @NgModule({
     declarations: [AppComponent,
         HomeComponentComponent,
@@ -76,6 +80,7 @@ import { CalendarModule } from "primeng/calendar";
         HttpClientModule,
         BrowserAnimationsModule,
         CalendarModule,
+        FormsModule
     ],
     exports: [
         TableModule,
@@ -92,6 +97,7 @@ import { CalendarModule } from "primeng/calendar";
         PedidosComponent,
         CrearPedidoComponent,
         CalendarModule,
+        FormsModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent]
