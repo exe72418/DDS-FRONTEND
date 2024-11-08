@@ -24,7 +24,6 @@ export class EntregaService {
   save(entrega: Entrega): Observable<Entrega> {
     return this.httpClient.post<Entrega>(environment.serverUrl + 'entregas', entrega)
   }
-  //FALTA DELETE
 
   delete(idEntrega: number): Observable<void> {
     return this.httpClient.delete<void>(environment.serverUrl + 'entregas/' + idEntrega);

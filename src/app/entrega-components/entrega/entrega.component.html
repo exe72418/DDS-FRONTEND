@@ -10,6 +10,7 @@
           <th>Lote</th>
           <th>Zona</th>
           <th>Repartidor</th>
+          <th>Pedido/s</th>
           <th style="text-align: center;">Editar/Borrar</th>
         </tr>
       </ng-template>
@@ -19,7 +20,11 @@
           <td>{{ entrega.lote }}</td>
           <td>{{ entrega.zona }}</td>
           <td>{{ entrega.repartidor.apellidoNombre}}</td>
-
+          <td>
+            <ul>
+              <li *ngFor="let pedido of entrega.pedidos">{{ pedido.nroPedido }}</li>
+            </ul>
+          </td>
           <td>
             <div style="margin-right: 10px; display: flex;justify-content: space-around;">
               <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"

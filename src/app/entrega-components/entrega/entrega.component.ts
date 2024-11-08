@@ -33,8 +33,32 @@ export class EntregaComponent implements OnInit {
     this.crearEditarModeEntrega = false;
   }
 
-  deleteEntrega(_t17: any) {
-    throw new Error('Method not implemented.');
+  deleteEntrega(ent: Entrega) {
+    Swal.fire({
+      title: "Atencion?",
+      text: "Deseas dar de baja entrega " + ent.id,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._entregaService.delete(ent.id).subscribe((ent) => {
+          Swal.fire({
+            title: "Entrega borrada",
+            text: "",
+            icon: "success"
+          });
+        }, (error) => {
+          Swal.fire({
+            title: "no se pudo borrar la entrega",
+            text: error.message,
+            icon: "error"
+          });
+        })
+      }
+    });
   }
 
   editEntrega(ent: Entrega) {
