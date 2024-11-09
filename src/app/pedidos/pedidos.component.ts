@@ -71,6 +71,7 @@ export class PedidosComponent implements OnInit{
 
   changeEditCreate() {
     this.crearMode = false;
+    this.search()
   }
 
   deleteProduct(ped: Pedido) {

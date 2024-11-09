@@ -6,6 +6,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PagoService } from '../services/pago.service';
 import { Pago } from '../models/pago';
 import { PedidoServiceService } from '../services/pedido-service.service';
+import Swal from 'sweetalert2';
+import { LineaDeProducto } from '../models/lineaProducto';
 
 @Component({
   selector: 'app-crear-pedido',
@@ -26,6 +28,7 @@ export class CrearPedidoComponent implements OnInit {
   entregaSelected!: boolean;
   pedidoForm!: FormGroup;
   pagos!: Pago[];
+  lineasSelected: LineaDeProducto[] = [];
 
   constructor(private _clienteService: ClienteService, private _pagoService: PagoService,
     private _pedidoService: PedidoServiceService
@@ -46,14 +49,9 @@ export class CrearPedidoComponent implements OnInit {
     })
     if (this.pedido) {
       this.pedidoForm.patchValue(this.pedido)
-      this.clienteSelected = this.pedido.cliente;
       this.fechaSelected = this.pedido.fecha;
-      this.pagoSelected = this.pedido.pago ? true : false;
-      this.entregaSelected = this.pedido.entrega ? true : false;
+      this.lineasSelected = this.pedido.lineas;
     }
-
-
-
 
     this._clienteService.getAll().subscribe(data => {
       this.clientes = data['data'].map((cliente: Cliente) => {
@@ -80,6 +78,8 @@ export class CrearPedidoComponent implements OnInit {
   }
 
   savePedido() {
+
+    this.pedidoForm.controls['fecha'].setValue(this.fechaSelected);
     let totalValue = this.pedidoForm.value.total;
 
     // Convierte a número
@@ -89,10 +89,44 @@ export class CrearPedidoComponent implements OnInit {
     if (!isNaN(totalInteger)) {
       this.pedidoForm.controls['total'].setValue(totalInteger);
     }
-    this._pedidoService.guardar(this.pedidoForm.value).subscribe((ped) => {
-    },
-      (err: any) => {
-      });
+
+    if(this.pedido != null){
+      console.log(this.pedidoForm.value)
+      this._pedidoService.editar(this.pedidoForm.value).subscribe((ped)=>{
+        Swal.fire({
+          title: "Pedido guardado",
+          text: "",
+          icon: "success"
+        });
+        this.editCrear.emit()    
+          },
+          (err: any) => {
+            Swal.fire({
+              title: "No se pudo guardar el pedido",
+              text: "",
+              icon: "error"
+            });
+          });
+      }
+    else{
+      this._pedidoService.guardar(this.pedidoForm.value).subscribe((ped) => {
+        Swal.fire({
+          title: "Pedido guardado",
+          text: "",
+          icon: "success"
+        });
+        this.editCrear.emit()    
+          },
+          (err: any) => {
+            Swal.fire({
+              title: "No se pudo guardar el pedido",
+              text: "",
+              icon: "error"
+            });
+          });
+    }
+
+    
 
   }
 

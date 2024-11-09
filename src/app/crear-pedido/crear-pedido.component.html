@@ -1,7 +1,8 @@
 <form [formGroup]="pedidoForm">
     <div style="display: flex; justify-content: center;">
         <p-card header="Pedido" >
-            <div *ngIf="pedido">
+            <label for="nroPedido">Nro Pedido</label>
+            <div id="nroPedido" *ngIf="pedido">
                 {{pedido.nroPedido}}
             </div>
             <p-dropdown 
@@ -14,14 +15,15 @@
                 <label for="fecha">Fecha</label>
                 <p-calendar 
                     id="fecha"
-                    formControlName="fecha"
-                        dateFormat="dd/mm/yy" />
+                    [(ngModel)]="fechaSelected" 
+                     [ngModelOptions]="{standalone: true}"
+                    dateFormat="dd/mm/yy" />
             </div>
-            
-            <ng-template *ngIf="pedido" pTemplate="footer">
-                {{pedido.total}}
-            </ng-template>
-            <label for="total">Total</label>
+            <label for="lineas" *ngIf="pedido">Lineas de producto</label>
+            <p-multiSelect id="lineas" *ngIf="pedido.lineas != null" id="pedidos" [options]="pedido.lineas" formControlName="lineas"
+            optionLabel="id" placeholder="Seleccione las lineas de los productos" [disabled]="false"
+            display="chip"></p-multiSelect>
+            <label for="total" *ngIf="!pedido">Total</label>
             <input id="total" pInputText formControlName="total" *ngIf="!pedido" type="text">
         </p-card>
     </div>
