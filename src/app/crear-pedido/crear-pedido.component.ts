@@ -15,44 +15,44 @@ import { PedidoServiceService } from '../services/pedido-service.service';
 export class CrearPedidoComponent implements OnInit {
 
 
-  @Input() pedido!:Pedido;
+  @Input() pedido!: Pedido;
   clientes!: Cliente[];
   clienteSelected!: Cliente;
   fechaSelected!: Date;
   pagoSelected!: boolean;
   entregaSelected!: boolean;
-  pedidoForm!:FormGroup;
+  pedidoForm!: FormGroup;
   pagos!: Pago[];
 
   constructor(private _clienteService: ClienteService, private _pagoService: PagoService,
     private _pedidoService: PedidoServiceService
-  ){
+  ) {
 
   }
   ngOnInit(): void {
 
     this.pedidoForm = new FormGroup({
-      nroPedido:new FormControl(''),
+      nroPedido: new FormControl(''),
       cliente: new FormControl('', [Validators.required]),
       lineas: new FormControl('', [Validators.required]),
-      fecha:new FormControl(''),
-      total:new FormControl(''),
-      entrega:new FormControl(''),
-      pago:new FormControl('')
+      fecha: new FormControl(''),
+      total: new FormControl(''),
+      entrega: new FormControl(''),
+      pago: new FormControl('')
 
     })
-    if(this.pedido){
+    if (this.pedido) {
       this.pedidoForm.patchValue(this.pedido)
       this.clienteSelected = this.pedido.cliente;
       this.fechaSelected = this.pedido.fecha;
       this.pagoSelected = this.pedido.pago ? true : false;
-      this.entregaSelected = this.pedido.entrega? true : false;
+      this.entregaSelected = this.pedido.entrega ? true : false;
     }
 
-    
-    
 
-    this._clienteService.getAllClients().subscribe(data => {
+
+
+    this._clienteService.getAll().subscribe(data => {
       this.clientes = data['data'].map((cliente: Cliente) => {
         const clienteFormateado: Cliente = {
           id: cliente.id,
@@ -67,7 +67,7 @@ export class CrearPedidoComponent implements OnInit {
         return clienteFormateado;
       });
     });
-    this._pagoService.getAll().subscribe((pagos)=>{
+    this._pagoService.getAll().subscribe((pagos) => {
       this.pagos = pagos
     })
   }
@@ -82,11 +82,11 @@ export class CrearPedidoComponent implements OnInit {
     if (!isNaN(totalInteger)) {
       this.pedidoForm.controls['total'].setValue(totalInteger);
     }
-    this._pedidoService.guardar(this.pedidoForm.value).subscribe((ped)=>{
-    }, 
-    (err: any) => {
+    this._pedidoService.guardar(this.pedidoForm.value).subscribe((ped) => {
+    },
+      (err: any) => {
       });
-    
+
   }
 
 }

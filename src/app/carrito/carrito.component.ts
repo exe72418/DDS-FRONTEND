@@ -17,19 +17,19 @@ import { PedidoServiceService } from '../../../src/app/services/pedido-service.s
   templateUrl: './carrito.component.html',
   styleUrl: './carrito.component.css'
 })
-export class  CarritoComponent implements OnInit {
+export class CarritoComponent implements OnInit {
 
 
   @Select(PedidoState.getPedido) pedido$!: Observable<Pedido>;
   pedidoSelectSnapShot!: Pedido;
-  clientes: Cliente[]|undefined;
+  clientes: Cliente[] | undefined;
   clienteSelected!: Cliente;
-  fechaSelected!: Date; 
+  fechaSelected!: Date;
 
 
-constructor(private store:Store, private apiService:ClienteService , private _pedidoService: PedidoServiceService){
+  constructor(private store: Store, private apiService: ClienteService, private _pedidoService: PedidoServiceService) {
 
-}
+  }
 
   ngOnInit(): void {
     this.llenarData();
@@ -37,13 +37,14 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
     this.pedidoSelectSnapShot = _.cloneDeep(this.store.selectSnapshot(PedidoState.getPedido))
   }
 
+
   setearCliente(cliente: Cliente) {
     this.pedidoSelectSnapShot.cliente = cliente;
 
   }
 
   llenarData() {
-    this.apiService.getAllClients().subscribe(data => {
+    this.apiService.getAll().subscribe(data => {
       this.clientes = data['data'].map((cliente: Cliente) => {
         const clienteFormateado: Cliente = {
           id: cliente.id,
@@ -52,31 +53,31 @@ constructor(private store:Store, private apiService:ClienteService , private _pe
           email: cliente.email,
           domicilio: cliente.domicilio,
           cuit: cliente.cuit,
-          disponible:cliente.disponible,
-          zona:cliente.zona
+          disponible: cliente.disponible,
+          zona: cliente.zona
         };
         return clienteFormateado;
       });
     });
   }
 
-  pagar(){
+  pagar() {
     this.pedidoSelectSnapShot.fecha = this.fechaSelected;
 
 
-    this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe((ped)=>{
+    this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe((ped) => {
       Swal.fire({
         title: "Pedido guardado",
         text: "",
         icon: "success"
       });
-    }, 
-    (err: any) => {
-      Swal.fire({
-        title: "No se pudo guardar el pedido",
-        text: "",
-        icon: "error"
-      });
+    },
+      (err: any) => {
+        Swal.fire({
+          title: "No se pudo guardar el pedido",
+          text: "",
+          icon: "error"
+        });
       });
   }
 }

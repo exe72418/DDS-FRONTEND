@@ -1,34 +1,27 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Cliente } from '../models/cliente';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
 
-  private baseUrl = "http://localhost:3000/api/v2/clientes";
+  constructor(private httpClient: HttpClient) { }
 
-  constructor(private http: HttpClient) { }
-
-  get(id: number): Observable<Cliente> {
-    return this.http.get<any>(`${this.baseUrl}/${id}`)
+  getAll(): Observable<any> {
+    return this.httpClient.get<any>(environment.serverUrl + 'clientes')
   }
 
-  getAllClients(): Observable<any> {
-    return this.http.get<any>(this.baseUrl)
+  delete(idCliente: number): Observable<void> {
+    return this.httpClient.delete<void>(environment.serverUrl + 'clientes/' + idCliente);
   }
-
-  createClient(data: Cliente): Observable<Cliente> {
-    return this.http.post<any>(this.baseUrl, data)
+  update(cliente: Cliente): Observable<Cliente> {
+    return this.httpClient.put<Cliente>(environment.serverUrl + 'clientes/' + cliente.id, cliente)
   }
-
-  updateClient(data: Cliente): Observable<Cliente> {
-    return this.http.put<any>(`${this.baseUrl}`, data)
-  }
-
-  deleteClient(id: any): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/${id}`)
+  create(cliente: Cliente): Observable<Cliente> {
+    return this.httpClient.post<Cliente>(environment.serverUrl + 'clientes', cliente)
   }
 }

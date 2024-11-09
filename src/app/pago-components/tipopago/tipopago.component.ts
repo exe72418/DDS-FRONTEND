@@ -18,16 +18,16 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
   styleUrl: './tipopago.component.css'
 })
 export class TipopagoComponent {
-  crearEditarMode: boolean= false;
+  crearEditarMode: boolean = false;
   tipoPagoelected!: TipoPago;
   tipoPagoForm!: FormGroup;
 
-  constructor(private tipopagoService : TipopagoService){}
+  constructor(private tipopagoService: TipopagoService) { }
   tiposPago: TipoPago[] = [];
 
   ngOnInit(): void {
     this.tipoPagoForm = new FormGroup({
-      id:new FormControl('', [Validators.required]),
+      id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
     })
     this.search();
@@ -35,33 +35,33 @@ export class TipopagoComponent {
   }
 
 
-    search(){
-      this.tipopagoService.getAll().subscribe((data:any)=>{
-        this.tiposPago =data['data'].map((tipopago: TipoPago) => {
-          const tipoPagoFormateado: TipoPago = {
-            id: tipopago.id,
-            nombre: tipopago.nombre,
-            descripcion: tipopago.descripcion,
-          };
-          return tipoPagoFormateado;
-        });
-      })
-    }
+  search() {
+    this.tipopagoService.getAll().subscribe((data: any) => {
+      this.tiposPago = data['data'].map((tipopago: TipoPago) => {
+        const tipoPagoFormateado: TipoPago = {
+          id: tipopago.id,
+          nombre: tipopago.nombre,
+          descripcion: tipopago.descripcion,
+        };
+        return tipoPagoFormateado;
+      });
+    })
+  }
 
-    changeEditCreate() {
-      this.crearEditarMode = false
-      this.search();
-    }
+  changeEditCreate() {
+    this.crearEditarMode = false
+    this.search();
+  }
 
-    new() {
-      this.crearEditarMode = true;
-    }
+  new() {
+    this.crearEditarMode = true;
+  }
 
-    editProduct(tipopago: TipoPago) {
-        this.crearEditarMode = true;
-        this.tipoPagoelected = tipopago;
+  editTipoPago(tipopago: TipoPago) {
+    this.crearEditarMode = true;
+    this.tipoPagoelected = tipopago;
 
-    }
+  }
 
 
   deleteTipoPago(tipoPago: TipoPago) {
@@ -96,7 +96,7 @@ export class TipopagoComponent {
 
 
 
-  }
+}
 
 
 

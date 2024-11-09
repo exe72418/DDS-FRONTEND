@@ -1,11 +1,15 @@
+import { Cliente } from '../../models/cliente';
 import { Component, OnInit } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
+import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { DataSource } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { Cliente } from '../../models/cliente';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import Swal from 'sweetalert2';
+import { CardModule } from 'primeng/card';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrearClientesComponent } from "../crear-clientes/crear-clientes.component";
-import Swal from 'sweetalert2'
 import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 
@@ -14,64 +18,32 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.css'
 })
-export class ClientesComponent implements OnInit {
-  event!: boolean;
-
-
-  constructor(private apiService: ClienteService, public router: Router
-  ) { }
-
-  //swal = require('sweetalert2');
-  clientes!: Cliente[];
-  editCreateMode: boolean = false
+export class ClientesComponent {
+  crearEditarMode: boolean = false;
   clienteSelected!: Cliente;
+  clienteForm!: FormGroup;
+
+  constructor(private clienteService: ClienteService) { }
+  clientes!: Cliente[];
 
   ngOnInit(): void {
-    this.llenarData();
-  }
-  new() {
-    this.editCreateMode = true;
-  }
-  changeEditCrear() {
-    this.editCreateMode = false
+    this.clienteForm = new FormGroup({
+      id: new FormControl('', [Validators.required]),
+      apellidoNombre: new FormControl('', [Validators.required]),
+      telefono: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
+      domicilio: new FormControl('', [Validators.required]),
+      cuit: new FormControl('', [Validators.required]),
+      disponible: new FormControl('', [Validators.required]),
+      zona: new FormControl('', [Validators.required])
+    })
+    this.search();
+
   }
 
-  navegarEdit(cliente: Cliente) {
 
-    this.clienteSelected = cliente;
-    this.editCreateMode = true
-  }
-
-  borrarCliente(cliente: Cliente) {
-    Swal.fire({
-      title: "Atencion?",
-      text: "Deseas dar de baja el cliente " + cliente.apellidoNombre,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.apiService.deleteClient(cliente.id).subscribe((cliente) => {
-          Swal.fire({
-            title: "Cliente Dado de baja",
-            text: "",
-            icon: "success"
-          });
-        }, (error) => {
-          Swal.fire({
-            title: "no se pudo dar de baja el cliente",
-            text: error.message,
-            icon: "error"
-          });
-        })
-      }
-    });
-  }
-
-  llenarData() {
-    this.apiService.getAllClients().subscribe(data => {
+  search() {
+    this.clienteService.getAll().subscribe((data: any) => {
       this.clientes = data['data'].map((cliente: Cliente) => {
         const clienteFormateado: Cliente = {
           id: cliente.id,
@@ -85,6 +57,51 @@ export class ClientesComponent implements OnInit {
         };
         return clienteFormateado;
       });
+    })
+  }
+
+  changeEditCreate() {
+    this.crearEditarMode = false
+    this.search();
+  }
+
+  new() {
+    this.crearEditarMode = true;
+  }
+
+  editCliente(cliente: Cliente) {
+    this.crearEditarMode = true;
+    this.clienteSelected = cliente;
+
+  }
+
+
+  deleteCliente(cliente: Cliente) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Deseas borrar el cliente ' + cliente.apellidoNombre,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, borrarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.clienteService.delete(cliente.id).subscribe(() => {
+          Swal.fire(
+            'Eliminado',
+            'El cliente ha sido eliminado.',
+            'success'
+          );
+          this.search();
+        }, (error) => {
+          Swal.fire(
+            'Error al eliminar',
+            error.message,
+            'error'
+          );
+        });
+      }
     });
   }
 }

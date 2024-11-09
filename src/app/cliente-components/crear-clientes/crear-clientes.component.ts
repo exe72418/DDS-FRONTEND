@@ -1,11 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ClienteService } from '../../services/cliente.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../../models/cliente';
 import Swal from 'sweetalert2';
+import { CustomComponentsModule } from '../../modules/custom-components.module';
 
 @Component({
   selector: 'app-crear-clientes',
@@ -14,69 +12,84 @@ import Swal from 'sweetalert2';
 })
 export class CrearClientesComponent implements OnInit {
 
-  @Input() cliente! : Cliente ;
+  @Input() cliente!: Cliente;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
-
-
   clienteForm: FormGroup;
 
-  constructor(private http: HttpClient, private cliService: ClienteService, private router : Router) {
+
+  constructor(private clienteService: ClienteService) {
     this.clienteForm = new FormGroup({
-      id:new FormControl(''),
+      id: new FormControl(''),
       apellidoNombre: new FormControl('', [Validators.required]),
-      telefono: new FormControl('', [Validators.required, ]), // Ajusta la expresión regular según tus necesidades
-      cuit: new FormControl('', [Validators.required, ]), // Ajusta la expresión regular según tus necesidades
-      email: new FormControl('', [Validators.required, ]),
+      telefono: new FormControl('', [Validators.required,]), // Ajusta la expresión regular según tus necesidades
+      cuit: new FormControl('', [Validators.required,]), // Ajusta la expresión regular según tus necesidades
+      email: new FormControl('', [Validators.required,]),
       domicilio: new FormControl('', [Validators.required]),
-      zona: new FormControl('',[Validators.required]),
+      zona: new FormControl('', [Validators.required])
     });
   }
 
-  ngOnInit(){
-      if(this.cliente){
-        this.clienteForm.patchValue(this.cliente)
+  ngOnInit() {
+    if (this.cliente) {
+      this.clienteForm.patchValue(this.cliente)
     }
   }
 
-  onSubmit() {
+
+  guardar(cliente: Cliente) {
     if (this.clienteForm.valid) {
-      if(!this.cliente){
-        let clienteData = this.clienteForm.value;
-        clienteData.id = 0;
-        // Aquí puedes enviar los datos al servidor usando HttpClient
-        this.cliService.createClient(clienteData)
+
+      if (!this.cliente) {
+        cliente.id = 0;
+
+        this.clienteService.create(cliente)
           .subscribe(response => {
             Swal.fire({
               title: "Guardado",
-              text: "Cliente creado",
+              text: 'Cliente creado',
               icon: "success"
             });
-            this.editCrear.emit(false);
 
-            // Puedes realizar acciones adicionales después de crear el cliente
+            this.editCrear.emit(false);
           }, error => {
+
             console.error('Error al crear el cliente:', error);
+            Swal.fire({
+              title: "Error",
+              text: 'Error al crear el cliente',
+              icon: "error"
+            });
           });
-      }else{
-        const clienteData = this.clienteForm.value;
-        // Aquí puedes enviar los datos al servidor usando HttpClient
-        this.cliService.updateClient(clienteData)
+
+      } else {
+
+        this.clienteService.update(cliente)
           .subscribe(response => {
             Swal.fire({
               title: "Guardado",
-              text: "Cliente actualizado",
+              text: 'Cliente actualizado',
               icon: "success"
             });
-            this.editCrear.emit(false);
 
-            // Puedes realizar acciones adicionales después de crear el cliente
+            this.editCrear.emit(false);
           }, error => {
-            console.error('Error al crear el cliente:', error);
+            // Manejo de errores
+            console.error('Error al modificar el cliente:', error);
+            Swal.fire({
+              title: "Error",
+              text: 'Error al modificar el cliente',
+              icon: "error"
+            });
           });
       }
 
     } else {
-      // Manejar errores de validación
+
+      Swal.fire({
+        title: "Error",
+        text: 'Formulario inválido. Verifique los datos ingresados.',
+        icon: "error"
+      });
       console.error('Formulario inválido');
     }
   }

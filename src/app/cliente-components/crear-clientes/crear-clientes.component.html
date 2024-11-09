@@ -1,36 +1,31 @@
-<div class="container">
-  <div class="form-container">
-    <h2 *ngIf="!cliente">Crear Cliente</h2>
-    <h2 *ngIf="cliente">Modificar Cliente</h2>
-    <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="apellidoNombre">Apellido y Nombre:</label>
-        <input type="text" class="form-control" id="apellidoNombre" name="apellidoNombre" formControlName="apellidoNombre">
-      </div>
-      <div class="form-group">
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" class="form-control" id="telefono" name="telefono" formControlName="telefono">
-      </div>
-      <div class="form-group">
-        <label for="cuit">CUIT:</label>
-        <input type="text" class="form-control" id="cuit" name="cuit" formControlName="cuit">
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" formControlName="email">
-      </div>
-      <div class="form-group">
-        <label for="domicilio">Domicilio:</label>
-        <input type="text" class="form-control" id="domicilio" name="domicilio" formControlName="domicilio">
-      </div>
-      <div class="form-group">
-        <label for="zona">Zona:</label>
-        <input type="text" class="form-control" id="zona" name="zona" formControlName="zona">
-      </div>
-      <button *ngIf="!cliente" type="submit" class="btn btn-primary">Crear</button>
-      <button *ngIf="cliente" type="submit" class="btn btn-primary">Modificar</button>
+<div style="display: flex; justify-content: center;">
+  <p-card>
+    <div>
+      <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="clienteForm"
+        (ngSubmit)="guardar(clienteForm.value)">
+        <h4 *ngIf="cliente">Modificar</h4>
+        <h4 *ngIf="!cliente">Crear</h4>
 
-    </form>
+        <label for="apellidoNombre">Nombre y Apellido</label>
+        <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre">
 
-  </div>
+        <label for="cuit">Cuit</label>
+        <input pInputText id="cuit" type="text" formControlName="cuit">
+
+        <label for="email">Email</label>
+        <input pInputText id="email" type="text" formControlName="email">
+
+        <label for="telefono">Telefono</label>
+        <input pInputText id="telefono" type="text" formControlName="telefono">
+
+        <label for="domicilio">Domicilio</label>
+        <input pInputText id="domicilio" type="text" formControlName="domicilio">
+
+        <label for="zona">Zona</label>
+        <input pInputText id="zona" type="text" formControlName="zona">
+
+        <button style="margin-top: 10px;" pButton type="submit" label="Guardar"></button>
+      </form>
+    </div>
+  </p-card>
 </div>
