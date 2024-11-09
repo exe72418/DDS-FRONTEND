@@ -17,8 +17,10 @@
         <p-dropdown id="pedido" [options]="pedidosSinPago" formControlName="pedido" optionLabel="nroPedido"
           placeholder="Pedido" />
 
-        <button style="margin-top: 10px;" pButton type="submit" class="btn btn-primary">Guardar</button>
-
+        <div style="display: flex; justify-content: center;">
+            <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+            <button pButton style="margin: 10px;" (click)="back()">Volver</button>
+        </div>
       </form>
     </div>
   </p-card>

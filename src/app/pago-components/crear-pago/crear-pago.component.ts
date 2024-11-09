@@ -98,6 +98,9 @@ export class CrearPagoComponent implements OnInit {
     }
   }
 
+  back() {
+    this.editCrear.emit(false)
+  }
 
   guardar(pag: Pago) {
     if (this.pago != undefined || this.pago != null) {

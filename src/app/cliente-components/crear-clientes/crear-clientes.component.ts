@@ -35,6 +35,9 @@ export class CrearClientesComponent implements OnInit {
     }
   }
 
+  back() {
+    this.editCrear.emit(false)
+  }
 
   guardar(cliente: Cliente) {
     if (this.clienteForm.valid) {

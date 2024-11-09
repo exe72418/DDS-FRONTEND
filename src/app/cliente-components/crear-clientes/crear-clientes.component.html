@@ -24,7 +24,11 @@
         <label for="zona">Zona</label>
         <input pInputText id="zona" type="text" formControlName="zona">
 
-        <button style="margin-top: 10px;" pButton type="submit" label="Guardar"></button>
+        <div style="display: flex; justify-content: center;">
+        <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+        <button pButton style="margin: 10px;" (click)="back()">Volver</button>
+        </div>
+
       </form>
     </div>
   </p-card>

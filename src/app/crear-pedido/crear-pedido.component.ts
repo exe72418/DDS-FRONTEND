@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Pedido } from '../models/pedido';
 import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/cliente';
@@ -15,7 +15,10 @@ import { PedidoServiceService } from '../services/pedido-service.service';
 export class CrearPedidoComponent implements OnInit {
 
 
+
   @Input() pedido!: Pedido;
+  @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
+
   clientes!: Cliente[];
   clienteSelected!: Cliente;
   fechaSelected!: Date;
@@ -70,6 +73,10 @@ export class CrearPedidoComponent implements OnInit {
     this._pagoService.getAll().subscribe((pagos) => {
       this.pagos = pagos
     })
+  }
+
+  back() {
+    this.editCrear.emit(false)
   }
 
   savePedido() {

@@ -29,6 +29,10 @@ export class CrearTipoProdComponent implements OnInit{
     }
   }
 
+  back() {
+    this.editCrear.emit(false)
+  }
+
   guardar(tipoProducto: TipoProducto){
     if (this.tipoProdForm.valid) {
       if(!this.tipoProd){

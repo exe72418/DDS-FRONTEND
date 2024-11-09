@@ -1,34 +1,33 @@
 <form [formGroup]="pedidoForm">
-<p-card header="Pedido">
-    <div *ngIf="pedido">
-        {{pedido.nroPedido}}
+    <div style="display: flex; justify-content: center;">
+        <p-card header="Pedido" >
+            <div *ngIf="pedido">
+                {{pedido.nroPedido}}
+            </div>
+            <p-dropdown 
+                    id="cliente"
+                    [options]="clientes" 
+                    formControlName="cliente"
+                    optionLabel="apellidoNombre" 
+                    placeholder="Clientes" />
+            <div class="card flex justify-content-center">
+                <label for="fecha">Fecha</label>
+                <p-calendar 
+                    id="fecha"
+                    formControlName="fecha"
+                        dateFormat="dd/mm/yy" />
+            </div>
+            
+            <ng-template *ngIf="pedido" pTemplate="footer">
+                {{pedido.total}}
+            </ng-template>
+            <label for="total">Total</label>
+            <input id="total" pInputText formControlName="total" *ngIf="!pedido" type="text">
+        </p-card>
     </div>
-    <p-dropdown 
-            id="cliente"
-            [options]="clientes" 
-            formControlName="cliente"
-            optionLabel="apellidoNombre" 
-            placeholder="Clientes" />
-    <div class="card flex justify-content-center">
-        <label for="fecha">Fecha</label>
-        <p-calendar 
-            id="fecha"
-            formControlName="fecha"
-                dateFormat="dd/mm/yy" />
-    </div>
-    
-    <div class="card flex justify-content-center">
-        <!-- <span>Entrega Realizada</span>
-        <p-inputSwitch formControlName="entrega" /> -->
-    </div>
-    <ng-template *ngIf="pedido" pTemplate="footer">
-        {{pedido.total}}
-    </ng-template>
-    <label for="total">Total</label>
-    <input id="total" pInputText formControlName="total" *ngIf="!pedido" type="text">
-</p-card>
+
 </form>
-<div>
-    <button pButton>Volver</button>
-    <button pButton (click)="savePedido()">Guardar</button>
+<div style="display: flex; justify-content: center;">
+    <button pButton style="margin: 10px;" (click)="back()">Volver</button>
+    <button pButton style="margin: 10px;" (click)="savePedido()">Guardar</button>
 </div>

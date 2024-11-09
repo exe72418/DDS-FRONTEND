@@ -24,6 +24,10 @@ export class CrearTipoPagoComponent implements OnInit {
     });
   }
 
+  back() {
+    this.editCrear.emit(false)
+  }
+
   ngOnInit(): void {
     if (this.tipoPago) {
       this.tipoPagoForm.patchValue(this.tipoPago);

@@ -46,6 +46,7 @@ export class ProductosComponent implements OnInit {
   }
   changeEditCreate() {
     this.crearEditarMode = false;
+    this.search();
   }
 
   buscarPorPrecio() {

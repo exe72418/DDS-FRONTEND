@@ -8,6 +8,7 @@ import { Pedido } from '../../../src/app/models/pedido';
 import { Cliente } from '../../../src/app/models/cliente';
 import { ClienteService } from '../../../src/app/services/cliente.service';
 import { PedidoServiceService } from '../../../src/app/services/pedido-service.service';
+import { Route, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,8 @@ export class CarritoComponent implements OnInit {
   fechaSelected!: Date;
 
 
-  constructor(private store: Store, private apiService: ClienteService, private _pedidoService: PedidoServiceService) {
+  constructor(private store: Store, private apiService: ClienteService, private router: Router,
+    private _pedidoService: PedidoServiceService) {
 
   }
 
@@ -71,6 +73,7 @@ export class CarritoComponent implements OnInit {
         text: "",
         icon: "success"
       });
+      this.router.navigate(['pedidos'])
     },
       (err: any) => {
         Swal.fire({

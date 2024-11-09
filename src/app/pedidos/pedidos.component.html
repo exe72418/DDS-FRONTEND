@@ -1,7 +1,26 @@
 <div>
-  <div style="display: flex; justify-content: center; width: 100%;">
+  <div *ngIf="!crearMode" style="display: flex; justify-content: center; width: 100%; margin: 10px;">
     <button pButton icon="pi pi-plus" routerLink="/home">Crear</button>
   </div>
+  <div style="display: flex; justify-content: center; margin: 10px; align-items: center; color: white;">
+    <label for="cliente">Cliente:</label>
+    <p-dropdown 
+                    id="cliente"
+                    [options]="clientes" 
+                    [(ngModel)]="clienteSelect"
+                    optionLabel="apellidoNombre" 
+                    [showClear]="true"
+                    placeholder="Clientes"
+                    (onChange)="buscar()" />
+
+    <label for="fechaInicio">Fecha de inicio:</label>
+    <input pInputText (change)="buscar()" id="fechaInicio" type="date" [(ngModel)]="fechaInicio" name="fechaInicio">
+
+    <label for="fechaFin">Fecha de fin:</label>
+    <input pInputText (change)="buscar()" id="fechaFin" type="date" [(ngModel)]="fechaFin" name="fechaFin">
+ 
+  </div>
+  
   <div>
     <p-table *ngIf="!crearMode" [value]="pedidos" [tableStyle]="{ 'min-width': '50rem' }" class="table-striped">
       <ng-template pTemplate="header">
@@ -24,7 +43,7 @@
               {{ pedido.entrega.id }}
             </div>
           </td>
-          <td>{{ pedido.fecha }}</td>
+          <td>{{ pedido.fecha | date: 'dd/MM/yyyy'}}</td>
           <td *ngIf="pedido.pago">{{ pedido.pago.id }}</td>
           <td *ngIf="!pedido.pago"> </td>
           <td>{{ pedido.total }}</td>
@@ -44,5 +63,5 @@
     </p-table>
   </div>
   
-  <app-crear-pedido [pedido]="pedidoSelected" *ngIf="crearMode"></app-crear-pedido>
+  <app-crear-pedido (editCrear)="changeEditCreate()" [pedido]="pedidoSelected" *ngIf="crearMode"></app-crear-pedido>
 </div>

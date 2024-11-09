@@ -105,7 +105,9 @@ export class CrearEntregaComponent {
   }
 
 
-
+  back() {
+    this.editCrear.emit(false)
+  }
 
   guardar(ent: Entrega) {
     if (this.entrega != undefined || this.entrega != null) {

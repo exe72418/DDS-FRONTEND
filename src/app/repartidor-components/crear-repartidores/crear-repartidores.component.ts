@@ -31,6 +31,9 @@ export class CrearRepartidoresComponent implements OnInit {
       this.repartidorForm.patchValue(this.repartidor);
     }
   }
+  back() {
+    this.editCrear.emit(false)
+  }
 
   guardar(repartidor: Repartidor) {
     if (this.repartidorForm.valid) {
