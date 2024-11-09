@@ -47,6 +47,7 @@ export class RepartidorComponent implements OnInit {
           apellidoNombre: repartidor.apellidoNombre,
           vehiculo: repartidor.vehiculo,
           zona: repartidor.zona,
+          disponible: repartidor.disponible
         };
         return repartidorFormateado;
       });

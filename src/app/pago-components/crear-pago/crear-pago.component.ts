@@ -41,6 +41,7 @@ export class CrearPagoComponent implements OnInit {
           id: tipoPago.id,
           nombre: tipoPago.nombre,
           descripcion: tipoPago.descripcion,
+          disponible: tipoPago.disponible
         };
         return tipoPagoFormateado;
       });

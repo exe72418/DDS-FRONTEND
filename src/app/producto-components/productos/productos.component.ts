@@ -16,25 +16,26 @@ import { TipoproductoService } from '../../services/tipoproducto.service';
 })
 export class ProductosComponent implements OnInit {
 
-  tiposProducto: TipoProducto[]|undefined;
+  tiposProducto: TipoProducto[] | undefined;
 
 
 
   prodSelected!: Producto;
   crearEditarMode: boolean = false;
-  productos! : Producto[];
+  productos!: Producto[];
   nombreString!: string;
 
-  constructor(private _productoService : ProductosServiceService, private tipoproductoService:TipoproductoService){
+  constructor(private _productoService: ProductosServiceService, private tipoproductoService: TipoproductoService) {
 
   }
   ngOnInit(): void {
     this.search();
-    this.tipoproductoService.getAll().subscribe((data:any)=>{
-      this.tiposProducto =data['data'].map((tipoprod: TipoProducto) => {
+    this.tipoproductoService.getAll().subscribe((data: any) => {
+      this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
         const tipoProductoFormateado: TipoProducto = {
           id: tipoprod.id,
           nombre: tipoprod.nombre,
+          disponible: tipoprod.disponible
         };
         return tipoProductoFormateado;
       });
@@ -48,7 +49,7 @@ export class ProductosComponent implements OnInit {
   }
   buscarPorNombre() {
     console.log(this.nombreString)
-    this._productoService.getProductosByName(this.nombreString).subscribe((prodFiltrado)=>{
+    this._productoService.getProductosByName(this.nombreString).subscribe((prodFiltrado) => {
       console.log(prodFiltrado)
       this.productos = prodFiltrado
     })
@@ -57,8 +58,8 @@ export class ProductosComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  search(){
-    this._productoService.getAll().subscribe((productos)=>{
+  search() {
+    this._productoService.getAll().subscribe((productos) => {
       this.productos = productos;
     })
   }
@@ -74,14 +75,14 @@ export class ProductosComponent implements OnInit {
       confirmButtonText: "Si"
     }).then((result) => {
       if (result.isConfirmed) {
-        this._productoService.delete(prod).subscribe((prod)=>{
+        this._productoService.delete(prod).subscribe((prod) => {
           Swal.fire({
             title: "Producto borrado",
             text: "",
             icon: "success"
           });
           this.search();
-        },(error)=>{
+        }, (error) => {
           Swal.fire({
             title: "Producto no se borro",
             text: error.message,
@@ -92,8 +93,8 @@ export class ProductosComponent implements OnInit {
     });
   }
   editProduct(prod: Producto) {
-  this.crearEditarMode = true;
-  this.prodSelected = prod;
+    this.crearEditarMode = true;
+    this.prodSelected = prod;
   }
   new() {
     this.crearEditarMode = true;

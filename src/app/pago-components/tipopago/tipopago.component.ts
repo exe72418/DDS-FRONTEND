@@ -42,6 +42,7 @@ export class TipopagoComponent {
           id: tipopago.id,
           nombre: tipopago.nombre,
           descripcion: tipopago.descripcion,
+          disponible: tipopago.disponible
         };
         return tipoPagoFormateado;
       });

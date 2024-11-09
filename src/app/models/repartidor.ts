@@ -8,6 +8,7 @@ export class Repartidor {
 
     vehiculo!: String;
     zona!: String;
+    disponible!: boolean;
 
-    //entregas! : Entrega []
+    ///entregas! : Entrega []
 }

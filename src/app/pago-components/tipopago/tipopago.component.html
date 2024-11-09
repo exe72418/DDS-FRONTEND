@@ -7,6 +7,7 @@
       <tr>
         <th>Nombre</th>
         <th>Descripción</th>
+        <th>Disponible</th>
         <th style="text-align: center;">Editar/Borrar</th>
       </tr>
     </ng-template>
@@ -14,6 +15,7 @@
       <tr>
         <td>{{ tipoPago.nombre }}</td>
         <td>{{ tipoPago.descripcion }}</td>
+        <td>{{ tipoPago.disponible }}</td>
         <td>
           <div style="margin-right: 10px; display: flex; justify-content: space-around;">
             <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"

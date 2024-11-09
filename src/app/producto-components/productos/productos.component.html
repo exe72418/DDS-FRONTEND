@@ -1,19 +1,13 @@
 <div *ngIf="crearEditarMode == false" style="display: flex; justify-content: center; margin-bottom: 20px;">
-    <p-button
-    label="Nuevo"
-    icon="pi pi-plus"
-    (onClick)="new()" />
+    <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
 </div>
 <div style="width: 100%; display: flex; justify-content: center;margin: 10px;">
-    <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreString" pInputText (change)="buscarPorNombre()">
-    
+    <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreString" pInputText
+        (change)="buscarPorNombre()">
+
     <input type="text" placeholder="Buscar por precio" pInputText (change)="buscarPorPrecio()">
-    <p-dropdown 
-                    id="tipodeprod"
-                    [options]="tiposProducto" 
-                    optionLabel="nombre" 
-                    (onChange)="buscarPorTipo()"
-                    placeholder="Tipo Producto" />
+    <p-dropdown id="tipodeprod" [options]="tiposProducto" optionLabel="nombre" (onChange)="buscarPorTipo()"
+        placeholder="Tipo Producto" />
 </div>
 <div style="width: 100%; display: flex; justify-content: center;">
     <p-table *ngIf="crearEditarMode == false" [value]="productos" [tableStyle]="{ 'min-width': '50rem' }">
@@ -22,7 +16,8 @@
                 <th>Nombre</th>
                 <th>Stock</th>
                 <th>Precio</th>
-                <th>Tipos de Productos</th>
+                <th>Tipo de Producto</th>
+                <th>Disponible</th>
                 <th style="text-align: center;">Editar/Borrar</th>
             </tr>
         </ng-template>
@@ -32,23 +27,14 @@
                 <td>{{ product.stock }}</td>
                 <td>{{ product.precio }}</td>
                 <td>{{ product.tipoProducto.nombre}}</td>
+                <td>{{ product.disponible}}</td>
 
-                <td >
+                <td>
                     <div style="margin-right: 10px; display: flex;justify-content: space-around;">
-                        <p-button
-                        icon="pi pi-pencil"
-                        class="mr-2"
-                        [rounded]="true"
-                        [outlined]="true"
-                        severity="success"
-                        (onClick)="editProduct(product)" />
-                        <p-button
-
-                        icon="pi pi-trash"
-                        severity="danger"
-                        [rounded]="true"
-                        [outlined]="true"
-                        (onClick)="deleteProduct(product)" />
+                        <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
+                            (onClick)="editProduct(product)" />
+                        <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                            (onClick)="deleteProduct(product)" />
                     </div>
 
                 </td>
@@ -58,5 +44,6 @@
 </div>
 
 <div>
-    <app-crear-productos (editCrear)="changeEditCreate()" [producto]="prodSelected" *ngIf="crearEditarMode"></app-crear-productos>
+    <app-crear-productos (editCrear)="changeEditCreate()" [producto]="prodSelected"
+        *ngIf="crearEditarMode"></app-crear-productos>
 </div>

@@ -23,28 +23,29 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
 export class TipoproductoComponent implements OnInit {
 
 
-  crearEditarMode: boolean= false;
+  crearEditarMode: boolean = false;
   tipoProdSelected!: TipoProducto;
   tipoProdForm!: FormGroup;
 
-  constructor(private tipoproductoService : TipoproductoService){}
+  constructor(private tipoproductoService: TipoproductoService) { }
 
   tiposProducto: TipoProducto[] = [];
 
   ngOnInit(): void {
     this.tipoProdForm = new FormGroup({
-      id:new FormControl('', [Validators.required]),
+      id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
     })
     this.search();
 
   }
-  search(){
-    this.tipoproductoService.getAll().subscribe((data:any)=>{
-      this.tiposProducto =data['data'].map((tipoprod: TipoProducto) => {
+  search() {
+    this.tipoproductoService.getAll().subscribe((data: any) => {
+      this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
         const tipoProductoFormateado: TipoProducto = {
           id: tipoprod.id,
           nombre: tipoprod.nombre,
+          disponible: tipoprod.disponible
         };
         return tipoProductoFormateado;
       });
@@ -61,12 +62,12 @@ export class TipoproductoComponent implements OnInit {
   }
 
   editProduct(tipoprod: TipoProducto) {
-      this.crearEditarMode = true;
-      this.tipoProdSelected = tipoprod;
+    this.crearEditarMode = true;
+    this.tipoProdSelected = tipoprod;
 
   }
 
-  deleteProduct(tipoprod: TipoProducto){
+  deleteProduct(tipoprod: TipoProducto) {
     Swal.fire({
       title: "Atencion?",
       text: "Deseas borrar el cliente " + tipoprod.nombre,
@@ -77,14 +78,14 @@ export class TipoproductoComponent implements OnInit {
       confirmButtonText: "Si"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.tipoproductoService.delete(tipoprod.id).subscribe(()=>{
+        this.tipoproductoService.delete(tipoprod.id).subscribe(() => {
           Swal.fire({
             title: "Tipo de producto borrado",
             text: "",
             icon: "success"
           });
           this.search();
-        },(error)=>{
+        }, (error) => {
           Swal.fire({
             title: "Tipo de producto no se borro",
             text: error.message,
