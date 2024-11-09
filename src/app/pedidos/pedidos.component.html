@@ -2,11 +2,11 @@
   <div *ngIf="!crearMode" style="display: flex; justify-content: center; width: 100%; margin: 10px;">
     <button pButton icon="pi pi-plus" routerLink="/home">Crear</button>
   </div>
-  <div style="display: flex; justify-content: center; margin: 10px; align-items: center; color: white;">
+  <div *ngIf="!crearMode" style="display: flex; justify-content: center; margin: 10px; align-items: center; color: white;">
     <label for="cliente">Cliente:</label>
     <p-dropdown 
                     id="cliente"
-                    [options]="clientes" 
+                    [options]="clientes"  
                     [(ngModel)]="clienteSelect"
                     optionLabel="apellidoNombre" 
                     [showClear]="true"
