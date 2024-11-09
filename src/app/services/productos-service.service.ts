@@ -3,6 +3,7 @@ import { map, Observable } from 'rxjs';
 import { Producto } from '../models/producto';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { TipoProducto } from '../models/tipoProducto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +17,39 @@ export class ProductosServiceService {
       .pipe(
         map((response: any) => response.productos))
   }
-  getProductosByName(descripcion: string = ''): Observable<Producto[]> {
+
+  getProductosByFilters(
+    descripcion: string = '', 
+    tipoProducto: TipoProducto | null = null, 
+    precioMinimo: number | null = null,
+    precioMaximo: number | null = null
+  ): Observable<Producto[]> {
     let params = new HttpParams();
 
-    // Solo añadimos el filtro si la descripción está presente
+    // Solo añadir los parámetros que están presentes
     if (descripcion) {
       params = params.set('descripcion', descripcion);
     }
 
-    // Realizamos la solicitud GET
-    return this.httpClient.get<Producto[]>(environment.serverUrl+'producto/ByName', { params })
-    .pipe(
-      map((response: any) => response.productos));
+    if (tipoProducto !== null) {
+      params = params.set('tipoProducto', tipoProducto.id.toString());
+    }
+
+    if (precioMinimo !== null) {
+      params = params.set('precioMinimo', precioMinimo.toString());
+    }
+
+    if (precioMaximo !== null) {
+      params = params.set('precioMaximo', precioMaximo.toString());
+    }
+
+    // Realizamos la solicitud GET con los filtros
+    return this.httpClient.get<any>(environment.serverUrl + 'producto/filter', { params })
+      .pipe(
+        map((response) => response.productos)  // Extraemos la lista de productos desde la respuesta
+      );
   }
+
   update(producto: Producto): Observable<Producto> {
     return this.httpClient.put<Producto>(environment.serverUrl + 'producto/' + producto.codigo, producto)
   }

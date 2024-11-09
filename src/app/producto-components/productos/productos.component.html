@@ -2,12 +2,19 @@
     <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
 </div>
 <div style="width: 100%; display: flex; justify-content: center;margin: 10px;">
-    <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreString" pInputText
-        (change)="buscarPorNombre()">
+    <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreString" pInputText (change)="buscar()">
+    
+    <input type="text" placeholder="Buscar por precio maximo" [(ngModel)]="precioMaximo" pInputText (change)="buscar()">
+    <input type="text" placeholder="Buscar por precio minimo" [(ngModel)]="precioMinimo" pInputText (change)="buscar()">
 
-    <input type="text" placeholder="Buscar por precio" pInputText (change)="buscarPorPrecio()">
-    <p-dropdown id="tipodeprod" [options]="tiposProducto" optionLabel="nombre" (onChange)="buscarPorTipo()"
-        placeholder="Tipo Producto" />
+    <p-dropdown 
+                    id="tipodeprod"
+                    [options]="tiposProducto" 
+                    optionLabel="nombre" 
+                    [(ngModel)]="tipoProductoSelect"
+                    (onChange)="buscar()"
+                    [showClear]="true"
+                    placeholder="Tipo Producto" />
 </div>
 <div style="width: 100%; display: flex; justify-content: center;">
     <p-table *ngIf="crearEditarMode == false" [value]="productos" [tableStyle]="{ 'min-width': '50rem' }">

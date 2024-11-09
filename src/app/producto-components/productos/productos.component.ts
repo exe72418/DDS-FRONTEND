@@ -19,11 +19,14 @@ export class ProductosComponent implements OnInit {
   tiposProducto: TipoProducto[] | undefined;
 
 
-
+  precioMinimo: number | null = null;  
+  precioMaximo: number | null = null;  
   prodSelected!: Producto;
   crearEditarMode: boolean = false;
   productos!: Producto[];
   nombreString!: string;
+  tipoProductoSelect!: TipoProducto;
+  precio!: number;
 
   constructor(private _productoService: ProductosServiceService, private tipoproductoService: TipoproductoService) {
 
@@ -46,17 +49,15 @@ export class ProductosComponent implements OnInit {
   }
 
   buscarPorPrecio() {
+
   }
-  buscarPorNombre() {
-    console.log(this.nombreString)
-    this._productoService.getProductosByName(this.nombreString).subscribe((prodFiltrado) => {
-      console.log(prodFiltrado)
+
+  buscar(){
+    this._productoService.getProductosByFilters(this.nombreString,this.tipoProductoSelect,this.precioMinimo,this.precioMaximo).subscribe((prodFiltrado)=>{
       this.productos = prodFiltrado
     })
   }
-  buscarPorTipo() {
-    throw new Error('Method not implemented.');
-  }
+
 
   search() {
     this._productoService.getAll().subscribe((productos) => {
