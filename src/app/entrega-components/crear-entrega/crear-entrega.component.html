@@ -17,7 +17,7 @@
 
         <label for="repartidor">Repartidor</label>
         <p-dropdown id="repartidor" [options]="repartidores" formControlName="repartidor" optionLabel="apellidoNombre"
-          placeholder="Repartidor"></p-dropdown>
+          placeholder="Repartidor" />
 
         <label for="pedidos">Pedidos</label>
         <p-multiSelect *ngIf="!entrega" id="pedidos" [options]="pedidos" formControlName="pedidos"

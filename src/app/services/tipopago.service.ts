@@ -13,6 +13,11 @@ export class TipopagoService {
   getAll(): Observable<TipoPago[]> {
     return this.httpClient.get<TipoPago[]>(environment.serverUrl + 'tiposDePago/');
   }
+
+  getTiposDePagoActivos(): Observable<TipoPago[]> {
+    return this.httpClient.get<TipoPago[]>(environment.serverUrl + 'tiposDePago/activos/');
+  }
+
   delete(idTipoPago: number): Observable<void> {
     return this.httpClient.delete<void>(environment.serverUrl + 'tiposDePago/' + idTipoPago);
   }

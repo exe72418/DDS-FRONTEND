@@ -31,24 +31,27 @@ export class CrearPagoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.pago != null) {
-      this.pagoForm.patchValue(this.pago)
-      this.pagoForm.controls['pedido'].setValue(this.pago.pedido)
-    }
-    this.tipopagoService.getAll().subscribe((data: any) => {
-      this.tiposPago = data['data'].map((tipoPago: TipoPago) => {
-        const tipoPagoFormateado: TipoPago = {
-          id: tipoPago.id,
-          nombre: tipoPago.nombre,
-          descripcion: tipoPago.descripcion,
-          disponible: tipoPago.disponible
-        };
-        return tipoPagoFormateado;
-      });
-    })
-    this.pagoService.getPedidosSinPago().subscribe((data: any) => {
-      this.pedidosSinPago = data['data'].map((pedido: Pedido) => {
-        const pedidoFormateado: Pedido = {
+
+    if (this.pago) {
+
+      this.pagoForm.patchValue(this.pago);
+
+
+      this.tipopagoService.getTiposDePagoActivos().subscribe((data: any) => {
+        this.tiposPago = data['data'].map((tipoPago: TipoPago) => {
+          const tipoPagoFormateado: TipoPago = {
+            id: tipoPago.id,
+            nombre: tipoPago.nombre,
+            descripcion: tipoPago.descripcion,
+            disponible: tipoPago.disponible
+          };
+          return tipoPagoFormateado;
+        });
+      })
+
+
+      this.pagoService.getPedidosSinPago().subscribe((data: any) => {
+        const pedidosSinPagoNew = data['data'].map((pedido: Pedido) => ({
           nroPedido: pedido.nroPedido,
           fecha: pedido.fecha,
           total: pedido.total,
@@ -56,10 +59,43 @@ export class CrearPagoComponent implements OnInit {
           entrega: pedido.entrega,
           pago: pedido.pago,
           lineas: pedido.lineas
-        };
-        return pedidoFormateado;
+        }));
+
+        // Combinar pedidos de la entrega actual con los pedidos sin entrega
+        this.pedidosSinPago = [this.pago.pedido, ...pedidosSinPagoNew];
+
+        // Actualizar el control 'pedidos' en el formulario con los pedidos seleccionados
+        this.pagoForm.patchValue({
+          pedidosSinPago: this.pago.pedido // Seleccionar los pedidos de la entrega actual
+        });
       });
-    })
+    } else {
+      // Obtener los repartidores
+      this.tipopagoService.getTiposDePagoActivos().subscribe((data: any) => {
+        this.tiposPago = data['data'].map((tipoPago: TipoPago) => {
+          const tipoPagoFormateado: TipoPago = {
+            id: tipoPago.id,
+            nombre: tipoPago.nombre,
+            descripcion: tipoPago.descripcion,
+            disponible: tipoPago.disponible
+          };
+          return tipoPagoFormateado;
+        });
+      })
+      // Si estamos creando una nueva entrega, solo obtener los pedidos sin entrega
+      this.pagoService.getPedidosSinPago().subscribe((data: any) => {
+        this.pedidosSinPago = data['data'].map((pedido: Pedido) => ({
+          nroPedido: pedido.nroPedido,
+          fecha: pedido.fecha,
+          total: pedido.total,
+          cliente: pedido.cliente,
+          entrega: pedido.entrega,
+          pago: pedido.pago,
+          lineas: pedido.lineas
+        }));
+      });
+
+    }
   }
 
 
@@ -94,3 +130,6 @@ export class CrearPagoComponent implements OnInit {
     }
   }
 }
+
+
+

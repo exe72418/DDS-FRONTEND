@@ -11,16 +11,21 @@ export class TipoproductoService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAll(): Observable<TipoProducto[]>{
-    return this.httpClient.get<TipoProducto[]>(environment.serverUrl+'tiposDeProducto/');
+  getAll(): Observable<TipoProducto[]> {
+    return this.httpClient.get<TipoProducto[]>(environment.serverUrl + 'tiposDeProducto/');
   }
-  delete(idTipoProd:number):Observable<void>{
-    return this.httpClient.delete<void>(environment.serverUrl+'tiposDeProducto/'+idTipoProd);
+
+  getTiposDeProductoActivos(): Observable<TipoProducto[]> {
+    return this.httpClient.get<TipoProducto[]>(environment.serverUrl + 'tiposDeProducto/activos/');
   }
-  update (tipoprod:TipoProducto):Observable<TipoProducto>{
-    return this.httpClient.put<TipoProducto>(environment.serverUrl+'tiposDeProducto',tipoprod)
+
+  delete(idTipoProd: number): Observable<void> {
+    return this.httpClient.delete<void>(environment.serverUrl + 'tiposDeProducto/' + idTipoProd);
   }
-  create (tipoprod:TipoProducto):Observable<TipoProducto>{
-    return this.httpClient.post<TipoProducto>(environment.serverUrl+'tiposDeProducto',tipoprod)
-  } 
+  update(tipoprod: TipoProducto): Observable<TipoProducto> {
+    return this.httpClient.put<TipoProducto>(environment.serverUrl + 'tiposDeProducto', tipoprod)
+  }
+  create(tipoprod: TipoProducto): Observable<TipoProducto> {
+    return this.httpClient.post<TipoProducto>(environment.serverUrl + 'tiposDeProducto', tipoprod)
+  }
 }

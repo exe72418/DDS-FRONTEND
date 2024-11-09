@@ -14,6 +14,11 @@ export class RepartidorService {
   getAll(): Observable<Repartidor[]> {
     return this.httpClient.get<Repartidor[]>(environment.serverUrl + 'repartidores/');
   }
+
+  getRepartidoresActivos(): Observable<Repartidor[]> {
+    return this.httpClient.get<Repartidor[]>(environment.serverUrl + 'repartidores/activos/');
+  }
+
   delete(idRepartidor: number): Observable<void> {
     return this.httpClient.delete<void>(environment.serverUrl + 'repartidores/' + idRepartidor);
   }

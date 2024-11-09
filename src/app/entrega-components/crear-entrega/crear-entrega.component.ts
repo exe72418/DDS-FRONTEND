@@ -43,7 +43,7 @@ export class CrearEntregaComponent {
       this.pedidos = [...this.entrega.pedidos]; // Inicialmente cargamos los pedidos de la entrega
 
       // Obtener los repartidores
-      this.repartidorService.getAll().subscribe((data: any) => {
+      this.repartidorService.getRepartidoresActivos().subscribe((data: any) => {
         this.repartidores = data['data'].map((repartidor: Repartidor) => {
           return {
             id: repartidor.id,
@@ -78,7 +78,7 @@ export class CrearEntregaComponent {
     } else {
 
       // Obtener los repartidores
-      this.repartidorService.getAll().subscribe((data: any) => {
+      this.repartidorService.getRepartidoresActivos().subscribe((data: any) => {
         this.repartidores = data['data'].map((repartidor: Repartidor) => {
           return {
             id: repartidor.id,

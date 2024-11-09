@@ -15,6 +15,10 @@ export class ClienteService {
     return this.httpClient.get<any>(environment.serverUrl + 'clientes')
   }
 
+  getClientesActivos(): Observable<Cliente[]> {
+    return this.httpClient.get<Cliente[]>(environment.serverUrl + 'clientes/activos/');
+  }
+
   delete(idCliente: number): Observable<void> {
     return this.httpClient.delete<void>(environment.serverUrl + 'clientes/' + idCliente);
   }

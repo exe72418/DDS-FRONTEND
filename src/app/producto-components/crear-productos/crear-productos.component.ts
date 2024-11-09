@@ -36,7 +36,7 @@ export class CrearProductosComponent implements OnInit {
         this.prodForm.patchValue(prodBackend)
       })
     }
-    this.tipoproductoService.getAll().subscribe((data: any) => {
+    this.tipoproductoService.getTiposDeProductoActivos().subscribe((data: any) => {
       this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
         const tipoProductoFormateado: TipoProducto = {
           id: tipoprod.id,
