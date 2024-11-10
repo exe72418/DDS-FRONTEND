@@ -21,9 +21,9 @@
                     optionLabel="apellidoNombre" 
                     (onChange)="setearCliente($event.value)"
                     placeholder="Clientes" />
-            <div class="card flex justify-content-center">
-                        <label for="fecha">Fecha</label>
+            <div style="margin-top: 10px;" class="card flex justify-content-center">
                         <p-calendar 
+                            placeholder="Fecha"
                             id="fecha"
                             [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="fechaSelected"
