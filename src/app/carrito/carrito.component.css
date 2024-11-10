@@ -1,6 +1,6 @@
 .card{
-    width: 300px;
-}
+/*     width: 300px;
+ */}
 .div{
     display: grid;
     justify-content: center;
@@ -17,6 +17,6 @@
 :host ::ng-deep {
     .p-card .p-card-body {
         padding: 1.25rem;
-        width: 300px;
-    }
+/*         width: 400px;
+ */    }
 }
