@@ -2,7 +2,7 @@
   <div *ngIf="crearEditarModeEntrega == false" style="display: flex; justify-content: center;">
     <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
   </div>
-  <div class="tabla-centrada">
+  
     <p-table *ngIf="crearEditarModeEntrega == false" [value]="entregas" [tableStyle]="{ 'min-width': '50rem' }">
       <ng-template pTemplate="header">
         <tr>
@@ -38,7 +38,7 @@
       </ng-template>
     </p-table>
   </div>
-</div>
+
 <div>
   <app-crear-entrega (editCrear)="changeEditCreate()" [entrega]="entSelected"
     *ngIf="crearEditarModeEntrega"></app-crear-entrega>

@@ -1,16 +1,16 @@
 <div *ngIf="crearEditarMode == false" style="display: flex; justify-content: center;">
   <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
 </div>
-<div class="tabla-centrada">
+
   <p-table *ngIf="crearEditarMode == false" [value]="repartidores">
     <ng-template pTemplate="header">
       <tr>
         <th>ID</th>
-        <th>CUIT</th>
-        <th>APELLIDO Y NOMBRE</th>
-        <th>VEHICULO</th>
-        <th>ZONA</th>
-        <th>DISPONIBLE</th>
+        <th>Cuit</th>
+        <th>Apellido Y Nombre</th>
+        <th>Vehiculo</th>
+        <th>Zona</th>
+        <th>Disponible</th>
         <th style="text-align: center;">Editar/Borrar</th>
       </tr>
     </ng-template>
@@ -40,4 +40,3 @@
     <app-crear-repartidores (editCrear)="changeEditCreate()" [repartidor]="repartidorSelected"
       *ngIf="crearEditarMode"></app-crear-repartidores>
   </div>
-</div>
