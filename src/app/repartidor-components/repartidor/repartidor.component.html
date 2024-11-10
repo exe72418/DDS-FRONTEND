@@ -1,8 +1,9 @@
-<div *ngIf="crearEditarMode == false" style="display: flex; justify-content: center;">
+<div class="mb-3" *ngIf="crearEditarMode == false" style="display: flex; justify-content: center;">
   <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
 </div>
 
-  <p-table *ngIf="crearEditarMode == false" [value]="repartidores">
+
+  <p-table  *ngIf="crearEditarMode == false" [value]="repartidores">
     <ng-template pTemplate="header">
       <tr>
         <th>ID</th>
