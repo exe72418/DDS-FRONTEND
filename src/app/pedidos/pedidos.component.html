@@ -1,27 +1,27 @@
-<div>
-  <div *ngIf="!crearMode" style="display: flex; justify-content: center; width: 100%; margin: 10px;">
+<div class=" col justify-content-center">
+  <div class="col" *ngIf="!crearMode" style="display: flex; justify-content: center; margin-bottom: 20px;">
     <button pButton icon="pi pi-plus" routerLink="/home">Crear</button>
   </div>
-  <div *ngIf="!crearMode" style="display: flex; justify-content: center; margin: 10px; align-items: center; color: white;">
-    <label for="cliente">Cliente:</label>
-    <p-dropdown 
+  <div  class="d-flex flex-wrap justify-content-center mb-3 text-white" *ngIf="!crearMode">
+    <label class="mr-2" for="cliente">Cliente:</label>
+    <p-dropdown
                     id="cliente"
-                    [options]="clientes"  
+                    [options]="clientes"
                     [(ngModel)]="clienteSelect"
-                    optionLabel="apellidoNombre" 
+                    optionLabel="apellidoNombre"
                     [showClear]="true"
                     placeholder="Clientes"
                     (onChange)="buscar()" />
 
-    <label for="fechaInicio">Fecha de inicio:</label>
+    <label class="mr-2" for="fechaInicio">Fecha de inicio: </label>
     <input pInputText (change)="buscar()" id="fechaInicio" type="date" [(ngModel)]="fechaInicio" name="fechaInicio">
 
-    <label for="fechaFin">Fecha de fin:</label>
+    <label class="mr-2" for="fechaFin">Fecha de fin: </label>
     <input pInputText (change)="buscar()" id="fechaFin" type="date" [(ngModel)]="fechaFin" name="fechaFin">
- 
+
   </div>
-  
-  <div>
+
+  <div class="col">
     <p-table *ngIf="!crearMode" [value]="pedidos" [tableStyle]="{ 'min-width': '50rem' }" class="table-striped">
       <ng-template pTemplate="header">
         <tr>
@@ -34,7 +34,7 @@
           <th style="text-align: center;">Editar/Borrar</th>
         </tr>
       </ng-template>
-  
+
       <ng-template pTemplate="body" let-pedido of="pedidos">
         <tr>
           <td>{{ pedido.cliente.apellidoNombre }}</td>
@@ -62,6 +62,6 @@
       </ng-template>
     </p-table>
   </div>
-  
+
   <app-crear-pedido (editCrear)="changeEditCreate()" [pedido]="pedidoSelected" *ngIf="crearMode"></app-crear-pedido>
 </div>
