@@ -29,14 +29,8 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.router.navigate(['/home'])
 
-
-  }
-  
-  navigateCarrito() {
-    // this.router.navigate(['/home'], {
-    //   replaceUrl: true, state: {pedido: this.pedido}
-    // });
   }
 
 }
