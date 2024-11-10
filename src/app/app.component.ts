@@ -11,20 +11,18 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  ///providers: [Store],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
-  productos!:Producto[];
+  productos!: Producto[];
   title = 'fast';
   pedido!: Pedido;
 
-  constructor(private _productoService : ProductosServiceService,
-              //private store:Store,
-              private router: Router,
-  ){
+  constructor(private _productoService: ProductosServiceService,
+    private router: Router,
+  ) {
 
   }
 
@@ -32,11 +30,8 @@ export class AppComponent implements OnInit{
 
 
   }
-  
+
   navigateCarrito() {
-    // this.router.navigate(['/home'], {
-    //   replaceUrl: true, state: {pedido: this.pedido}
-    // });
   }
 
 }

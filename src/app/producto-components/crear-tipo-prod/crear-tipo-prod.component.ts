@@ -10,21 +10,21 @@ import { CustomComponentsModule } from '../../modules/custom-components.module';
   templateUrl: './crear-tipo-prod.component.html',
   styleUrl: './crear-tipo-prod.component.css'
 })
-export class CrearTipoProdComponent implements OnInit{
+export class CrearTipoProdComponent implements OnInit {
 
-  @Input() tipoProd!:TipoProducto;
+  @Input() tipoProd!: TipoProducto;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
   tipoProdForm!: FormGroup;
 
-  constructor(private tipoproductoService : TipoproductoService){
+  constructor(private tipoproductoService: TipoproductoService) {
     this.tipoProdForm = new FormGroup({
-      id:new FormControl(''),
+      id: new FormControl(''),
       nombre: new FormControl('', [Validators.required]),
     })
   }
 
   ngOnInit(): void {
-    if(this.tipoProd != null ){
+    if (this.tipoProd != null) {
       this.tipoProdForm.patchValue(this.tipoProd);
     }
   }
@@ -33,11 +33,10 @@ export class CrearTipoProdComponent implements OnInit{
     this.editCrear.emit(false)
   }
 
-  guardar(tipoProducto: TipoProducto){
+  guardar(tipoProducto: TipoProducto) {
     if (this.tipoProdForm.valid) {
-      if(!this.tipoProd){
+      if (!this.tipoProd) {
         tipoProducto.id = 0;
-        // Aquí puedes enviar los datos al servidor usando HttpClient
         this.tipoproductoService.create(tipoProducto)
           .subscribe(response => {
             Swal.fire({
@@ -45,13 +44,11 @@ export class CrearTipoProdComponent implements OnInit{
               text: 'Tipo de producto creado',
               icon: "success"
             });
-            // Puedes realizar acciones adicionales después de crear el cliente
             this.editCrear.emit(false);
           }, error => {
             console.error('Error al crear el tipo de producto:', error);
           });
-      }else{
-        // Aquí puedes enviar los datos al servidor usando HttpClient
+      } else {
         this.tipoproductoService.update(tipoProducto)
           .subscribe(response => {
             Swal.fire({
@@ -61,14 +58,12 @@ export class CrearTipoProdComponent implements OnInit{
             });
             this.editCrear.emit(false);
 
-            // Puedes realizar acciones adicionales después de crear el cliente
           }, error => {
             console.error('Error al modificar el Tipo de producto:', error);
           });
       }
 
     } else {
-      // Manejar errores de validación
       console.error('Formulario inválido');
     }
   }

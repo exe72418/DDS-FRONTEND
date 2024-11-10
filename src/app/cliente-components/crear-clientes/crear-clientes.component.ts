@@ -21,8 +21,8 @@ export class CrearClientesComponent implements OnInit {
     this.clienteForm = new FormGroup({
       id: new FormControl(''),
       apellidoNombre: new FormControl('', [Validators.required]),
-      telefono: new FormControl('', [Validators.required,]), // Ajusta la expresión regular según tus necesidades
-      cuit: new FormControl('', [Validators.required,]), // Ajusta la expresión regular según tus necesidades
+      telefono: new FormControl('', [Validators.required,]),
+      cuit: new FormControl('', [Validators.required,]),
       email: new FormControl('', [Validators.required,]),
       domicilio: new FormControl('', [Validators.required]),
       zona: new FormControl('', [Validators.required])

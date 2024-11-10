@@ -13,21 +13,21 @@ import { LineaDeProducto } from '../models/lineaProducto';
   templateUrl: './home-component.component.html',
   styleUrl: './home-component.component.css'
 })
-export class HomeComponentComponent implements OnInit, OnDestroy{
+export class HomeComponentComponent implements OnInit, OnDestroy {
 
 
-  constructor(    private _productoService: ProductosServiceService, private store: Store,
-  ){
+  constructor(private _productoService: ProductosServiceService, private store: Store,
+  ) {
   }
 
 
-  @Input() productos!:Producto[];
-  pedido! : Pedido;
+  @Input() productos!: Producto[];
+  pedido!: Pedido;
 
 
   ngOnInit(): void {
 
-    this._productoService.getAll().subscribe((productos)=>{
+    this._productoService.getAll().subscribe((productos) => {
       this.productos = productos;
     })
     this.pedido = new Pedido()
@@ -35,31 +35,31 @@ export class HomeComponentComponent implements OnInit, OnDestroy{
     this.pedido.total = 0;
   }
 
-  agregar(producto:Producto) {
+  agregar(producto: Producto) {
     let lineaProd = new LineaDeProducto();
 
-    lineaProd.cantidad = 1 ;
+    lineaProd.cantidad = 1;
     lineaProd.producto = producto;
     lineaProd.subtotal = producto.precio;
 
     let encontro = false;
 
-    if(this.pedido.lineas.length>0){
-      this.pedido.lineas.map((linea)=>{
-        if(linea.producto.codigo == producto.codigo){
+    if (this.pedido.lineas.length > 0) {
+      this.pedido.lineas.map((linea) => {
+        if (linea.producto.codigo == producto.codigo) {
           encontro = true;
           linea.cantidad++;
           linea.subtotal = linea.subtotal + producto.precio;
           this.pedido.total = this.pedido.total + linea.producto.precio;
         }
       })
-      if(!encontro){
-        this.pedido.lineas = [...this.pedido.lineas,lineaProd];
+      if (!encontro) {
+        this.pedido.lineas = [...this.pedido.lineas, lineaProd];
         this.pedido.total = this.pedido.total + lineaProd.producto.precio;
 
       }
-    }else{
-      this.pedido.lineas = [...this.pedido.lineas,lineaProd];
+    } else {
+      this.pedido.lineas = [...this.pedido.lineas, lineaProd];
       this.pedido.total = this.pedido.total + lineaProd.producto.precio;
 
 
@@ -71,7 +71,7 @@ export class HomeComponentComponent implements OnInit, OnDestroy{
 
   }
 
-  consolelog(){
+  consolelog() {
     this.store.dispatch(new SetPedidosAction(_.cloneDeep(this.pedido)))
 
     let pedido: Pedido = this.store.selectSnapshot(PedidoState.getPedido)

@@ -36,13 +36,10 @@ export class CrearEntregaComponent {
   }
   ngOnInit(): void {
     if (this.entrega) {
-      // Carga los datos de la entrega existente en el formulario
       this.entregaForm.patchValue(this.entrega);
 
-      // Al editar, incluir los pedidos de la entrega actual
-      this.pedidos = [...this.entrega.pedidos]; // Inicialmente cargamos los pedidos de la entrega
+      this.pedidos = [...this.entrega.pedidos];
 
-      // Obtener los repartidores
       this.repartidorService.getRepartidoresActivos().subscribe((data: any) => {
         this.repartidores = data['data'].map((repartidor: Repartidor) => {
           return {
@@ -55,7 +52,6 @@ export class CrearEntregaComponent {
         });
       });
 
-      // Obtener los pedidos sin entrega
       this._entregaService.getPedidosPagosSinEntrega().subscribe((data: any) => {
         const pedidosSinEntrega = data['data'].map((pedido: Pedido) => ({
           nroPedido: pedido.nroPedido,
@@ -67,17 +63,14 @@ export class CrearEntregaComponent {
           lineas: pedido.lineas
         }));
 
-        // Combinar pedidos de la entrega actual con los pedidos sin entrega
         this.pedidos = [...pedidosSinEntrega, ...this.entrega.pedidos];
 
-        // Actualizar el control 'pedidos' en el formulario con los pedidos seleccionados
         this.entregaForm.patchValue({
-          pedidos: this.entrega.pedidos // Seleccionar los pedidos de la entrega actual
+          pedidos: this.entrega.pedidos
         });
       });
     } else {
 
-      // Obtener los repartidores
       this.repartidorService.getRepartidoresActivos().subscribe((data: any) => {
         this.repartidores = data['data'].map((repartidor: Repartidor) => {
           return {
@@ -89,7 +82,7 @@ export class CrearEntregaComponent {
           };
         });
       });
-      // Si estamos creando una nueva entrega, solo obtener los pedidos sin entrega
+
       this._entregaService.getPedidosPagosSinEntrega().subscribe((data: any) => {
         this.pedidos = data['data'].map((pedido: Pedido) => ({
           nroPedido: pedido.nroPedido,

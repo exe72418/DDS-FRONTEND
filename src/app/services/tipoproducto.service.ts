@@ -19,8 +19,8 @@ export class TipoproductoService {
     return this.httpClient.get<TipoProducto[]>(environment.serverUrl + 'tiposDeProducto/activos/');
   }
 
-  delete(idTipoProd: number): Observable<void> {
-    return this.httpClient.delete<void>(environment.serverUrl + 'tiposDeProducto/' + idTipoProd);
+  delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>(environment.serverUrl + 'tiposDeProducto/' + id);
   }
   update(tipoprod: TipoProducto): Observable<TipoProducto> {
     return this.httpClient.put<TipoProducto>(environment.serverUrl + 'tiposDeProducto', tipoprod)

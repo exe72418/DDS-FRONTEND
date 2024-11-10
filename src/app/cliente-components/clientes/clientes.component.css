@@ -16,26 +16,28 @@
 /* Estilos para el título "FAST" */
 .navbar-brand {
   margin-left: 5%;
-  font-family: 'Arial', sans-serif; /* Ejemplo: Cambiar a Arial */
-  font-size: 24px; /* Ajustar el tamaño */
-  font-weight: bold; /* Cambiar el peso */
-  color: #2196F3; /* Color azul */
-  text-transform: uppercase; /* Texto en mayúsculas */
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #2196F3;
+  text-transform: uppercase;
 }
-.iconos{
+
+.iconos {
   display: flex;
   justify-content: space-around;
   margin-top: 10px;
 }
-.iconos:hover{
+
+.iconos:hover {
   cursor: pointer;
 }
 
 
 /* Estilos para la navbar */
 .navbar {
-  background-color: #f0f0f0; /* Color de fondo de la navbar */
-  margin-top: 20px; /* Ajusta el margen superior si lo deseas */
+  background-color: #f0f0f0;
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,13 +70,13 @@
   background-color: #eee;
 }
 
-/* Estilos para la tabla (ya los tienes) */
+/* Estilos para la tabla */
 .tabla-centrada {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Ajusta la alineación vertical si lo deseas */
+  align-items: flex-start;
   min-height: 100vh;
-  margin-top: 20px; /* Ajusta el margen superior si lo deseas */
+  margin-top: 20px;
 }
 
 table {
@@ -83,7 +85,8 @@ table {
   background-color: #f9f9f9;
 }
 
-th, td {
+th,
+td {
   padding: 8px;
   border: 1px solid #ddd;
   text-align: left;

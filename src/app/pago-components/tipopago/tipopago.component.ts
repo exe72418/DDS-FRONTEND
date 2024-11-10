@@ -82,7 +82,7 @@ export class TipopagoComponent {
             'El tipo de pago ha sido eliminado.',
             'success'
           );
-          this.search(); // Recargar la lista de tipos de pago
+          this.search();
         }, (error) => {
           Swal.fire(
             'Error al eliminar',

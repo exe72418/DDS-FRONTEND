@@ -61,16 +61,13 @@ export class CrearPagoComponent implements OnInit {
           lineas: pedido.lineas
         }));
 
-        // Combinar pedidos de la entrega actual con los pedidos sin entrega
         this.pedidosSinPago = [this.pago.pedido, ...pedidosSinPagoNew];
 
-        // Actualizar el control 'pedidos' en el formulario con los pedidos seleccionados
         this.pagoForm.patchValue({
-          pedidosSinPago: this.pago.pedido // Seleccionar los pedidos de la entrega actual
+          pedidosSinPago: this.pago.pedido
         });
       });
     } else {
-      // Obtener los repartidores
       this.tipopagoService.getTiposDePagoActivos().subscribe((data: any) => {
         this.tiposPago = data['data'].map((tipoPago: TipoPago) => {
           const tipoPagoFormateado: TipoPago = {
@@ -82,7 +79,6 @@ export class CrearPagoComponent implements OnInit {
           return tipoPagoFormateado;
         });
       })
-      // Si estamos creando una nueva entrega, solo obtener los pedidos sin entrega
       this.pagoService.getPedidosSinPago().subscribe((data: any) => {
         this.pedidosSinPago = data['data'].map((pedido: Pedido) => ({
           nroPedido: pedido.nroPedido,

@@ -39,16 +39,13 @@ export class CrearRepartidoresComponent implements OnInit {
     if (this.repartidorForm.valid) {
       if (!this.repartidor) {
         repartidor.id = 0;
-        // Aquí puedes enviar los datos al servidor usando HttpClient
         this.repartidorService.create(repartidor)
           .subscribe(response => {
-            // Puedes realizar acciones adicionales después de crear el cliente
             this.editCrear.emit(false);
           }, error => {
             console.error('Error al crear el repartidor:', error);
           });
       } else {
-        // Aquí puedes enviar los datos al servidor usando HttpClient
         this.repartidorService.update(repartidor)
           .subscribe(response => {
             Swal.fire({
@@ -58,14 +55,12 @@ export class CrearRepartidoresComponent implements OnInit {
             });
             this.editCrear.emit(false);
 
-            // Puedes realizar acciones adicionales después de crear el cliente
           }, error => {
             console.error('Error al modificar el Repartidor:', error);
           });
       }
 
     } else {
-      // Manejar errores de validación
       console.error('Formulario inválido');
     }
   }

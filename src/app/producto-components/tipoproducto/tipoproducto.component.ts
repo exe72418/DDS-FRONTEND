@@ -69,29 +69,29 @@ export class TipoproductoComponent implements OnInit {
 
   deleteProduct(tipoprod: TipoProducto) {
     Swal.fire({
-      title: "Atencion?",
-      text: "Deseas borrar el cliente " + tipoprod.nombre,
-      icon: "warning",
+      title: '¿Estás seguro?',
+      text: 'Deseas borrar el tipo de producto ' + tipoprod.nombre,
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si"
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, borrarlo'
     }).then((result) => {
       if (result.isConfirmed) {
         this.tipoproductoService.delete(tipoprod.id).subscribe(() => {
-          Swal.fire({
-            title: "Tipo de producto borrado",
-            text: "",
-            icon: "success"
-          });
+          Swal.fire(
+            'Eliminado',
+            'El tipo de producto ha sido eliminado.',
+            'success'
+          );
           this.search();
         }, (error) => {
-          Swal.fire({
-            title: "Tipo de producto no se borro",
-            text: error.message,
-            icon: "error"
-          });
-        })
+          Swal.fire(
+            'Error al eliminar',
+            error.message,
+            'error'
+          );
+        });
       }
     });
   }

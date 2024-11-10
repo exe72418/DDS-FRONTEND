@@ -71,7 +71,6 @@ export class CrearTipoPagoComponent implements OnInit {
 
             this.editCrear.emit(false);
           }, error => {
-            // Manejo de errores
             console.error('Error al modificar el tipo de pago:', error);
             Swal.fire({
               title: "Error",

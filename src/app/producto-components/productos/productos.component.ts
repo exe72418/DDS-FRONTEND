@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { TipoProducto } from '../../models/tipoProducto';
 import { TipoproductoService } from '../../services/tipoproducto.service';
 
-//import { addIcons } from "ionicons";
 
 @Component({
   selector: 'app-productos',
@@ -19,8 +18,8 @@ export class ProductosComponent implements OnInit {
   tiposProducto: TipoProducto[] | undefined;
 
 
-  precioMinimo: number | null = null;  
-  precioMaximo: number | null = null;  
+  precioMinimo: number | null = null;
+  precioMaximo: number | null = null;
   prodSelected!: Producto;
   crearEditarMode: boolean = false;
   productos!: Producto[];
@@ -53,8 +52,8 @@ export class ProductosComponent implements OnInit {
 
   }
 
-  buscar(){
-    this._productoService.getProductosByFilters(this.nombreString,this.tipoProductoSelect,this.precioMinimo,this.precioMaximo).subscribe((prodFiltrado)=>{
+  buscar() {
+    this._productoService.getProductosByFilters(this.nombreString, this.tipoProductoSelect, this.precioMinimo, this.precioMaximo).subscribe((prodFiltrado) => {
       this.productos = prodFiltrado
     })
   }

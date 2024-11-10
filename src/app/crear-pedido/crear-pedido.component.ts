@@ -82,51 +82,49 @@ export class CrearPedidoComponent implements OnInit {
     this.pedidoForm.controls['fecha'].setValue(this.fechaSelected);
     let totalValue = this.pedidoForm.value.total;
 
-    // Convierte a número
     let totalInteger = Number(totalValue);
 
-    // Si es un número válido, actualiza el valor del control 'total'
     if (!isNaN(totalInteger)) {
       this.pedidoForm.controls['total'].setValue(totalInteger);
     }
 
-    if(this.pedido != null){
+    if (this.pedido != null) {
       console.log(this.pedidoForm.value)
-      this._pedidoService.editar(this.pedidoForm.value).subscribe((ped)=>{
+      this._pedidoService.editar(this.pedidoForm.value).subscribe((ped) => {
         Swal.fire({
           title: "Pedido guardado",
           text: "",
           icon: "success"
         });
-        this.editCrear.emit()    
-          },
-          (err: any) => {
-            Swal.fire({
-              title: "No se pudo guardar el pedido",
-              text: "",
-              icon: "error"
-            });
+        this.editCrear.emit()
+      },
+        (err: any) => {
+          Swal.fire({
+            title: "No se pudo guardar el pedido",
+            text: "",
+            icon: "error"
           });
-      }
-    else{
+        });
+    }
+    else {
       this._pedidoService.guardar(this.pedidoForm.value).subscribe((ped) => {
         Swal.fire({
           title: "Pedido guardado",
           text: "",
           icon: "success"
         });
-        this.editCrear.emit()    
-          },
-          (err: any) => {
-            Swal.fire({
-              title: "No se pudo guardar el pedido",
-              text: "",
-              icon: "error"
-            });
+        this.editCrear.emit()
+      },
+        (err: any) => {
+          Swal.fire({
+            title: "No se pudo guardar el pedido",
+            text: "",
+            icon: "error"
           });
+        });
     }
 
-    
+
 
   }
 

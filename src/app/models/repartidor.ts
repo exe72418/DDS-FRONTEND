@@ -10,5 +10,4 @@ export class Repartidor {
     zona!: String;
     disponible!: boolean;
 
-    ///entregas! : Entrega []
 }

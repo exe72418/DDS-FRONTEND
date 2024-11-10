@@ -11,7 +11,7 @@
   font-family: 'Arial', sans-serif;
   font-size: 24px;
   font-weight: bold;
-  color: #000; /* Texto en negro para mayor contraste */
+  color: #000;
   text-transform: uppercase;
 }
 
@@ -28,7 +28,7 @@
 
 /* Estilos para la navbar */
 .navbar {
-  background-color: white; /* Cambia el fondo a blanco */
+  background-color: white;
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
@@ -50,11 +50,11 @@
   display: block;
   padding: 8px 12px;
   text-decoration: none;
-  color: #000; /* Texto en negro */
+  color: #000;
 }
 
 .nav-link:hover {
-  background-color: #f2f2f2; /* Un leve gris claro al pasar el mouse */
+  background-color: #f2f2f2;
 }
 
 /* Estilos para la tabla */
@@ -64,13 +64,13 @@
   align-items: flex-start;
   min-height: 100vh;
   margin-top: 20px;
-  background-color: white; /* Fondo blanco */
+  background-color: white;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white; /* Fondo blanco */
+  background-color: white;
 }
 
 th,
@@ -78,27 +78,27 @@ td {
   padding: 8px;
   border: 1px solid #ddd;
   text-align: left;
-  background-color: white; /* Fondo blanco para celdas */
+  background-color: white;
 }
 
 th {
-  background-color: white; /* Fondo blanco para encabezados */
+  background-color: white;
   font-weight: bold;
-  color: #000; /* Texto negro */
+  color: #000;
 }
 
 tbody tr:nth-child(odd),
 tbody tr:nth-child(even) {
-  background-color: white; /* Fondo blanco para todas las filas */
+  background-color: white;
 }
 
 /* Botones en la tabla */
 p-button {
-  background-color: white; /* Fondo blanco para botones */
-  color: #000; /* Texto en negro */
-  border: 1px solid #ddd; /* Borde leve */
+  background-color: white;
+  color: #000;
+  border: 1px solid #ddd;
 }
 
 p-button:hover {
-  background-color: #f2f2f2; /* Fondo gris claro al pasar el mouse */
+  background-color: #f2f2f2;
 }

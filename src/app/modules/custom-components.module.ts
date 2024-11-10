@@ -11,7 +11,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { NgxsModule } from '@ngxs/store';
 import { AppComponent } from "../app.component";
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'; // Importar HttpClientModule
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from "../app.routes";
 import { ClientesComponent } from "../cliente-components/clientes/clientes.component";
 import { TipoproductoComponent } from "../producto-components/tipoproducto/tipoproducto.component";
@@ -39,7 +39,7 @@ import { CalendarModule } from "primeng/calendar";
 
 @Injectable({
     providedIn: 'root'
-  })
+})
 @NgModule({
     declarations: [AppComponent,
         HomeComponentComponent,

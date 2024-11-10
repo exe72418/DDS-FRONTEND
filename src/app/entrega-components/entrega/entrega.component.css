@@ -1,18 +1,11 @@
-
-
 /* Estilos para el título "FAST" */
 .navbar-brand {
   margin-left: 5%;
   font-family: 'Arial', sans-serif;
-  /* Ejemplo: Cambiar a Arial */
   font-size: 24px;
-  /* Ajustar el tamaño */
   font-weight: bold;
-  /* Cambiar el peso */
   color: #2196F3;
-  /* Color azul */
   text-transform: uppercase;
-  /* Texto en mayúsculas */
 }
 
 .iconos {
@@ -29,9 +22,7 @@
 /* Estilos para la navbar */
 .navbar {
   background-color: #f0f0f0;
-  /* Color de fondo de la navbar */
   margin-top: 20px;
-  /* Ajusta el margen superior si lo deseas */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -64,15 +55,14 @@
   background-color: #eee;
 }
 
-/* Estilos para la tabla (ya los tienes) */
+/* Estilos para la tabla */
 .tabla-centrada {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* Ajusta la alineación vertical si lo deseas */
   min-height: 100vh;
   margin-top: 20px;
-  /* Ajusta el margen superior si lo deseas */
+
 }
 
 table {

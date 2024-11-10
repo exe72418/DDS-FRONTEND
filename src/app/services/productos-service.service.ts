@@ -18,9 +18,15 @@ export class ProductosServiceService {
         map((response: any) => response.productos))
   }
 
+  getProductosActivos(): Observable<Producto[]> {
+    return this.httpClient.get<Producto[]>(environment.serverUrl + 'producto/activos/')
+      .pipe(
+        map((response: any) => response.productos))
+  }
+
   getProductosByFilters(
-    descripcion: string = '', 
-    tipoProducto: TipoProducto | null = null, 
+    descripcion: string = '',
+    tipoProducto: TipoProducto | null = null,
     precioMinimo: number | null = null,
     precioMaximo: number | null = null
   ): Observable<Producto[]> {
@@ -43,10 +49,9 @@ export class ProductosServiceService {
       params = params.set('precioMaximo', precioMaximo.toString());
     }
 
-    // Realizamos la solicitud GET con los filtros
     return this.httpClient.get<any>(environment.serverUrl + 'producto/filter', { params })
       .pipe(
-        map((response) => response.productos)  // Extraemos la lista de productos desde la respuesta
+        map((response) => response.productos)
       );
   }
 
@@ -56,11 +61,11 @@ export class ProductosServiceService {
   save(producto: Producto): Observable<Producto> {
     return this.httpClient.post<Producto>(environment.serverUrl + 'producto', producto)
   }
-  delete(producto:Producto):Observable<Producto>{
-    return this.httpClient.delete<Producto>(environment.serverUrl+'producto/'+producto.codigo)
+  delete(producto: Producto): Observable<Producto> {
+    return this.httpClient.delete<Producto>(environment.serverUrl + 'producto/' + producto.codigo)
   }
-  findOne(codigo: number):Observable<Producto> {
-    return this.httpClient.get<Producto>(environment.serverUrl+'producto/' + codigo)
+  findOne(codigo: number): Observable<Producto> {
+    return this.httpClient.get<Producto>(environment.serverUrl + 'producto/' + codigo)
       .pipe(
         map((response: any) => response.data))
   }

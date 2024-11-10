@@ -7,8 +7,6 @@ export class LineaDeProducto {
 
     producto!: Producto;
 
-    //pedido!: Pedido;
-
     cantidad!: number;
 
     subtotal!: number;

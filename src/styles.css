@@ -1,16 +1,30 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "../node_modules/primeicons/primeicons.css";
+
 body {
-  background-image: url('assets/fondo.jpg'); /* Reemplaza 'tu-imagen.jpg' con el path a tu imagen */
+  background-image: url('assets/fondo.jpg');
   background-size: auto;
   background-position: center center;
   background-repeat: no-repeat;
-  /* Otros estilos para ajustar la imagen, como background-attachment: fixed; para un fondo fijo */
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
