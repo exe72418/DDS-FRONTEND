@@ -1,3 +1,4 @@
+<div class="container">
 <div *ngIf="!crearEditarMode" style="display: flex; justify-content: center; margin-bottom: 10px;">
   <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()"></p-button>
 </div>
@@ -41,3 +42,4 @@
   <div *ngIf="crearEditarMode">
     <app-crear-clientes (editCrear)="changeEditCreate()" [cliente]="clienteSelected"></app-crear-clientes>
   </div>
+</div>

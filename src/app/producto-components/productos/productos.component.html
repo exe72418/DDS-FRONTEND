@@ -1,18 +1,18 @@
 
-<div class=" col justify-content-center"> 
+<div class=" container">
 <div class="col" *ngIf="crearEditarMode == false" style="display: flex; justify-content: center; margin-bottom: 20px;">
     <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
 </div>
 <div class="d-flex flex-wrap justify-content-center mb-3">
-    
+
     <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreString" pInputText (change)="buscar()">
     <input type="text" placeholder="Buscar por precio maximo" [(ngModel)]="precioMaximo" pInputText (change)="buscar()">
     <input type="text" placeholder="Buscar por precio minimo" [(ngModel)]="precioMinimo" pInputText (change)="buscar()">
 
-    <p-dropdown 
+    <p-dropdown
                     id="tipodeprod"
-                    [options]="tiposProducto" 
-                    optionLabel="nombre" 
+                    [options]="tiposProducto"
+                    optionLabel="nombre"
                     [(ngModel)]="tipoProductoSelect"
                     (onChange)="buscar()"
                     [showClear]="true"

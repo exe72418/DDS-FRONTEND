@@ -1,8 +1,7 @@
+<div class="container">
 <div class="mb-3" *ngIf="crearEditarMode == false" style="display: flex; justify-content: center;">
   <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
 </div>
-
-
   <p-table  *ngIf="crearEditarMode == false" [value]="repartidores">
     <ng-template pTemplate="header">
       <tr>
@@ -41,3 +40,4 @@
     <app-crear-repartidores (editCrear)="changeEditCreate()" [repartidor]="repartidorSelected"
       *ngIf="crearEditarMode"></app-crear-repartidores>
   </div>
+</div>
