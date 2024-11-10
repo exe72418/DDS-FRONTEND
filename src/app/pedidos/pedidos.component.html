@@ -3,7 +3,7 @@
     <button pButton icon="pi pi-plus" routerLink="/home">Crear</button>
   </div>
   <div  class="d-flex flex-wrap justify-content-center mb-3 text-white" *ngIf="!crearMode">
-    <label class="mr-2" for="cliente">Cliente:</label>
+    <label class="m-2" for="cliente">Cliente:</label>
     <p-dropdown
                     id="cliente"
                     [options]="clientes"
@@ -13,10 +13,10 @@
                     placeholder="Clientes"
                     (onChange)="buscar()" />
 
-    <label class="mr-2" for="fechaInicio">Fecha de inicio: </label>
+    <label class="m-2" for="fechaInicio">Fecha de inicio: </label>
     <input pInputText (change)="buscar()" id="fechaInicio" type="date" [(ngModel)]="fechaInicio" name="fechaInicio">
 
-    <label class="mr-2" for="fechaFin">Fecha de fin: </label>
+    <label class="m-2" for="fechaFin">Fecha de fin: </label>
     <input pInputText (change)="buscar()" id="fechaFin" type="date" [(ngModel)]="fechaFin" name="fechaFin">
 
   </div>
