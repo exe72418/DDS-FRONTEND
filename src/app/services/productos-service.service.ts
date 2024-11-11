@@ -21,7 +21,7 @@ export class ProductosServiceService {
   getProductosActivos(): Observable<Producto[]> {
     return this.httpClient.get<Producto[]>(environment.serverUrl + 'producto/activos/')
       .pipe(
-        map((response: any) => response.productos))
+        map((response: any) => response.data))
   }
 
   getProductosByFilters(

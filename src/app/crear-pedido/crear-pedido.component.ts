@@ -89,7 +89,6 @@ export class CrearPedidoComponent implements OnInit {
     }
 
     if (this.pedido != null) {
-      console.log(this.pedidoForm.value)
       this._pedidoService.editar(this.pedidoForm.value).subscribe((ped) => {
         Swal.fire({
           title: "Pedido guardado",

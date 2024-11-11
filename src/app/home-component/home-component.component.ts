@@ -6,6 +6,7 @@ import { ProductosServiceService } from '../services/productos-service.service';
 import { Producto } from '../models/producto';
 import { Pedido } from '../models/pedido';
 import { LineaDeProducto } from '../models/lineaProducto';
+import { Route, Router } from '@angular/router';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { LineaDeProducto } from '../models/lineaProducto';
 export class HomeComponentComponent implements OnInit, OnDestroy {
 
 
-  constructor(private _productoService: ProductosServiceService, private store: Store,
+  constructor(private _productoService: ProductosServiceService, private store: Store
   ) {
   }
 
@@ -27,7 +28,7 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this._productoService.getAll().subscribe((productos) => {
+    this._productoService.getProductosActivos().subscribe((productos) => {
       this.productos = productos;
     })
     this.pedido = new Pedido()
