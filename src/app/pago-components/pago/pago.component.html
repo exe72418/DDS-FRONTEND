@@ -16,7 +16,7 @@
       <ng-template pTemplate="body" let-pago of pagos>
         <tr>
           <td>{{ pago.id }}</td>
-          <td>{{ pago.fecha }}</td>
+          <td>{{ pago.fecha | date: 'dd/MM/yyyy'}}</td>
           <td>{{ pago.tipoPago.nombre}}</td>
           <td>{{ pago.pedido.nroPedido}}</td>
           <td>

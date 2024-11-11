@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: center;">
-  <p-card>
+  <p-card >
     <div>
       <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="entregaForm"
         (ngSubmit)="guardar(entregaForm.value)">
@@ -16,7 +16,7 @@
         <input pInputText id="zona" type="text" formControlName="zona" [disabled]="true">
 
         <label for="repartidor">Repartidor</label>
-        <p-dropdown id="repartidor" [options]="repartidores" formControlName="repartidor" optionLabel="apellidoNombre"
+        <p-dropdown id="repartidor"  [options]="repartidores" formControlName="repartidor" optionLabel="apellidoNombre"
           placeholder="Repartidor" />
 
         <label for="pedidos">Pedidos</label>

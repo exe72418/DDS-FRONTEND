@@ -1,0 +1,10 @@
+
+.tabla{
+    display: grid; 
+    justify-content: center; 
+    grid-template-columns: 300px 300px 300px;
+        @media (max-width: 900px) {
+            display: table-row;
+        }
+}
+    

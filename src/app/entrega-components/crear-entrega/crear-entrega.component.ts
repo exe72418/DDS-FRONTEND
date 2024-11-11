@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class CrearEntregaComponent {
 
+
   @Input() entrega!: Entrega;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
 
@@ -37,7 +38,7 @@ export class CrearEntregaComponent {
   ngOnInit(): void {
     if (this.entrega) {
       this.entregaForm.patchValue(this.entrega);
-
+      console.log(this.entregaForm.value)
       this.pedidos = [...this.entrega.pedidos];
 
       this.repartidorService.getRepartidoresActivos().subscribe((data: any) => {

@@ -17,7 +17,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-entrega of entregas>
         <tr>
-          <td>{{ entrega.fecha }}</td>
+          <td>{{ entrega.fecha | date: 'dd/MM/yyyy'}}</td>
           <td>{{ entrega.lote }}</td>
           <td>{{ entrega.zona }}</td>
           <td>{{ entrega.repartidor.apellidoNombre}}</td>
