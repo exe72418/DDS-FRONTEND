@@ -31,7 +31,10 @@
             </div>
         </p-card>
             
-    <p-button [disabled]="fechaSelected ==null || this.pedidoSelectSnapShot.cliente ==null" label="Guardar" (click)="pagar()" class="button" styleClass="w-full" />
+    <p-button [disabled]="fechaSelected ==null 
+    || this.pedidoSelectSnapShot.cliente ==null 
+    || this.pedidoSelectSnapShot.lineas == null
+    || this.pedidoSelectSnapShot.lineas.length == 0" label="Guardar" (click)="pagar()" class="button" styleClass="w-full" />
     </div>
 
 </div>
