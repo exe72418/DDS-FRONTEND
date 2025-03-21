@@ -35,6 +35,7 @@ import { PagoComponent } from '../pago-components/pago/pago.component';
 import { CrearPagoComponent } from '../pago-components/crear-pago/crear-pago.component';
 import { CrearPedidoComponent } from "../crear-pedido/crear-pedido.component";
 import { CalendarModule } from "primeng/calendar";
+import { LoginComponent } from "../login/login.component";
 
 
 @Injectable({
@@ -60,6 +61,7 @@ import { CalendarModule } from "primeng/calendar";
         CarritoComponent,
         PedidosComponent,
         CrearPedidoComponent,
+        LoginComponent,
     ],
     imports: [
         NgxsModule.forRoot([PedidoState], { developmentMode: true }),

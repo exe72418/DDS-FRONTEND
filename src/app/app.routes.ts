@@ -15,6 +15,7 @@ import { EntregaComponent } from './entrega-components/entrega/entrega.component
 import { CrearEntregaComponent } from './entrega-components/crear-entrega/crear-entrega.component';
 import { PagoComponent } from './pago-components/pago/pago.component';
 import { CrearPagoComponent } from './pago-components/crear-pago/crear-pago.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponentComponent },
@@ -30,6 +31,7 @@ export const routes: Routes = [
   { path: "crearTipoPago", component: CrearTipoPagoComponent },
   { path: "carrito", component: CarritoComponent },
   { path: "pedidos", component: PedidosComponent },
+  { path: "login", component: LoginComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
