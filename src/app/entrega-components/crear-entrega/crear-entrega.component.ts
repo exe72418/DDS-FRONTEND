@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Entrega } from '../../models/entrega';
 import { Pedido } from '../../models/pedido';
-import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RepartidorService } from '../../services/repartidor.service';
 import { Repartidor } from '../../models/repartidor';
@@ -13,16 +12,13 @@ import Swal from 'sweetalert2';
   templateUrl: './crear-entrega.component.html',
   styleUrl: './crear-entrega.component.css'
 })
-export class CrearEntregaComponent {
-
-
+export class CrearEntregaComponent implements OnInit {
   @Input() entrega!: Entrega;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
 
   entregaForm!: FormGroup;
   repartidores: Repartidor[] = [];
   pedidos: Pedido[] = [];
-
 
   constructor(private repartidorService: RepartidorService, private _entregaService: EntregaService) {
     this.entregaForm = new FormGroup({
@@ -32,25 +28,30 @@ export class CrearEntregaComponent {
       zona: new FormControl('', [Validators.required]),
       repartidor: new FormControl('', [Validators.required]),
       pedidos: new FormControl([])
-
-    })
+    });
   }
+
   ngOnInit(): void {
     if (this.entrega) {
-      this.entregaForm.patchValue(this.entrega);
-      console.log(this.entregaForm.value)
+      this.entrega.fecha = new Date(this.entrega.fecha); // Asegurar que la fecha sea un objeto Date
+
+      this.entregaForm.patchValue({
+        ...this.entrega,
+        fecha: this.entrega.fecha,
+      });
+
+      console.log("Datos de la entrega recibidos:", this.entrega);
+
       this.pedidos = [...this.entrega.pedidos];
 
       this.repartidorService.getRepartidoresActivos().subscribe((data: any) => {
-        this.repartidores = data['data'].map((repartidor: Repartidor) => {
-          return {
-            id: repartidor.id,
-            cuit: repartidor.cuit,
-            apellidoNombre: repartidor.apellidoNombre,
-            vehiculo: repartidor.vehiculo,
-            zona: repartidor.zona
-          };
-        });
+        this.repartidores = data['data'].map((repartidor: Repartidor) => ({
+          id: repartidor.id,
+          cuit: repartidor.cuit,
+          apellidoNombre: repartidor.apellidoNombre,
+          vehiculo: repartidor.vehiculo,
+          zona: repartidor.zona
+        }));
       });
 
       this._entregaService.getPedidosPagosSinEntrega().subscribe((data: any) => {
@@ -71,17 +72,14 @@ export class CrearEntregaComponent {
         });
       });
     } else {
-
       this.repartidorService.getRepartidoresActivos().subscribe((data: any) => {
-        this.repartidores = data['data'].map((repartidor: Repartidor) => {
-          return {
-            id: repartidor.id,
-            cuit: repartidor.cuit,
-            apellidoNombre: repartidor.apellidoNombre,
-            vehiculo: repartidor.vehiculo,
-            zona: repartidor.zona
-          };
-        });
+        this.repartidores = data['data'].map((repartidor: Repartidor) => ({
+          id: repartidor.id,
+          cuit: repartidor.cuit,
+          apellidoNombre: repartidor.apellidoNombre,
+          vehiculo: repartidor.vehiculo,
+          zona: repartidor.zona
+        }));
       });
 
       this._entregaService.getPedidosPagosSinEntrega().subscribe((data: any) => {
@@ -98,9 +96,8 @@ export class CrearEntregaComponent {
     }
   }
 
-
   back() {
-    this.editCrear.emit(false)
+    this.editCrear.emit(false);
   }
 
   guardar(ent: Entrega) {
@@ -113,10 +110,9 @@ export class CrearEntregaComponent {
             icon: "success"
           });
           this.editCrear.emit(false);
-
         }, error => {
           console.error('Error al modificar la entrega:', error);
-        })
+        });
       }
     } else {
       ent.id = 0;
@@ -127,12 +123,9 @@ export class CrearEntregaComponent {
           icon: "success"
         });
         this.editCrear.emit(false);
-
       }, error => {
         console.error('Error al crear la entrega:', error);
       });
     }
   }
-
-
 }

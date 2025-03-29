@@ -7,7 +7,8 @@
         <h4 *ngIf="!pago">Crear</h4>
 
         <label for="fecha">Fecha</label>
-        <input pInputText id="fecha" type="text" formControlName="fecha" [disabled]="true">
+        <p-calendar id="fecha" formControlName="fecha" placeholder="Seleccione una fecha" dateFormat="dd/mm/yy"
+          showIcon="true"></p-calendar>
 
         <label for="tipoPago">Tipo Pago</label>
         <p-dropdown id="tipoPago" [options]="tiposPago" formControlName="tipoPago" optionLabel="nombre"
@@ -18,8 +19,8 @@
           placeholder="Pedido" />
 
         <div style="display: flex; justify-content: center;">
-            <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-            <button pButton style="margin: 10px;" (click)="back()">Volver</button>
+          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+          <button pButton style="margin: 10px;" (click)="back()">Volver</button>
         </div>
       </form>
     </div>

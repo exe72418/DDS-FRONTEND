@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: center;">
-  <p-card >
+  <p-card>
     <div>
       <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="entregaForm"
         (ngSubmit)="guardar(entregaForm.value)">
@@ -7,7 +7,9 @@
         <h4 *ngIf="!entrega">Crear</h4>
 
         <label for="fecha">Fecha</label>
-        <input pInputText id="fecha" type="text" formControlName="fecha" [disabled]="true">
+        <p-calendar id="fecha" formControlName="fecha" placeholder="Seleccione una fecha" dateFormat="dd/mm/yy"
+          showIcon="true">
+        </p-calendar>
 
         <label for="lote">Lote</label>
         <input pInputText id="lote" type="text" formControlName="lote" [disabled]="true">
@@ -16,7 +18,7 @@
         <input pInputText id="zona" type="text" formControlName="zona" [disabled]="true">
 
         <label for="repartidor">Repartidor</label>
-        <p-dropdown id="repartidor"  [options]="repartidores" formControlName="repartidor" optionLabel="apellidoNombre"
+        <p-dropdown id="repartidor" [options]="repartidores" formControlName="repartidor" optionLabel="apellidoNombre"
           placeholder="Repartidor" />
 
         <label for="pedidos">Pedidos</label>
@@ -28,10 +30,10 @@
           optionLabel="nroPedido" placeholder="Seleccione los pedidos" [disabled]="false"
           display="chip"></p-multiSelect>
 
-          <div style="display: flex; justify-content: center;">
-            <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-            <button pButton style="margin: 10px;" (click)="back()">Volver</button>
-          </div>
+        <div style="display: flex; justify-content: center;">
+          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+          <button pButton style="margin: 10px;" (click)="back()">Volver</button>
+        </div>
       </form>
     </div>
   </p-card>

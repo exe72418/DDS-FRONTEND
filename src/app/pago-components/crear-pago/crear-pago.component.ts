@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Pago } from '../../models/pago';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PagoService } from '../../services/pago.service';
-import { PedidoServiceService } from '../../services/pedido-service.service';
 import { TipoPago } from '../../models/tipopago';
 import { Pedido } from '../../models/pedido';
 import { TipopagoService } from '../../services/tipopago.service';
@@ -31,104 +30,62 @@ export class CrearPagoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.tipopagoService.getTiposDePagoActivos().subscribe((data: any) => {
+      this.tiposPago = data['data'].map((tipoPago: TipoPago) => ({
+        id: tipoPago.id,
+        nombre: tipoPago.nombre,
+        descripcion: tipoPago.descripcion,
+        disponible: tipoPago.disponible
+      }));
+    });
+
+    this.pagoService.getPedidosSinPago().subscribe((data: any) => {
+      this.pedidosSinPago = data['data'].map((pedido: Pedido) => ({
+        nroPedido: pedido.nroPedido,
+        fecha: new Date(pedido.fecha),
+        total: pedido.total,
+        cliente: pedido.cliente,
+        entrega: pedido.entrega,
+        pago: pedido.pago,
+        lineas: pedido.lineas
+      }));
+    });
 
     if (this.pago) {
-
+      this.pago.fecha = new Date(this.pago.fecha);
       this.pagoForm.patchValue(this.pago);
-
-
-      this.tipopagoService.getTiposDePagoActivos().subscribe((data: any) => {
-        this.tiposPago = data['data'].map((tipoPago: TipoPago) => {
-          const tipoPagoFormateado: TipoPago = {
-            id: tipoPago.id,
-            nombre: tipoPago.nombre,
-            descripcion: tipoPago.descripcion,
-            disponible: tipoPago.disponible
-          };
-          return tipoPagoFormateado;
-        });
-      })
-
-
-      this.pagoService.getPedidosSinPago().subscribe((data: any) => {
-        const pedidosSinPagoNew = data['data'].map((pedido: Pedido) => ({
-          nroPedido: pedido.nroPedido,
-          fecha: pedido.fecha,
-          total: pedido.total,
-          cliente: pedido.cliente,
-          entrega: pedido.entrega,
-          pago: pedido.pago,
-          lineas: pedido.lineas
-        }));
-
-        this.pedidosSinPago = [this.pago.pedido, ...pedidosSinPagoNew];
-
-        this.pagoForm.patchValue({
-          pedidosSinPago: this.pago.pedido
-        });
-      });
-    } else {
-      this.tipopagoService.getTiposDePagoActivos().subscribe((data: any) => {
-        this.tiposPago = data['data'].map((tipoPago: TipoPago) => {
-          const tipoPagoFormateado: TipoPago = {
-            id: tipoPago.id,
-            nombre: tipoPago.nombre,
-            descripcion: tipoPago.descripcion,
-            disponible: tipoPago.disponible
-          };
-          return tipoPagoFormateado;
-        });
-      })
-      this.pagoService.getPedidosSinPago().subscribe((data: any) => {
-        this.pedidosSinPago = data['data'].map((pedido: Pedido) => ({
-          nroPedido: pedido.nroPedido,
-          fecha: pedido.fecha,
-          total: pedido.total,
-          cliente: pedido.cliente,
-          entrega: pedido.entrega,
-          pago: pedido.pago,
-          lineas: pedido.lineas
-        }));
-      });
-
     }
   }
 
   back() {
-    this.editCrear.emit(false)
+    this.editCrear.emit(false);
   }
 
   guardar(pag: Pago) {
-    if (this.pago != undefined || this.pago != null) {
-      if (this.pago.id) {
-        this.pagoService.update(pag).subscribe(pagBackend => {
-          Swal.fire({
-            title: "Guardado",
-            text: "Pago actualizado",
-            icon: "success"
-          });
-          this.editCrear.emit(false);
-
-        }, error => {
-          console.error('Error al modificar el pago:', error);
-        })
-      }
+    pag.fecha = new Date(pag.fecha);
+    if (this.pago && this.pago.id) {
+      this.pagoService.update(pag).subscribe(() => {
+        Swal.fire({
+          title: "Guardado",
+          text: "Pago actualizado",
+          icon: "success"
+        });
+        this.editCrear.emit(false);
+      }, error => {
+        console.error('Error al modificar el pago:', error);
+      });
     } else {
       pag.id = 0;
-      this.pagoService.save(pag).subscribe(pagBackend => {
+      this.pagoService.save(pag).subscribe(() => {
         Swal.fire({
           title: "Guardado",
           text: "Pago creado",
           icon: "success"
         });
         this.editCrear.emit(false);
-
       }, error => {
         console.error('Error al crear el pago:', error);
       });
     }
   }
 }
-
-
-
