@@ -1,28 +1,20 @@
 <form [formGroup]="pedidoForm">
     <div style="display: flex; justify-content: center;">
-        <p-card header="Pedido" >
+        <p-card header="Pedido">
             <label for="nroPedido">Nro Pedido</label>
             <div id="nroPedido" *ngIf="pedido">
                 {{pedido.nroPedido}}
             </div>
-            <p-dropdown 
-                    id="cliente"
-                    [options]="clientes" 
-                    formControlName="cliente"
-                    optionLabel="apellidoNombre" 
-                    placeholder="Clientes" />
+            <p-dropdown id="cliente" [options]="clientes" formControlName="cliente" optionLabel="apellidoNombre"
+                placeholder="Clientes" />
             <div class="card flex justify-content-center">
-                <p-calendar 
-                    placeholder="Fecha"
-                    id="fecha"
-                    [(ngModel)]="fechaSelected" 
-                     [ngModelOptions]="{standalone: true}"
-                    dateFormat="dd/mm/yy" />
+                <p-calendar placeholder="Fecha" id="fecha" [(ngModel)]="fechaSelected"
+                    [ngModelOptions]="{standalone: true}" dateFormat="dd/mm/yy" showIcon="true" />
             </div>
             <label for="lineas" *ngIf="pedido">Lineas de producto</label>
-            <p-multiSelect id="lineas" *ngIf="pedido.lineas != null" id="pedidos" [options]="pedido.lineas" formControlName="lineas"
-            optionLabel="id" placeholder="Seleccione las lineas de los productos" [disabled]="false"
-            display="chip"></p-multiSelect>
+            <p-multiSelect id="lineas" *ngIf="pedido.lineas != null" id="pedidos" [options]="pedido.lineas"
+                formControlName="lineas" optionLabel="id" placeholder="Seleccione las lineas de los productos"
+                [disabled]="false" display="chip"></p-multiSelect>
             <label for="total" *ngIf="!pedido">Total</label>
             <input id="total" pInputText formControlName="total" *ngIf="!pedido" type="text">
         </p-card>
