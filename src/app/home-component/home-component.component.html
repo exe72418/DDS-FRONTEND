@@ -1,24 +1,29 @@
 <div class="tabla">
-    <div style="margin-left: 10px; margin-bottom: 10px;"  *ngFor="let product of productos">
-      <p-card header=""  [style]="{ width: '250px' }">
-        <ng-template pTemplate="header">
-        </ng-template>
-        <p>
-            {{product.descripcion}}
-        </p>
-        <div *ngFor="let linea of this.pedido.lineas">
-            <div *ngIf="product.codigo == linea.producto.codigo">
-                Cantidad: {{linea.cantidad}}
+    <div style="margin-left: 10px; margin-bottom: 10px;" *ngFor="let product of productos">
+        <p-card header="" [style]="{ width: '250px' }">
+            <ng-template pTemplate="header"></ng-template>
+            <p>
+                {{ product.descripcion }}
+            </p>
+
+            <!-- Mostrar la cantidad y los botones de control -->
+            <div *ngFor="let linea of pedido.lineas">
+                <div *ngIf="product.codigo == linea.producto.codigo">
+                    <p>Cantidad: {{ linea.cantidad }}</p>
+                    <span style="margin-right: 10px;">
+                        <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning"></button>
+                    </span>
+                    <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger"></button>
+                </div>
             </div>
-        </div>
-        <ng-template pTemplate="footer">
-            <div class="flex gap-3 mt-1">
-                <p-button (click)="agregar(product)" label="Comprar" class="w-full" styleClass="w-full" />
-            </div>
-        </ng-template>
-        
-      </p-card>
+
+            <ng-template pTemplate="footer">
+                <div class="flex gap-3 mt-1">
+                    <p-button (click)="agregar(product)" label="Comprar" class="w-full" styleClass="w-full" />
+                </div>
+            </ng-template>
+        </p-card>
     </div>
+
     <button style="grid-column: 2/3;" pButton routerLink="/carrito"> Ir al Carrito</button>
 </div>
-
