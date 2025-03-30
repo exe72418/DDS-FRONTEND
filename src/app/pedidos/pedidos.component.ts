@@ -4,47 +4,39 @@ import { PedidoServiceService } from '../services/pedido-service.service';
 import Swal from 'sweetalert2';
 import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/cliente';
-
+import { LineaProductoService } from '../services/lineaproducto-service.service'; // Nuevo import
 
 @Component({
   selector: 'app-pedidos',
   templateUrl: './pedidos.component.html',
-  styleUrl: './pedidos.component.css'
+  styleUrls: ['./pedidos.component.css']
 })
-export class PedidosComponent implements OnInit{
-
- 
+export class PedidosComponent implements OnInit {
 
   crearMode: boolean = false;
-
-
-  pedidos!:Pedido[];
+  pedidos!: Pedido[];
   pedidoSelected!: Pedido;
   clienteSelect!: Cliente;
   fechaInicio!: Date;
   fechaFin!: Date;
   clientes!: Cliente[];
 
-  constructor(private _pedidoService: PedidoServiceService, private _clienteService: ClienteService){
-
-  }
+  constructor(
+    private _pedidoService: PedidoServiceService,
+    private _clienteService: ClienteService,
+    private _lineaProductoService: LineaProductoService // Inyectar el servicio
+  ) { }
 
   ngOnInit(): void {
     this.search();
     this._clienteService.getAll().subscribe(data => {
-      this.clientes = data['data'].map((cliente: Cliente) => {
-        const clienteFormateado: Cliente = {
-          id: cliente.id,
-          apellidoNombre: cliente.apellidoNombre,
-          telefono: cliente.telefono,
-          email: cliente.email,
-          domicilio: cliente.domicilio,
-          cuit: cliente.cuit,
-          disponible: cliente.disponible,
-          zona: cliente.zona
-        };
-        return clienteFormateado;
-      });
+      this.clientes = data['data'];
+    });
+  }
+
+  search() {
+    this._pedidoService.getAll().subscribe((pedidos) => {
+      this.pedidos = pedidos;
     });
   }
 
@@ -52,17 +44,9 @@ export class PedidosComponent implements OnInit{
     const fechaInicio = this.fechaInicio ? new Date(this.fechaInicio) : null;
     const fechaFin = this.fechaFin ? new Date(this.fechaFin) : null;
 
-
-    this._pedidoService.getPedidosByFilters(this.clienteSelect, fechaInicio,fechaFin).subscribe((pedidos)=>{
+    this._pedidoService.getPedidosByFilters(this.clienteSelect, fechaInicio, fechaFin).subscribe((pedidos) => {
       this.pedidos = pedidos;
-    })
-  }
-
-  search(){
-    this._pedidoService.getAll().subscribe((pedidos)=>{
-      this.pedidos = pedidos
-
-    })
+    });
   }
 
   new() {
@@ -71,39 +55,98 @@ export class PedidosComponent implements OnInit{
 
   changeEditCreate() {
     this.crearMode = false;
-    this.search()
+    this.search();
   }
 
   deleteProduct(ped: Pedido) {
     Swal.fire({
-      title: "Atencion?",
-      text: "Deseas borrar el pedido " + ped.nroPedido,
+      title: "Atención",
+      text: `¿Deseas borrar el pedido ${ped.nroPedido}?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si"
+      confirmButtonText: "Sí"
     }).then((result) => {
       if (result.isConfirmed) {
-        this._pedidoService.delete(ped).subscribe((ped)=>{
+        this._pedidoService.delete(ped).subscribe(() => {
           Swal.fire({
             title: "Pedido borrado",
-            text: "",
             icon: "success"
           });
           this.search();
-        },(error)=>{
+        }, (error) => {
           Swal.fire({
-            title: "Pedido no se borro",
+            title: "Error",
             text: error.message,
             icon: "error"
           });
-        })
+        });
       }
     });
   }
+
   editProduct(ped: Pedido) {
     this.pedidoSelected = ped;
     this.crearMode = true;
+  }
+
+  showProductDetails(pedido: Pedido) {
+    if (!pedido.nroPedido) {
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo encontrar el pedido.',
+        icon: 'error'
+      });
+      return;
+    }
+
+    this._lineaProductoService.getLineasByPedidoId(pedido.nroPedido).subscribe((lineas) => {
+      if (lineas.length === 0) {
+        Swal.fire({
+          title: 'Sin líneas de producto',
+          text: 'Este pedido no tiene líneas de producto.',
+          icon: 'info'
+        });
+        return;
+      }
+
+      this.generateProductTable(lineas);
+    });
+  }
+
+  generateProductTable(lineas: any[]) {
+    let htmlContent = `
+      <table class="table table-bordered" style="width: 100%; text-align: left;">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    lineas.forEach(linea => {
+      htmlContent += `
+        <tr>
+          <td>${linea.producto.descripcion}</td>
+          <td>${linea.cantidad}</td>
+          <td>${new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(linea.producto.precio)}</td>
+          <td>${new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(linea.subtotal)}</td>
+        </tr>
+      `;
+    });
+
+
+    Swal.fire({
+      title: 'Detalle de líneas de productos',
+      html: htmlContent,
+      icon: 'info',
+      showCloseButton: true,
+      confirmButtonText: 'Cerrar'
+    });
   }
 }
