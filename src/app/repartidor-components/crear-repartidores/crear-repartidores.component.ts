@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Repartidor } from '../../models/repartidor';
 import Swal from 'sweetalert2';
 import { CustomComponentsModule } from '../../modules/custom-components.module';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-crear-repartidores',
@@ -16,7 +17,7 @@ export class CrearRepartidoresComponent implements OnInit {
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
   repartidorForm!: FormGroup;
 
-  constructor(private repartidorService: RepartidorService) {
+  constructor(private repartidorService: RepartidorService, private cargaService: CargaService) {
     this.repartidorForm = new FormGroup({
       id: new FormControl(''),
       cuit: new FormControl('', [Validators.required]),
@@ -37,17 +38,26 @@ export class CrearRepartidoresComponent implements OnInit {
 
   guardar(repartidor: Repartidor) {
     if (this.repartidorForm.valid) {
+      this.cargaService.show();
       if (!this.repartidor) {
         repartidor.id = 0;
         this.repartidorService.create(repartidor)
           .subscribe(response => {
+            this.cargaService.hide();
+            Swal.fire({
+              title: "Guardado",
+              text: 'Repartidor creado',
+              icon: "success"
+            });
             this.editCrear.emit(false);
           }, error => {
+            this.cargaService.hide();
             console.error('Error al crear el repartidor:', error);
           });
       } else {
         this.repartidorService.update(repartidor)
           .subscribe(response => {
+            this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
               text: "Repartidor guardado",
@@ -56,6 +66,7 @@ export class CrearRepartidoresComponent implements OnInit {
             this.editCrear.emit(false);
 
           }, error => {
+            this.cargaService.hide();
             console.error('Error al modificar el Repartidor:', error);
           });
       }

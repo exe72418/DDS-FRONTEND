@@ -8,6 +8,7 @@ import { Pago } from '../models/pago';
 import { PedidoServiceService } from '../services/pedido-service.service';
 import Swal from 'sweetalert2';
 import { LineaDeProducto } from '../models/lineaProducto';
+import { CargaService } from '../services/carga.service';
 
 @Component({
   selector: 'app-crear-pedido',
@@ -30,7 +31,7 @@ export class CrearPedidoComponent implements OnInit {
   pagos!: Pago[];
   lineasSelected: LineaDeProducto[] = [];
 
-  constructor(private _clienteService: ClienteService, private _pagoService: PagoService,
+  constructor(private _clienteService: ClienteService, private cargaService: CargaService, private _pagoService: PagoService,
     private _pedidoService: PedidoServiceService
   ) {
 
@@ -89,7 +90,9 @@ export class CrearPedidoComponent implements OnInit {
     }
 
     if (this.pedido != null) {
+      this.cargaService.show();
       this._pedidoService.editar(this.pedidoForm.value).subscribe((ped) => {
+        this.cargaService.hide();
         Swal.fire({
           title: "Pedido guardado",
           text: "",
@@ -98,6 +101,7 @@ export class CrearPedidoComponent implements OnInit {
         this.editCrear.emit()
       },
         (err: any) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "No se pudo guardar el pedido",
             text: "",
@@ -107,6 +111,7 @@ export class CrearPedidoComponent implements OnInit {
     }
     else {
       this._pedidoService.guardar(this.pedidoForm.value).subscribe((ped) => {
+        this.cargaService.hide();
         Swal.fire({
           title: "Pedido guardado",
           text: "",
@@ -115,6 +120,7 @@ export class CrearPedidoComponent implements OnInit {
         this.editCrear.emit()
       },
         (err: any) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "No se pudo guardar el pedido",
             text: "",

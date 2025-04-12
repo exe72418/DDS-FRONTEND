@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../../models/cliente';
 import Swal from 'sweetalert2';
 import { CustomComponentsModule } from '../../modules/custom-components.module';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-crear-clientes',
@@ -17,7 +18,7 @@ export class CrearClientesComponent implements OnInit {
   clienteForm: FormGroup;
 
 
-  constructor(private clienteService: ClienteService) {
+  constructor(private clienteService: ClienteService, private cargaService: CargaService) {
     this.clienteForm = new FormGroup({
       id: new FormControl(''),
       apellidoNombre: new FormControl('', [Validators.required]),
@@ -41,12 +42,13 @@ export class CrearClientesComponent implements OnInit {
 
   guardar(cliente: Cliente) {
     if (this.clienteForm.valid) {
-
+      this.cargaService.show();
       if (!this.cliente) {
         cliente.id = 0;
 
         this.clienteService.create(cliente)
           .subscribe(response => {
+            this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
               text: 'Cliente creado',
@@ -55,7 +57,7 @@ export class CrearClientesComponent implements OnInit {
 
             this.editCrear.emit(false);
           }, error => {
-
+            this.cargaService.hide();
             console.error('Error al crear el cliente:', error);
             Swal.fire({
               title: "Error",
@@ -68,6 +70,7 @@ export class CrearClientesComponent implements OnInit {
 
         this.clienteService.update(cliente)
           .subscribe(response => {
+            this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
               text: 'Cliente actualizado',
@@ -76,7 +79,7 @@ export class CrearClientesComponent implements OnInit {
 
             this.editCrear.emit(false);
           }, error => {
-            // Manejo de errores
+            this.cargaService.hide();
             console.error('Error al modificar el cliente:', error);
             Swal.fire({
               title: "Error",
@@ -87,7 +90,7 @@ export class CrearClientesComponent implements OnInit {
       }
 
     } else {
-
+      this.cargaService.hide();
       Swal.fire({
         title: "Error",
         text: 'Formulario inválido. Verifique los datos ingresados.',

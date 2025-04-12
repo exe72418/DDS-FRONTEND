@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TipoPago } from '../../models/tipopago';
 import Swal from 'sweetalert2';
 import { CustomComponentsModule } from '../../modules/custom-components.module';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-crear-tipopago',
@@ -16,7 +17,7 @@ export class CrearTipoPagoComponent implements OnInit {
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
   tipoPagoForm!: FormGroup;
 
-  constructor(private tipopagoService: TipopagoService) {
+  constructor(private tipopagoService: TipopagoService, private cargaService: CargaService) {
     this.tipoPagoForm = new FormGroup({
       id: new FormControl(''),
       nombre: new FormControl('', [Validators.required]),
@@ -36,12 +37,13 @@ export class CrearTipoPagoComponent implements OnInit {
 
   guardar(tipoPago: TipoPago) {
     if (this.tipoPagoForm.valid) {
-
+      this.cargaService.show();
       if (!this.tipoPago) {
         tipoPago.id = 0;
 
         this.tipopagoService.create(tipoPago)
           .subscribe(response => {
+            this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
               text: 'Tipo de pago creado',
@@ -50,7 +52,7 @@ export class CrearTipoPagoComponent implements OnInit {
 
             this.editCrear.emit(false);
           }, error => {
-
+            this.cargaService.hide();
             console.error('Error al crear el tipo de pago:', error);
             Swal.fire({
               title: "Error",
@@ -63,6 +65,7 @@ export class CrearTipoPagoComponent implements OnInit {
 
         this.tipopagoService.update(tipoPago)
           .subscribe(response => {
+            this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
               text: 'Tipo de pago actualizado',
@@ -71,6 +74,7 @@ export class CrearTipoPagoComponent implements OnInit {
 
             this.editCrear.emit(false);
           }, error => {
+            this.cargaService.hide();
             console.error('Error al modificar el tipo de pago:', error);
             Swal.fire({
               title: "Error",
@@ -81,7 +85,7 @@ export class CrearTipoPagoComponent implements OnInit {
       }
 
     } else {
-
+      this.cargaService.hide();
       Swal.fire({
         title: "Error",
         text: 'Formulario inválido. Verifique los datos ingresados.',

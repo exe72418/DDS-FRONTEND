@@ -6,7 +6,7 @@ import { Producto } from '../../models/producto';
 import Swal from 'sweetalert2';
 import { TipoProducto } from '../../models/tipoProducto';
 import { TipoproductoService } from '../../services/tipoproducto.service';
-
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-productos',
@@ -27,10 +27,11 @@ export class ProductosComponent implements OnInit {
   tipoProductoSelect!: TipoProducto;
   precio!: number;
 
-  constructor(private _productoService: ProductosServiceService, private tipoproductoService: TipoproductoService) {
+  constructor(private _productoService: ProductosServiceService, private tipoproductoService: TipoproductoService, private cargaService: CargaService) {
 
   }
   ngOnInit(): void {
+    this.cargaService.show();
     this.search();
     this.tipoproductoService.getAll().subscribe((data: any) => {
       this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
@@ -41,6 +42,7 @@ export class ProductosComponent implements OnInit {
         };
         return tipoProductoFormateado;
       });
+      this.cargaService.hide();
     })
   }
   changeEditCreate() {
@@ -60,9 +62,11 @@ export class ProductosComponent implements OnInit {
 
 
   search() {
+
     this._productoService.getAll().subscribe((productos) => {
       this.productos = productos;
     })
+
   }
 
   deleteProduct(prod: Producto) {
@@ -76,7 +80,9 @@ export class ProductosComponent implements OnInit {
       confirmButtonText: "Si"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.cargaService.show();
         this._productoService.delete(prod).subscribe((prod) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Producto borrado",
             text: "",
@@ -84,6 +90,7 @@ export class ProductosComponent implements OnInit {
           });
           this.search();
         }, (error) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Producto no se borro",
             text: error.message,

@@ -11,6 +11,7 @@ import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrearTipoPagoComponent } from "../crear-tipopago/crear-tipopago.component";
 import { CustomComponentsModule } from '../../modules/custom-components.module';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-tipopago',
@@ -22,7 +23,7 @@ export class TipopagoComponent {
   tipoPagoelected!: TipoPago;
   tipoPagoForm!: FormGroup;
 
-  constructor(private tipopagoService: TipopagoService) { }
+  constructor(private tipopagoService: TipopagoService, private cargaService: CargaService) { }
   tiposPago: TipoPago[] = [];
 
   ngOnInit(): void {
@@ -36,6 +37,7 @@ export class TipopagoComponent {
 
 
   search() {
+    this.cargaService.show();
     this.tipopagoService.getAll().subscribe((data: any) => {
       this.tiposPago = data['data'].map((tipopago: TipoPago) => {
         const tipoPagoFormateado: TipoPago = {
@@ -46,6 +48,7 @@ export class TipopagoComponent {
         };
         return tipoPagoFormateado;
       });
+      this.cargaService.hide();
     })
   }
 
@@ -76,7 +79,9 @@ export class TipopagoComponent {
       confirmButtonText: 'Sí, borrarlo'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.cargaService.show();
         this.tipopagoService.delete(tipoPago.id).subscribe(() => {
+          this.cargaService.hide();
           Swal.fire(
             'Eliminado',
             'El tipo de pago ha sido eliminado.',
@@ -84,6 +89,7 @@ export class TipopagoComponent {
           );
           this.search();
         }, (error) => {
+          this.cargaService.hide();
           Swal.fire(
             'Error al eliminar',
             error.message,

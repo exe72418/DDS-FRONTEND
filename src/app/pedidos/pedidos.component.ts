@@ -4,7 +4,8 @@ import { PedidoServiceService } from '../services/pedido-service.service';
 import Swal from 'sweetalert2';
 import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/cliente';
-import { LineaProductoService } from '../services/lineaproducto-service.service'; // Nuevo import
+import { LineaProductoService } from '../services/lineaproducto-service.service';
+import { CargaService } from '../services/carga.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -24,7 +25,8 @@ export class PedidosComponent implements OnInit {
   constructor(
     private _pedidoService: PedidoServiceService,
     private _clienteService: ClienteService,
-    private _lineaProductoService: LineaProductoService // Inyectar el servicio
+    private _lineaProductoService: LineaProductoService,
+    private cargaService: CargaService
   ) { }
 
   ngOnInit(): void {
@@ -35,9 +37,11 @@ export class PedidosComponent implements OnInit {
   }
 
   search() {
+    this.cargaService.show();
     this._pedidoService.getAll().subscribe((pedidos) => {
       this.pedidos = pedidos;
     });
+    this.cargaService.hide();
   }
 
   buscar() {
@@ -69,13 +73,16 @@ export class PedidosComponent implements OnInit {
       confirmButtonText: "Sí"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.cargaService.show();
         this._pedidoService.delete(ped).subscribe(() => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Pedido borrado",
             icon: "success"
           });
           this.search();
         }, (error) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Error",
             text: error.message,
@@ -92,7 +99,9 @@ export class PedidosComponent implements OnInit {
   }
 
   showProductDetails(pedido: Pedido) {
+    this.cargaService.show();
     if (!pedido.nroPedido) {
+      this.cargaService.hide();
       Swal.fire({
         title: 'Error',
         text: 'No se pudo encontrar el pedido.',
@@ -103,6 +112,7 @@ export class PedidosComponent implements OnInit {
 
     this._lineaProductoService.getLineasByPedidoId(pedido.nroPedido).subscribe((lineas) => {
       if (lineas.length === 0) {
+        this.cargaService.hide();
         Swal.fire({
           title: 'Sin líneas de producto',
           text: 'Este pedido no tiene líneas de producto.',
@@ -110,7 +120,7 @@ export class PedidosComponent implements OnInit {
         });
         return;
       }
-
+      this.cargaService.hide();
       this.generateProductTable(lineas);
     });
   }

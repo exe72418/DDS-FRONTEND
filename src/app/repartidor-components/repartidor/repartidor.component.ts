@@ -11,6 +11,7 @@ import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrearRepartidoresComponent } from "../crear-repartidores/crear-repartidores.component";
 import { CustomComponentsModule } from '../../modules/custom-components.module';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-repartidor',
@@ -23,7 +24,7 @@ export class RepartidorComponent implements OnInit {
   repartidorSelected!: Repartidor;
   repartidorForm!: FormGroup;
 
-  constructor(private repartidorService: RepartidorService) { }
+  constructor(private repartidorService: RepartidorService, private cargaService: CargaService) { }
 
   repartidores: Repartidor[] = [];
 
@@ -39,6 +40,7 @@ export class RepartidorComponent implements OnInit {
 
   }
   search() {
+    this.cargaService.show();
     this.repartidorService.getAll().subscribe((data: any) => {
       this.repartidores = data['data'].map((repartidor: Repartidor) => {
         const repartidorFormateado: Repartidor = {
@@ -51,6 +53,7 @@ export class RepartidorComponent implements OnInit {
         };
         return repartidorFormateado;
       });
+      this.cargaService.hide();
     })
   }
 
@@ -80,7 +83,9 @@ export class RepartidorComponent implements OnInit {
       confirmButtonText: "Si"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.cargaService.show();
         this.repartidorService.delete(repartidor.id).subscribe(() => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Repartidor borrado",
             text: "",
@@ -88,6 +93,7 @@ export class RepartidorComponent implements OnInit {
           });
           this.search();
         }, (error) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Repartidor no se borro",
             text: error.message,

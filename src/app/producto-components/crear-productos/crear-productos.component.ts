@@ -6,6 +6,7 @@ import { TipoproductoService } from '../../services/tipoproducto.service';
 import { TipoProducto } from '../../models/tipoProducto';
 import { ProductosServiceService } from '../../services/productos-service.service';
 import Swal from 'sweetalert2';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-crear-productos',
@@ -20,7 +21,7 @@ export class CrearProductosComponent implements OnInit {
   prodForm!: FormGroup;
   tiposProducto: TipoProducto[] = [];
 
-  constructor(private tipoproductoService: TipoproductoService, private _productoService: ProductosServiceService) {
+  constructor(private tipoproductoService: TipoproductoService, private cargaService: CargaService, private _productoService: ProductosServiceService) {
     this.prodForm = new FormGroup({
       codigo: new FormControl(''),
       descripcion: new FormControl('', [Validators.required]),
@@ -51,8 +52,10 @@ export class CrearProductosComponent implements OnInit {
 
   guardar(prod: Producto) {
     if (this.producto != undefined || this.producto != null) {
+      this.cargaService.show();
       if (this.producto.codigo) {
         this._productoService.update(prod).subscribe(prodBackend => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Guardado",
             text: "Producto actualizado",
@@ -61,12 +64,14 @@ export class CrearProductosComponent implements OnInit {
           this.editCrear.emit(false);
 
         }, error => {
+          this.cargaService.hide();
           console.error('Error al modificar el producto:', error);
         })
       }
     } else {
       prod.codigo = 0;
       this._productoService.save(prod).subscribe(prodBackend => {
+        this.cargaService.hide();
         Swal.fire({
           title: "Guardado",
           text: "Producto creado",
@@ -75,6 +80,7 @@ export class CrearProductosComponent implements OnInit {
         this.editCrear.emit(false);
 
       }, error => {
+        this.cargaService.hide();
         console.error('Error al crear el producto:', error);
       });
     }

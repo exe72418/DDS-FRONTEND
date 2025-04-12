@@ -4,7 +4,7 @@ import { CrearEntregaComponent } from "../crear-entrega/crear-entrega.component"
 import { EntregaService } from '../../services/entrega.service';
 import { Entrega } from '../../models/entrega';
 import Swal from 'sweetalert2';
-
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-entrega',
@@ -17,7 +17,7 @@ export class EntregaComponent implements OnInit {
   crearEditarModeEntrega: boolean = false;
   entregas!: Entrega[];
 
-  constructor(private _entregaService: EntregaService) {
+  constructor(private _entregaService: EntregaService, private cargaService: CargaService) {
 
   }
 
@@ -25,9 +25,11 @@ export class EntregaComponent implements OnInit {
     this.search();
   }
   search() {
+    this.cargaService.show();
     this._entregaService.getAll().subscribe((entregas) => {
       this.entregas = entregas;
     })
+    this.cargaService.hide();
   }
   changeEditCreate() {
     this.crearEditarModeEntrega = false;
@@ -44,13 +46,16 @@ export class EntregaComponent implements OnInit {
       confirmButtonText: "Si"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.cargaService.show();
         this._entregaService.delete(ent.id).subscribe((ent) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Entrega borrada",
             text: "",
             icon: "success"
           });
         }, (error) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "no se pudo borrar la entrega",
             text: error.message,

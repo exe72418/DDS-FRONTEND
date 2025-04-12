@@ -6,6 +6,7 @@ import { RepartidorService } from '../../services/repartidor.service';
 import { Repartidor } from '../../models/repartidor';
 import { EntregaService } from '../../services/entrega.service';
 import Swal from 'sweetalert2';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-crear-entrega',
@@ -20,7 +21,7 @@ export class CrearEntregaComponent implements OnInit {
   repartidores: Repartidor[] = [];
   pedidos: Pedido[] = [];
 
-  constructor(private repartidorService: RepartidorService, private _entregaService: EntregaService) {
+  constructor(private repartidorService: RepartidorService, private cargaService: CargaService, private _entregaService: EntregaService) {
     this.entregaForm = new FormGroup({
       id: new FormControl(''),
       fecha: new FormControl('', [Validators.required]),
@@ -102,8 +103,10 @@ export class CrearEntregaComponent implements OnInit {
 
   guardar(ent: Entrega) {
     if (this.entrega != undefined || this.entrega != null) {
+      this.cargaService.show();
       if (this.entrega.id) {
         this._entregaService.update(ent).subscribe(entBackend => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Guardado",
             text: "Entrega actualizada",
@@ -111,12 +114,14 @@ export class CrearEntregaComponent implements OnInit {
           });
           this.editCrear.emit(false);
         }, error => {
+          this.cargaService.hide();
           console.error('Error al modificar la entrega:', error);
         });
       }
     } else {
       ent.id = 0;
       this._entregaService.save(ent).subscribe(entBackend => {
+        this.cargaService.hide();
         Swal.fire({
           title: "Guardado",
           text: "Entrega creada",
@@ -124,6 +129,7 @@ export class CrearEntregaComponent implements OnInit {
         });
         this.editCrear.emit(false);
       }, error => {
+        this.cargaService.hide();
         console.error('Error al crear la entrega:', error);
       });
     }

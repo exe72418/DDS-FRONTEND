@@ -4,7 +4,7 @@ import { CrearPagoComponent } from "../crear-pago/crear-pago.component";
 import { PagoService } from '../../services/pago.service';
 import { Pago } from '../../models/pago';
 import Swal from 'sweetalert2';
-
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-pago',
@@ -17,17 +17,21 @@ export class PagoComponent implements OnInit {
   crearEditarModePago: boolean = false;
   pagos!: Pago[];
 
-  constructor(private _pagoService: PagoService) {
+  constructor(private _pagoService: PagoService, private cargaService: CargaService) {
 
   }
 
   ngOnInit(): void {
+    this.cargaService.show();
     this.search();
   }
   search() {
+
     this._pagoService.getAll().subscribe((pagos) => {
       this.pagos = pagos;
+      this.cargaService.hide();
     })
+
   }
   changeEditCreate() {
     this.crearEditarModePago = false;
@@ -44,13 +48,16 @@ export class PagoComponent implements OnInit {
       confirmButtonText: "Si"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.cargaService.show();
         this._pagoService.delete(pag.id).subscribe((pag) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "Pago borrado",
             text: "",
             icon: "success"
           });
         }, (error) => {
+          this.cargaService.hide();
           Swal.fire({
             title: "no se pudo borrar el pago",
             text: error.message,

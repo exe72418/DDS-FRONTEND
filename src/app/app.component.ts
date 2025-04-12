@@ -7,6 +7,7 @@ import { Pedido } from './models/pedido';
 import { LineaDeProducto } from './models/lineaProducto';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { CargaService } from './services/carga.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
   title = 'fast';
   pedido!: Pedido;
 
-  constructor(private _productoService: ProductosServiceService,
+  constructor(private _productoService: ProductosServiceService, private cargaService: CargaService,
     //private store:Store,
     private router: Router,
   ) {

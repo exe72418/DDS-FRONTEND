@@ -11,7 +11,7 @@ import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrearClientesComponent } from "../crear-clientes/crear-clientes.component";
 import { CustomComponentsModule } from '../../modules/custom-components.module';
-
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-clientes',
@@ -23,7 +23,7 @@ export class ClientesComponent {
   clienteSelected!: Cliente;
   clienteForm!: FormGroup;
 
-  constructor(private clienteService: ClienteService) { }
+  constructor(private clienteService: ClienteService, private cargaService: CargaService) { }
   clientes!: Cliente[];
 
   ngOnInit(): void {
@@ -43,6 +43,7 @@ export class ClientesComponent {
 
 
   search() {
+    this.cargaService.show();
     this.clienteService.getAll().subscribe((data: any) => {
       this.clientes = data['data'].map((cliente: Cliente) => {
         const clienteFormateado: Cliente = {
@@ -57,6 +58,7 @@ export class ClientesComponent {
         };
         return clienteFormateado;
       });
+      this.cargaService.hide();
     })
   }
 
@@ -87,7 +89,9 @@ export class ClientesComponent {
       confirmButtonText: 'Sí, borrarlo'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.cargaService.show();
         this.clienteService.delete(cliente.id).subscribe(() => {
+          this.cargaService.hide();
           Swal.fire(
             'Eliminado',
             'El cliente ha sido eliminado.',
@@ -95,6 +99,7 @@ export class ClientesComponent {
           );
           this.search();
         }, (error) => {
+          this.cargaService.hide();
           Swal.fire(
             'Error al eliminar',
             error.message,

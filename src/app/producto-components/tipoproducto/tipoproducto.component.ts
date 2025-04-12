@@ -11,6 +11,7 @@ import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrearTipoProdComponent } from "../crear-tipo-prod/crear-tipo-prod.component";
 import { CustomComponentsModule } from '../../modules/custom-components.module';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-tipoproducto',
@@ -27,7 +28,7 @@ export class TipoproductoComponent implements OnInit {
   tipoProdSelected!: TipoProducto;
   tipoProdForm!: FormGroup;
 
-  constructor(private tipoproductoService: TipoproductoService) { }
+  constructor(private tipoproductoService: TipoproductoService, private cargaService: CargaService) { }
 
   tiposProducto: TipoProducto[] = [];
 
@@ -40,16 +41,23 @@ export class TipoproductoComponent implements OnInit {
 
   }
   search() {
-    this.tipoproductoService.getAll().subscribe((data: any) => {
-      this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
-        const tipoProductoFormateado: TipoProducto = {
+    this.cargaService.show();
+    this.tipoproductoService.getAll().subscribe({
+      next: (data: any) => {
+        this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => ({
           id: tipoprod.id,
           nombre: tipoprod.nombre,
           disponible: tipoprod.disponible
-        };
-        return tipoProductoFormateado;
-      });
-    })
+        }));
+      },
+      error: (err) => {
+        console.error(err);
+        this.cargaService.hide();
+      },
+      complete: () => {
+        this.cargaService.hide();
+      }
+    });
   }
 
   changeEditCreate() {
@@ -78,7 +86,9 @@ export class TipoproductoComponent implements OnInit {
       confirmButtonText: 'Sí, borrarlo'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.cargaService.show();
         this.tipoproductoService.delete(tipoprod.id).subscribe(() => {
+          this.cargaService.hide();
           Swal.fire(
             'Eliminado',
             'El tipo de producto ha sido eliminado.',
@@ -86,11 +96,13 @@ export class TipoproductoComponent implements OnInit {
           );
           this.search();
         }, (error) => {
+          this.cargaService.hide();
           Swal.fire(
             'Error al eliminar',
             error.message,
             'error'
           );
+
         });
       }
     });

@@ -6,6 +6,7 @@ import { ProductosServiceService } from '../services/productos-service.service';
 import { Producto } from '../models/producto';
 import { Pedido } from '../models/pedido';
 import { LineaDeProducto } from '../models/lineaProducto';
+import { CargaService } from '../services/carga.service';
 
 @Component({
   selector: 'app-home-component',
@@ -14,7 +15,7 @@ import { LineaDeProducto } from '../models/lineaProducto';
 })
 export class HomeComponentComponent implements OnInit, OnDestroy {
 
-  constructor(private _productoService: ProductosServiceService, private store: Store) {}
+  constructor(private _productoService: ProductosServiceService, private cargaService: CargaService, private store: Store) { }
 
   @Input() productos!: Producto[];
   pedido!: Pedido;
@@ -29,6 +30,7 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
   }
 
   agregar(producto: Producto) {
+    this.cargaService.show();
     let lineaProd = new LineaDeProducto();
     lineaProd.cantidad = 1;
     lineaProd.producto = producto;
@@ -38,6 +40,7 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
 
     if (this.pedido.lineas.length > 0) {
       this.pedido.lineas.map((linea) => {
+        this.cargaService.hide();
         if (linea.producto.codigo == producto.codigo) {
           encontro = true;
           linea.cantidad++;
@@ -46,10 +49,12 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
         }
       });
       if (!encontro) {
+        this.cargaService.hide();
         this.pedido.lineas = [...this.pedido.lineas, lineaProd];
         this.pedido.total += lineaProd.producto.precio;
       }
     } else {
+      this.cargaService.hide();
       this.pedido.lineas = [...this.pedido.lineas, lineaProd];
       this.pedido.total += lineaProd.producto.precio;
     }
@@ -58,9 +63,11 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
   }
 
   restar(producto: Producto) {
+    this.cargaService.show();
     let index = this.pedido.lineas.findIndex(linea => linea.producto.codigo === producto.codigo);
 
     if (index !== -1) {
+      this.cargaService.hide();
       let linea = this.pedido.lineas[index];
 
       if (linea.cantidad > 1) {
@@ -76,10 +83,12 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
   }
 
   eliminar(producto: Producto) {
+    this.cargaService.show();
     this.pedido.lineas = this.pedido.lineas.filter(linea => linea.producto.codigo !== producto.codigo);
     this.pedido.total = this.pedido.lineas.reduce((total, linea) => total + linea.subtotal, 0);
 
     this.store.dispatch(new SetPedidosAction(_.cloneDeep(this.pedido)));
+    this.cargaService.hide();
   }
 
   consolelog() {

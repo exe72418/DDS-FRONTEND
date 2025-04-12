@@ -9,6 +9,7 @@ import { Cliente } from '../../../src/app/models/cliente';
 import { ClienteService } from '../../../src/app/services/cliente.service';
 import { PedidoServiceService } from '../../../src/app/services/pedido-service.service';
 import { Route, Router } from '@angular/router';
+import { CargaService } from '../services/carga.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class CarritoComponent implements OnInit {
 
 
   constructor(private store: Store, private apiService: ClienteService, private router: Router,
-    private _pedidoService: PedidoServiceService) {
+    private _pedidoService: PedidoServiceService, private cargaService: CargaService) {
 
   }
 
@@ -46,6 +47,7 @@ export class CarritoComponent implements OnInit {
   }
 
   llenarData() {
+    this.cargaService.show();
     this.apiService.getAll().subscribe(data => {
       this.clientes = data['data'].map((cliente: Cliente) => {
         const clienteFormateado: Cliente = {
@@ -60,14 +62,17 @@ export class CarritoComponent implements OnInit {
         };
         return clienteFormateado;
       });
+      this.cargaService.hide();
     });
   }
 
   pagar() {
+    this.cargaService.show();
     this.pedidoSelectSnapShot.fecha = this.fechaSelected;
 
 
     this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe((ped) => {
+      this.cargaService.hide();
       Swal.fire({
         title: "Pedido guardado",
         text: "",
@@ -76,6 +81,7 @@ export class CarritoComponent implements OnInit {
       this.router.navigate(['pedidos'])
     },
       (err: any) => {
+        this.cargaService.hide();
         Swal.fire({
           title: "No se pudo guardar el pedido",
           text: "",

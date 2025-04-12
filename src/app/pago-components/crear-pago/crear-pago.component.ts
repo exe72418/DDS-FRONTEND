@@ -6,6 +6,7 @@ import { TipoPago } from '../../models/tipopago';
 import { Pedido } from '../../models/pedido';
 import { TipopagoService } from '../../services/tipopago.service';
 import Swal from 'sweetalert2';
+import { CargaService } from '../../services/carga.service';
 
 @Component({
   selector: 'app-crear-pago',
@@ -20,7 +21,7 @@ export class CrearPagoComponent implements OnInit {
   tiposPago: TipoPago[] = [];
   pedidosSinPago: Pedido[] = [];
 
-  constructor(private tipopagoService: TipopagoService, private pagoService: PagoService) {
+  constructor(private tipopagoService: TipopagoService, private cargaService: CargaService, private pagoService: PagoService) {
     this.pagoForm = new FormGroup({
       id: new FormControl(''),
       fecha: new FormControl('', [Validators.required]),
@@ -64,7 +65,9 @@ export class CrearPagoComponent implements OnInit {
   guardar(pag: Pago) {
     pag.fecha = new Date(pag.fecha);
     if (this.pago && this.pago.id) {
+      this.cargaService.show();
       this.pagoService.update(pag).subscribe(() => {
+        this.cargaService.hide();
         Swal.fire({
           title: "Guardado",
           text: "Pago actualizado",
@@ -72,11 +75,13 @@ export class CrearPagoComponent implements OnInit {
         });
         this.editCrear.emit(false);
       }, error => {
+        this.cargaService.hide();
         console.error('Error al modificar el pago:', error);
       });
     } else {
       pag.id = 0;
       this.pagoService.save(pag).subscribe(() => {
+        this.cargaService.hide();
         Swal.fire({
           title: "Guardado",
           text: "Pago creado",
@@ -84,6 +89,7 @@ export class CrearPagoComponent implements OnInit {
         });
         this.editCrear.emit(false);
       }, error => {
+        this.cargaService.hide();
         console.error('Error al crear el pago:', error);
       });
     }
