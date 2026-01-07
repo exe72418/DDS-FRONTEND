@@ -40,12 +40,12 @@ export class PagoComponent implements OnInit {
   deletePago(pag: Pago) {
     Swal.fire({
       title: "Atencion?",
-      text: "Deseas dar de baja pago " + pag.id,
+      text: "Deseas borrar el pago " + pag.id,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si"
+      confirmButtonText: "Si, borrar!"
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
@@ -59,10 +59,10 @@ export class PagoComponent implements OnInit {
         }, (error) => {
           this.cargaService.hide();
           Swal.fire({
-            title: "no se pudo borrar el pago",
-            text: error.message,
-            icon: "error"
-          });
+              title: "Error",
+              text: 'Error al borrar el pago',
+              icon: "error"
+            });
         })
       }
     });

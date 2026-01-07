@@ -53,6 +53,11 @@ export class CrearRepartidoresComponent implements OnInit {
           }, error => {
             this.cargaService.hide();
             console.error('Error al crear el repartidor:', error);
+            Swal.fire({
+                        title: "Error",
+                        text: 'Error al crear el repartidor',
+                        icon: "error"
+                      });
           });
       } else {
         this.repartidorService.update(repartidor)
@@ -68,6 +73,11 @@ export class CrearRepartidoresComponent implements OnInit {
           }, error => {
             this.cargaService.hide();
             console.error('Error al modificar el Repartidor:', error);
+          Swal.fire({
+                        title: "Error",
+                        text: 'Error al modificar el repartidor',
+                        icon: "error"
+                      });
           });
       }
 

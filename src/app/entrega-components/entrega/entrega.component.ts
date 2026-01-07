@@ -38,7 +38,7 @@ export class EntregaComponent implements OnInit {
   deleteEntrega(ent: Entrega) {
     Swal.fire({
       title: "Atencion?",
-      text: "Deseas dar de baja entrega " + ent.id,
+      text: "Deseas eliminar la entrega " + ent.id,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -57,7 +57,7 @@ export class EntregaComponent implements OnInit {
         }, (error) => {
           this.cargaService.hide();
           Swal.fire({
-            title: "no se pudo borrar la entrega",
+            title: "No se pudo borrar la entrega",
             text: error.message,
             icon: "error"
           });

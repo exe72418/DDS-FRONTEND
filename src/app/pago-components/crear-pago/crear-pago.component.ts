@@ -77,6 +77,11 @@ export class CrearPagoComponent implements OnInit {
       }, error => {
         this.cargaService.hide();
         console.error('Error al modificar el pago:', error);
+        Swal.fire({
+              title: "Error",
+              text: 'Error al modificar el pago',
+              icon: "error"
+            });
       });
     } else {
       pag.id = 0;
@@ -91,6 +96,11 @@ export class CrearPagoComponent implements OnInit {
       }, error => {
         this.cargaService.hide();
         console.error('Error al crear el pago:', error);
+        Swal.fire({
+              title: "Error",
+              text: 'Error al crear el pago',
+              icon: "error"
+            });
       });
     }
   }

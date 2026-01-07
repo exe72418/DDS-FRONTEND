@@ -66,6 +66,11 @@ export class CrearProductosComponent implements OnInit {
         }, error => {
           this.cargaService.hide();
           console.error('Error al modificar el producto:', error);
+          Swal.fire({
+              title: "Error",
+              text: 'Error al modificar el producto',
+              icon: "error"
+            });
         })
       }
     } else {
@@ -82,6 +87,11 @@ export class CrearProductosComponent implements OnInit {
       }, error => {
         this.cargaService.hide();
         console.error('Error al crear el producto:', error);
+        Swal.fire({
+              title: "Error",
+              text: 'Error al crear el producto',
+              icon: "error"
+            });
       });
     }
   }

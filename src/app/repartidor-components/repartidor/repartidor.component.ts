@@ -75,7 +75,7 @@ export class RepartidorComponent implements OnInit {
   deleteRepartidor(repartidor: Repartidor) {
     Swal.fire({
       title: "Atencion?",
-      text: "Deseas borrar el repartidor " + repartidor.apellidoNombre,
+      text: "Deseas dar de baja el repartidor " + repartidor.apellidoNombre,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -87,7 +87,7 @@ export class RepartidorComponent implements OnInit {
         this.repartidorService.delete(repartidor.id).subscribe(() => {
           this.cargaService.hide();
           Swal.fire({
-            title: "Repartidor borrado",
+            title: "Repartidor dado de baja",
             text: "",
             icon: "success"
           });
@@ -95,7 +95,7 @@ export class RepartidorComponent implements OnInit {
         }, (error) => {
           this.cargaService.hide();
           Swal.fire({
-            title: "Repartidor no se borro",
+            title: "Repartidor no se dio de baja",
             text: error.message,
             icon: "error"
           });

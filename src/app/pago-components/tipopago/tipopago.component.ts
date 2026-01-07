@@ -71,12 +71,12 @@ export class TipopagoComponent {
   deleteTipoPago(tipoPago: TipoPago) {
     Swal.fire({
       title: '¿Estás seguro?',
-      text: 'Deseas borrar el tipo de pago ' + tipoPago.nombre,
+      text: 'Deseas dar de baja el tipo de pago ' + tipoPago.nombre,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, borrarlo'
+      confirmButtonText: 'Sí, dar de baja!'
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
@@ -84,17 +84,17 @@ export class TipopagoComponent {
           this.cargaService.hide();
           Swal.fire(
             'Eliminado',
-            'El tipo de pago ha sido eliminado.',
+            'El tipo de pago ha sido dado de baja.',
             'success'
           );
           this.search();
         }, (error) => {
           this.cargaService.hide();
-          Swal.fire(
-            'Error al eliminar',
-            error.message,
-            'error'
-          );
+          Swal.fire({
+              title: "Error",
+              text: 'Error al dar de baja el tipo de pago',
+              icon: "error"
+            });
         });
       }
     });

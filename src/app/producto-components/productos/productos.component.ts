@@ -72,19 +72,19 @@ export class ProductosComponent implements OnInit {
   deleteProduct(prod: Producto) {
     Swal.fire({
       title: "Atencion?",
-      text: "Deseas borrar el producto " + prod.descripcion,
+      text: "Deseas dar de baja el producto " + prod.descripcion,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si"
+      confirmButtonText: "Si, dar de baja!",
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
         this._productoService.delete(prod).subscribe((prod) => {
           this.cargaService.hide();
           Swal.fire({
-            title: "Producto borrado",
+            title: "Producto Dado de baja",
             text: "",
             icon: "success"
           });
@@ -92,10 +92,10 @@ export class ProductosComponent implements OnInit {
         }, (error) => {
           this.cargaService.hide();
           Swal.fire({
-            title: "Producto no se borro",
-            text: error.message,
-            icon: "error"
-          });
+              title: "Error",
+              text: 'Error al dar de baja el producto',
+              icon: "error"
+            });
         })
       }
     });

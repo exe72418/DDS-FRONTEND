@@ -116,6 +116,11 @@ export class CrearEntregaComponent implements OnInit {
         }, error => {
           this.cargaService.hide();
           console.error('Error al modificar la entrega:', error);
+          Swal.fire({
+                        title: "Error",
+                        text: 'Error al modificar la entrega',
+                        icon: "error"
+                      });
         });
       }
     } else {
@@ -131,6 +136,11 @@ export class CrearEntregaComponent implements OnInit {
       }, error => {
         this.cargaService.hide();
         console.error('Error al crear la entrega:', error);
+          Swal.fire({
+                        title: "Error",
+                        text: 'Error al crear la entrega',
+                        icon: "error"
+                      });
       });
     }
   }

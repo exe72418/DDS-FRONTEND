@@ -78,12 +78,12 @@ export class TipoproductoComponent implements OnInit {
   deleteProduct(tipoprod: TipoProducto) {
     Swal.fire({
       title: '¿Estás seguro?',
-      text: 'Deseas borrar el tipo de producto ' + tipoprod.nombre,
+      text: 'Deseas dar de baja el tipo de producto ' + tipoprod.nombre,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, borrarlo'
+      confirmButtonText: 'Sí, Dar de baja!'
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
@@ -91,17 +91,17 @@ export class TipoproductoComponent implements OnInit {
           this.cargaService.hide();
           Swal.fire(
             'Eliminado',
-            'El tipo de producto ha sido eliminado.',
+            'El tipo de producto ha sido dado de baja.',
             'success'
           );
           this.search();
         }, (error) => {
           this.cargaService.hide();
-          Swal.fire(
-            'Error al eliminar',
-            error.message,
-            'error'
-          );
+          Swal.fire({
+              title: "Error",
+              text: 'Error al dar de baja el tipo de producto',
+              icon: "error"
+            });
 
         });
       }

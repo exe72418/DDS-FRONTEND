@@ -81,7 +81,7 @@ export class ClientesComponent {
   deleteCliente(cliente: Cliente) {
     Swal.fire({
       title: '¿Estás seguro?',
-      text: 'Deseas borrar el cliente ' + cliente.apellidoNombre,
+      text: 'Deseas dar de baja el cliente ' + cliente.apellidoNombre,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -94,14 +94,14 @@ export class ClientesComponent {
           this.cargaService.hide();
           Swal.fire(
             'Eliminado',
-            'El cliente ha sido eliminado.',
+            'El cliente ha sido dado de baja.',
             'success'
           );
           this.search();
         }, (error) => {
           this.cargaService.hide();
           Swal.fire(
-            'Error al eliminar',
+            'Error al dar de baja',
             error.message,
             'error'
           );

@@ -51,6 +51,11 @@ export class CrearTipoProdComponent implements OnInit {
           }, error => {
             this.cargaService.hide();
             console.error('Error al crear el tipo de producto:', error);
+          Swal.fire({
+              title: "Error",
+              text: 'Error al crear el tipo de producto',
+              icon: "error"
+            });
           });
       } else {
         this.tipoproductoService.update(tipoProducto)
@@ -66,6 +71,11 @@ export class CrearTipoProdComponent implements OnInit {
           }, error => {
             this.cargaService.hide();
             console.error('Error al modificar el Tipo de producto:', error);
+            Swal.fire({
+              title: "Error",
+              text: 'Error al modificar el tipo de producto',
+              icon: "error"
+            });
           });
       }
 
