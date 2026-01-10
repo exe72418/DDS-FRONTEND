@@ -1,34 +1,44 @@
 <div style="display: flex; justify-content: center;">
-  <p-card>
-    <div>
-      <form style="display: flex;flex-direction: column; justify-content: center;" [formGroup]="repartidorForm"
-        (ngSubmit)="guardar(repartidorForm.value)">
-        <h4 *ngIf="repartidor != null || repartidor != undefined ">Modificar</h4>
-        <h4 *ngIf="repartidor == null || repartidor == undefined ">Crear</h4>
-        <div class="form-group">
-          <label for="cuit">Cuit</label>
-          <input pInputText id="cuit" type="text" formControlName="cuit" [disabled]="true">
-        </div>
-        <div class="form-group">
-          <label for="apellidoNombre">Apellido y Nombre</label>
-          <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre" [disabled]="true">
-        </div>
-        <div class="form-group">
-          <label for="vehiculo">Vehiculo</label>
-          <input pInputText id="vehiculo" type="text" formControlName="vehiculo" [disabled]="true">
-        </div>
-        <div class="form-group">
-          <label for="zona">Zona</label>
-          <input pInputText id="zona" type="text" formControlName="zona" [disabled]="true">
-        </div>
+    <p-card>
+        <div>
+            <form style="display: flex;flex-direction: column; justify-content: center;" [formGroup]="repartidorForm"
+                (ngSubmit)="guardar(repartidorForm.value)">
+                
+                <h4 *ngIf="repartidor">Modificar</h4>
+                <h4 *ngIf="!repartidor">Crear</h4>
+                
+                <div class="form-group">
+                    <label for="cuit">Cuit</label>
+                    <input pInputText id="cuit" type="text" formControlName="cuit"> 
+                </div>
+                
+                <div class="form-group">
+                    <label for="apellidoNombre">Apellido y Nombre</label>
+                    <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre">
+                </div>
+                
+                <div class="form-group">
+                    <label for="vehiculo">Vehiculo</label>
+                    <input pInputText id="vehiculo" type="text" formControlName="vehiculo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="zona">Zona</label>
+                    <p-dropdown 
+                        id="zona" 
+                        [options]="zonas" 
+                        formControlName="zona" 
+                        optionLabel="nombre"
+                        placeholder="Seleccione una zona"
+                        [showClear]="true">
+                    </p-dropdown>
+                </div>
 
-        <div style="display: flex; justify-content: center;">
-        <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-        <button pButton style="margin: 10px;" (click)="back()">Volver</button>
+                <div style="display: flex; justify-content: center;">
+                    <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+                    <button pButton type="button" style="margin: 10px;" (click)="back()">Volver</button>
+                </div>
+            </form>
         </div>
-      </form>
-    </div>
-
-  </p-card>
-
+    </p-card>
 </div>

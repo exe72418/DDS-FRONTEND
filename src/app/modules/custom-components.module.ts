@@ -19,6 +19,8 @@ import { ProductosComponent } from "../producto-components/productos/productos.c
 import { RepartidorComponent } from "../repartidor-components/repartidor/repartidor.component";
 import { TipopagoComponent } from "../pago-components/tipopago/tipopago.component";
 import { CrearTipoPagoComponent } from "../pago-components/crear-tipopago/crear-tipopago.component";
+import { ZonasComponent } from "../zona/zonas/zonas.component";
+import { CrearZonasComponent } from "../zona/crear-zonas/crear-zonas.component";
 import { CrearClientesComponent } from "../cliente-components/crear-clientes/crear-clientes.component";
 import { CrearProductosComponent } from "../producto-components/crear-productos/crear-productos.component";
 import { CrearRepartidoresComponent } from "../repartidor-components/crear-repartidores/crear-repartidores.component";
@@ -63,7 +65,9 @@ import { CargaComponent } from '../carga/carga/carga.component.js';
         PedidosComponent,
         CrearPedidoComponent,
         LoginComponent,
-        CargaComponent
+        CargaComponent,
+        ZonasComponent,
+        CrearZonasComponent
     ],
     imports: [
         NgxsModule.forRoot([PedidoState], { developmentMode: true }),

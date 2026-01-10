@@ -2,8 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../../models/cliente';
+import { Zona } from '../../models/zona'; // Importar Zona
+import { ZonaService } from '../../services/zona.service'; // Importar ZonaService
 import Swal from 'sweetalert2';
-import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CargaService } from '../../services/carga.service';
 
 @Component({
@@ -16,21 +17,29 @@ export class CrearClientesComponent implements OnInit {
   @Input() cliente!: Cliente;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
   clienteForm: FormGroup;
+  zonas: Zona[] = []; 
 
-
-  constructor(private clienteService: ClienteService, private cargaService: CargaService) {
+  constructor(
+    private clienteService: ClienteService, 
+    private zonaService: ZonaService, 
+    private cargaService: CargaService
+  ) {
     this.clienteForm = new FormGroup({
       id: new FormControl(''),
       apellidoNombre: new FormControl('', [Validators.required]),
-      telefono: new FormControl('', [Validators.required,]),
-      cuit: new FormControl('', [Validators.required,]),
-      email: new FormControl('', [Validators.required,]),
+      telefono: new FormControl('', [Validators.required]),
+      cuit: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
       domicilio: new FormControl('', [Validators.required]),
       zona: new FormControl('', [Validators.required])
     });
   }
 
   ngOnInit() {
+    this.zonaService.getZonasActivas().subscribe((response: any) => {
+        this.zonas = response.data || response;
+    });
+
     if (this.cliente) {
       this.clienteForm.patchValue(this.cliente)
     }
@@ -43,18 +52,16 @@ export class CrearClientesComponent implements OnInit {
   guardar(cliente: Cliente) {
     if (this.clienteForm.valid) {
       this.cargaService.show();
+      
       if (!this.cliente) {
         cliente.id = 0;
-
-        this.clienteService.create(cliente)
-          .subscribe(response => {
+        this.clienteService.create(cliente).subscribe(response => {
             this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
               text: 'Cliente creado',
               icon: "success"
             });
-
             this.editCrear.emit(false);
           }, error => {
             this.cargaService.hide();
@@ -67,16 +74,15 @@ export class CrearClientesComponent implements OnInit {
           });
 
       } else {
-
-        this.clienteService.update(cliente)
-          .subscribe(response => {
+        cliente.id = this.cliente.id; 
+        
+        this.clienteService.update(cliente).subscribe(response => {
             this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
               text: 'Cliente actualizado',
               icon: "success"
             });
-
             this.editCrear.emit(false);
           }, error => {
             this.cargaService.hide();

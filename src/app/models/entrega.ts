@@ -1,5 +1,6 @@
 import { Repartidor } from "./repartidor";
 import { Pedido } from "./pedido";
+import { Zona } from "./zona";
 
 export class Entrega {
 
@@ -9,7 +10,7 @@ export class Entrega {
 
     lote!: number;
 
-    zona!: string;
+    zona!: Zona;
 
     repartidor!: Repartidor;
 

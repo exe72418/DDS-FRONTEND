@@ -1,0 +1,23 @@
+<div style="display: flex; justify-content: center;">
+    <p-card>
+        <div>
+            <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="zonaForm"
+                (ngSubmit)="guardar(zonaForm.value)">
+                
+                <h4 *ngIf="zona">Modificar</h4>
+                <h4 *ngIf="!zona">Crear</h4>
+
+                <label for="nombre">Nombre</label>
+                <input pInputText id="nombre" type="text" formControlName="nombre">
+                
+                <label for="descripcion">Descripción</label>
+                <input pInputText id="descripcion" type="text" formControlName="descripcion">
+                
+                <div style="display: flex; justify-content: center;">
+                    <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+                    <button pButton type="button" style="margin: 10px;" (click)="back()">Volver</button>
+                </div>           
+             </form>
+        </div>
+    </p-card>
+</div>

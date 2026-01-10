@@ -16,6 +16,8 @@ import { CrearEntregaComponent } from './entrega-components/crear-entrega/crear-
 import { PagoComponent } from './pago-components/pago/pago.component';
 import { CrearPagoComponent } from './pago-components/crear-pago/crear-pago.component';
 import { LoginComponent } from './login/login.component';
+import { ZonasComponent } from './zona/zonas/zonas.component';
+import { CrearZonasComponent } from './zona/crear-zonas/crear-zonas.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponentComponent },
@@ -28,6 +30,8 @@ export const routes: Routes = [
   { path: "crearPago", component: CrearPagoComponent },
   { path: "repartidores", component: RepartidorComponent },
   { path: "tiposDePago", component: TipopagoComponent },
+  { path: "zonas", component: ZonasComponent },
+  { path: "crearZonas", component: CrearZonasComponent },
   { path: "crearTipoPago", component: CrearTipoPagoComponent },
   { path: "carrito", component: CarritoComponent },
   { path: "pedidos", component: PedidosComponent },

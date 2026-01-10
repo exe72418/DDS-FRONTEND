@@ -1,4 +1,5 @@
 import { Entrega } from "./entrega";
+import { Zona } from "./zona";
 
 export class Repartidor {
 
@@ -7,7 +8,7 @@ export class Repartidor {
     apellidoNombre!: String;
 
     vehiculo!: String;
-    zona!: String;
+    zona!: Zona;
     disponible!: boolean;
 
 }

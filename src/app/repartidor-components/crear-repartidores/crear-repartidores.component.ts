@@ -2,8 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RepartidorService } from '../../services/repartidor.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Repartidor } from '../../models/repartidor';
+import { Zona } from '../../models/zona'; // Importamos el modelo Zona
+import { ZonaService } from '../../services/zona.service'; // Importamos el servicio Zona
 import Swal from 'sweetalert2';
-import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CargaService } from '../../services/carga.service';
 
 @Component({
@@ -16,8 +17,14 @@ export class CrearRepartidoresComponent implements OnInit {
   @Input() repartidor!: Repartidor;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
   repartidorForm!: FormGroup;
+  zonas: Zona[] = []; // Lista para el dropdown
 
-  constructor(private repartidorService: RepartidorService, private cargaService: CargaService) {
+  // Inyectamos ZonaService
+  constructor(
+    private repartidorService: RepartidorService, 
+    private zonaService: ZonaService,
+    private cargaService: CargaService
+  ) {
     this.repartidorForm = new FormGroup({
       id: new FormControl(''),
       cuit: new FormControl('', [Validators.required]),
@@ -28,10 +35,18 @@ export class CrearRepartidoresComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.repartidor != null) {
+    // 1. Cargar las zonas activas para el dropdown
+    this.zonaService.getZonasActivas().subscribe((response: any) => {
+        // Dependiendo de si tu back devuelve { data: [...] } o [...] directo
+        this.zonas = response.data || response;
+    });
+
+    // 2. Si estamos editando, llenar el formulario
+    if (this.repartidor) {
       this.repartidorForm.patchValue(this.repartidor);
     }
   }
+
   back() {
     this.editCrear.emit(false)
   }
@@ -39,10 +54,11 @@ export class CrearRepartidoresComponent implements OnInit {
   guardar(repartidor: Repartidor) {
     if (this.repartidorForm.valid) {
       this.cargaService.show();
+      
       if (!this.repartidor) {
+        // CREAR
         repartidor.id = 0;
-        this.repartidorService.create(repartidor)
-          .subscribe(response => {
+        this.repartidorService.create(repartidor).subscribe(response => {
             this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
@@ -54,36 +70,42 @@ export class CrearRepartidoresComponent implements OnInit {
             this.cargaService.hide();
             console.error('Error al crear el repartidor:', error);
             Swal.fire({
-                        title: "Error",
-                        text: 'Error al crear el repartidor',
-                        icon: "error"
-                      });
+                title: "Error",
+                text: 'Error al crear el repartidor',
+                icon: "error"
+              });
           });
       } else {
-        this.repartidorService.update(repartidor)
-          .subscribe(response => {
+        // EDITAR
+        // Aseguramos mantener el ID original
+        repartidor.id = this.repartidor.id;
+        
+        this.repartidorService.update(repartidor).subscribe(response => {
             this.cargaService.hide();
             Swal.fire({
               title: "Guardado",
-              text: "Repartidor guardado",
+              text: "Repartidor actualizado",
               icon: "success"
             });
             this.editCrear.emit(false);
-
           }, error => {
             this.cargaService.hide();
             console.error('Error al modificar el Repartidor:', error);
-          Swal.fire({
-                        title: "Error",
-                        text: 'Error al modificar el repartidor',
-                        icon: "error"
-                      });
+            Swal.fire({
+                title: "Error",
+                text: 'Error al modificar el repartidor',
+                icon: "error"
+              });
           });
       }
 
     } else {
       console.error('Formulario inválido');
+      Swal.fire({
+        title: "Error",
+        text: 'Formulario inválido. Verifique los campos.',
+        icon: "warning"
+      });
     }
   }
-
 }

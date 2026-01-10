@@ -1,3 +1,4 @@
+import { Zona } from "./zona";
 
 export class Cliente {
   apellidoNombre!: string;
@@ -7,5 +8,5 @@ export class Cliente {
   domicilio!: string;
   cuit!: string;
   disponible!: boolean;
-  zona!: string;
+  zona!: Zona;
 }

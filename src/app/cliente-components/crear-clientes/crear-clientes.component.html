@@ -1,35 +1,43 @@
 <div style="display: flex; justify-content: center;">
-  <p-card>
-    <div>
-      <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="clienteForm"
-        (ngSubmit)="guardar(clienteForm.value)">
-        <h4 *ngIf="cliente">Modificar</h4>
-        <h4 *ngIf="!cliente">Crear</h4>
+    <p-card>
+        <div>
+            <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="clienteForm"
+                (ngSubmit)="guardar(clienteForm.value)">
+                
+                <h4 *ngIf="cliente">Modificar</h4>
+                <h4 *ngIf="!cliente">Crear</h4>
 
-        <label for="apellidoNombre">Nombre y Apellido</label>
-        <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre">
+                <label for="apellidoNombre">Nombre y Apellido</label>
+                <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre">
 
-        <label for="cuit">Cuit</label>
-        <input pInputText id="cuit" type="text" formControlName="cuit">
+                <label for="cuit">Cuit</label>
+                <input pInputText id="cuit" type="text" formControlName="cuit">
 
-        <label for="email">Email</label>
-        <input pInputText id="email" type="text" formControlName="email">
+                <label for="email">Email</label>
+                <input pInputText id="email" type="text" formControlName="email">
 
-        <label for="telefono">Telefono</label>
-        <input pInputText id="telefono" type="text" formControlName="telefono">
+                <label for="telefono">Telefono</label>
+                <input pInputText id="telefono" type="text" formControlName="telefono">
 
-        <label for="domicilio">Domicilio</label>
-        <input pInputText id="domicilio" type="text" formControlName="domicilio">
+                <label for="domicilio">Domicilio</label>
+                <input pInputText id="domicilio" type="text" formControlName="domicilio">
 
-        <label for="zona">Zona</label>
-        <input pInputText id="zona" type="text" formControlName="zona">
+                <label for="zona">Zona</label>
+                <p-dropdown 
+                    id="zona" 
+                    [options]="zonas" 
+                    formControlName="zona" 
+                    optionLabel="nombre"
+                    placeholder="Seleccione Zona"
+                    [showClear]="true">
+                </p-dropdown>
 
-        <div style="display: flex; justify-content: center;">
-        <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-        <button pButton style="margin: 10px;" (click)="back()">Volver</button>
+                <div style="display: flex; justify-content: center;">
+                    <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+                    <button pButton type="button" style="margin: 10px;" (click)="back()">Volver</button>
+                </div>
+
+            </form>
         </div>
-
-      </form>
-    </div>
-  </p-card>
+    </p-card>
 </div>
