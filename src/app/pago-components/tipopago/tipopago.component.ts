@@ -1,16 +1,8 @@
 import { TipoPago } from '../../models/tipopago';
 import { Component, OnInit } from '@angular/core';
 import { TipopagoService } from '../../services/tipopago.service';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { DataSource } from '@angular/cdk/collections';
-import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
 import Swal from 'sweetalert2';
-import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CrearTipoPagoComponent } from "../crear-tipopago/crear-tipopago.component";
-import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CargaService } from '../../services/carga.service';
 
 @Component({
@@ -18,23 +10,22 @@ import { CargaService } from '../../services/carga.service';
   templateUrl: './tipopago.component.html',
   styleUrl: './tipopago.component.css'
 })
-export class TipopagoComponent {
+export class TipopagoComponent implements OnInit {
   crearEditarMode: boolean = false;
-  tipoPagoelected!: TipoPago;
+  tipoPagoelected: TipoPago | null = null;
   tipoPagoForm!: FormGroup;
 
-  constructor(private tipopagoService: TipopagoService, private cargaService: CargaService) { }
   tiposPago: TipoPago[] = [];
+
+  constructor(private tipopagoService: TipopagoService, private cargaService: CargaService) {}
 
   ngOnInit(): void {
     this.tipoPagoForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
-    })
+    });
     this.search();
-
   }
-
 
   search() {
     this.cargaService.show();
@@ -49,24 +40,24 @@ export class TipopagoComponent {
         return tipoPagoFormateado;
       });
       this.cargaService.hide();
-    })
+    });
   }
 
   changeEditCreate() {
-    this.crearEditarMode = false
+    this.crearEditarMode = false;
+    this.tipoPagoelected = null;
     this.search();
   }
 
   new() {
+    this.tipoPagoelected = null;
     this.crearEditarMode = true;
   }
 
   editTipoPago(tipopago: TipoPago) {
-    this.crearEditarMode = true;
     this.tipoPagoelected = tipopago;
-
+    this.crearEditarMode = true;
   }
-
 
   deleteTipoPago(tipoPago: TipoPago) {
     Swal.fire({
@@ -88,25 +79,15 @@ export class TipopagoComponent {
             'success'
           );
           this.search();
-        }, (error) => {
+        }, () => {
           this.cargaService.hide();
           Swal.fire({
-              title: "Error",
-              text: 'Error al dar de baja el tipo de pago',
-              icon: "error"
-            });
+            title: "Error",
+            text: 'Error al dar de baja el tipo de pago',
+            icon: "error"
+          });
         });
       }
     });
   }
-
-
-
-
 }
-
-
-
-
-
-

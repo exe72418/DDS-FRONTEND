@@ -1,26 +1,46 @@
 <div style="display: flex; justify-content: center;">
   <p-card>
     <div>
-      <form style="display: flex;flex-direction: column; justify-content: center;" [formGroup]="pagoForm"
-        (ngSubmit)="guardar(pagoForm.value)">
-        <h4 *ngIf="pago">Modificar</h4>
-        <h4 *ngIf="!pago">Crear</h4>
+      <form
+        style="display: flex; flex-direction: column; justify-content: center;"
+        [formGroup]="pagoForm"
+        (ngSubmit)="guardar(pagoForm.value)"
+      >
+        <h4 *ngIf="pago?.id; else crearTpl">Modificar</h4>
+        <ng-template #crearTpl>
+          <h4>Crear</h4>
+        </ng-template>
 
         <label for="fecha">Fecha</label>
-        <p-calendar id="fecha" formControlName="fecha" placeholder="Seleccione una fecha" dateFormat="dd/mm/yy"
-          showIcon="true"></p-calendar>
+        <p-calendar
+          id="fecha"
+          formControlName="fecha"
+          placeholder="Seleccione una fecha"
+          dateFormat="dd/mm/yy"
+          showIcon="true"
+        ></p-calendar>
 
         <label for="tipoPago">Tipo Pago</label>
-        <p-dropdown id="tipoPago" [options]="tiposPago" formControlName="tipoPago" optionLabel="nombre"
-          placeholder="TipoPago" />
+        <p-dropdown
+          id="tipoPago"
+          [options]="tiposPago"
+          formControlName="tipoPago"
+          optionLabel="nombre"
+          placeholder="TipoPago"
+        ></p-dropdown>
 
         <label for="pedido">Pedido</label>
-        <p-dropdown id="pedido" [options]="pedidosSinPago" formControlName="pedido" optionLabel="nroPedido"
-          placeholder="Pedido" />
+        <p-dropdown
+          id="pedido"
+          [options]="pedidosSinPago"
+          formControlName="pedido"
+          optionLabel="nroPedido"
+          placeholder="Pedido"
+        ></p-dropdown>
 
         <div style="display: flex; justify-content: center;">
           <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-          <button pButton style="margin: 10px;" (click)="back()">Volver</button>
+          <button pButton type="button" style="margin: 10px;" (click)="back()" label="Volver"></button>
         </div>
       </form>
     </div>

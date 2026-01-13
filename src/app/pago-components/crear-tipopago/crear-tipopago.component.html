@@ -1,21 +1,27 @@
 <div style="display: flex; justify-content: center;">
-    <p-card>
-        <div>
-            <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="tipoPagoForm"
-                (ngSubmit)="guardar(tipoPagoForm.value)">
-                <h4 *ngIf="tipoPago">Modificar</h4>
-                <h4 *ngIf="!tipoPago">Crear</h4>
-                <label for="nombre">Nombre</label>
-                <input pInputText id="nombre" type="text" formControlName="nombre">
-                
-                <label for="descripcion">Descripción</label>
-                <input pInputText id="descripcion" type="text" formControlName="descripcion">
-                
-                <div style="display: flex; justify-content: center;">
-                    <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-                    <button pButton style="margin: 10px;" (click)="back()">Volver</button>
-                </div>           
-             </form>
+  <p-card>
+    <div>
+      <form
+        style="display: flex; flex-direction: column; justify-content: center;"
+        [formGroup]="tipoPagoForm"
+        (ngSubmit)="guardar(tipoPagoForm.value)"
+      >
+        <h4 *ngIf="tipoPago?.id; else crearTpl">Modificar</h4>
+        <ng-template #crearTpl>
+          <h4>Crear</h4>
+        </ng-template>
+
+        <label for="nombre">Nombre</label>
+        <input pInputText id="nombre" type="text" formControlName="nombre" />
+
+        <label for="descripcion">Descripción</label>
+        <input pInputText id="descripcion" type="text" formControlName="descripcion" />
+
+        <div style="display: flex; justify-content: center;">
+          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+          <button pButton type="button" style="margin: 10px;" (click)="back()" label="Volver"></button>
         </div>
-    </p-card>
+      </form>
+    </div>
+  </p-card>
 </div>

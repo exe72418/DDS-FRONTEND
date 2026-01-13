@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomComponentsModule } from '../../modules/custom-components.module';
-import { CrearPagoComponent } from "../crear-pago/crear-pago.component";
 import { PagoService } from '../../services/pago.service';
 import { Pago } from '../../models/pago';
 import Swal from 'sweetalert2';
@@ -13,28 +11,28 @@ import { CargaService } from '../../services/carga.service';
 })
 export class PagoComponent implements OnInit {
 
-  pagoSelected!: Pago;
+  pagoSelected: Pago | null = null;
   crearEditarModePago: boolean = false;
   pagos!: Pago[];
 
-  constructor(private _pagoService: PagoService, private cargaService: CargaService) {
-
-  }
+  constructor(private _pagoService: PagoService, private cargaService: CargaService) {}
 
   ngOnInit(): void {
     this.cargaService.show();
     this.search();
   }
-  search() {
 
+  search() {
     this._pagoService.getAll().subscribe((pagos) => {
       this.pagos = pagos;
       this.cargaService.hide();
-    })
-
+    });
   }
+
   changeEditCreate() {
     this.crearEditarModePago = false;
+    this.pagoSelected = null;
+    this.search();
   }
 
   deletePago(pag: Pago) {
@@ -49,31 +47,33 @@ export class PagoComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
-        this._pagoService.delete(pag.id).subscribe((pag) => {
+        this._pagoService.delete(pag.id).subscribe(() => {
           this.cargaService.hide();
           Swal.fire({
             title: "Pago borrado",
             text: "",
             icon: "success"
           });
-        }, (error) => {
+          this.search();
+        }, () => {
           this.cargaService.hide();
           Swal.fire({
-              title: "Error",
-              text: 'Error al borrar el pago',
-              icon: "error"
-            });
-        })
+            title: "Error",
+            text: "Error al borrar el pago",
+            icon: "error"
+          });
+        });
       }
     });
   }
 
   editPago(pag: Pago) {
-    this.crearEditarModePago = true;
     this.pagoSelected = pag;
-  }
-  new() {
     this.crearEditarModePago = true;
   }
 
+  new() {
+    this.pagoSelected = null;
+    this.crearEditarModePago = true;
+  }
 }

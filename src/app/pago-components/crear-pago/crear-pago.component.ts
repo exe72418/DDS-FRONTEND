@@ -14,14 +14,18 @@ import { CargaService } from '../../services/carga.service';
   styleUrls: ['./crear-pago.component.css']
 })
 export class CrearPagoComponent implements OnInit {
-  @Input() pago!: Pago;
+  @Input() pago: Pago | null = null;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
 
-  pagoForm!: FormGroup;
+  pagoForm: FormGroup;
   tiposPago: TipoPago[] = [];
   pedidosSinPago: Pedido[] = [];
 
-  constructor(private tipopagoService: TipopagoService, private cargaService: CargaService, private pagoService: PagoService) {
+  constructor(
+    private tipopagoService: TipopagoService,
+    private cargaService: CargaService,
+    private pagoService: PagoService
+  ) {
     this.pagoForm = new FormGroup({
       id: new FormControl(''),
       fecha: new FormControl('', [Validators.required]),
@@ -52,9 +56,11 @@ export class CrearPagoComponent implements OnInit {
       }));
     });
 
-    if (this.pago) {
-      this.pago.fecha = new Date(this.pago.fecha);
+    if (this.pago?.id) {
+      this.pago.fecha = new Date(this.pago.fecha as any);
       this.pagoForm.patchValue(this.pago);
+    } else {
+      this.pagoForm.reset();
     }
   }
 
@@ -63,8 +69,11 @@ export class CrearPagoComponent implements OnInit {
   }
 
   guardar(pag: Pago) {
-    pag.fecha = new Date(pag.fecha);
-    if (this.pago && this.pago.id) {
+    pag.fecha = new Date(pag.fecha as any);
+
+    const esEdicion = !!this.pago && !!this.pago.id;
+
+    if (esEdicion) {
       this.cargaService.show();
       this.pagoService.update(pag).subscribe(() => {
         this.cargaService.hide();
@@ -78,13 +87,14 @@ export class CrearPagoComponent implements OnInit {
         this.cargaService.hide();
         console.error('Error al modificar el pago:', error);
         Swal.fire({
-              title: "Error",
-              text: 'Error al modificar el pago',
-              icon: "error"
-            });
+          title: "Error",
+          text: "Error al modificar el pago",
+          icon: "error"
+        });
       });
     } else {
       pag.id = 0;
+      this.cargaService.show();
       this.pagoService.save(pag).subscribe(() => {
         this.cargaService.hide();
         Swal.fire({
@@ -97,10 +107,10 @@ export class CrearPagoComponent implements OnInit {
         this.cargaService.hide();
         console.error('Error al crear el pago:', error);
         Swal.fire({
-              title: "Error",
-              text: 'Error al crear el pago',
-              icon: "error"
-            });
+          title: "Error",
+          text: "Error al crear el pago",
+          icon: "error"
+        });
       });
     }
   }
