@@ -11,7 +11,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { NgxsModule } from '@ngxs/store';
 import { AppComponent } from "../app.component";
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from "../app.routes";
 import { ClientesComponent } from "../cliente-components/clientes/clientes.component";
 import { TipoproductoComponent } from "../producto-components/tipoproducto/tipoproducto.component";
@@ -39,7 +39,8 @@ import { CrearPedidoComponent } from "../crear-pedido/crear-pedido.component";
 import { CalendarModule } from "primeng/calendar";
 import { LoginComponent } from "../login/login.component";
 import { CargaComponent } from '../carga/carga/carga.component.js';
-
+import { AuthInterceptor } from "../app.interceptor";
+import {MatDialogModule} from "@angular/material/dialog"
 
 @Injectable({
     providedIn: 'root'
@@ -78,6 +79,7 @@ import { CargaComponent } from '../carga/carga/carga.component.js';
         CommonModule,
         ReactiveFormsModule,
         MatTable,
+        MatDialogModule,
         MatTableModule,
         CommonModule,
         ButtonModule,
@@ -108,7 +110,14 @@ import { CargaComponent } from '../carga/carga/carga.component.js';
         FormsModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthInterceptor,
+          multi: true
+        }
+      ]
 
 })
 export class CustomComponentsModule { }

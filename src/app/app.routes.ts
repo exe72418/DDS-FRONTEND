@@ -16,25 +16,26 @@ import { CrearEntregaComponent } from './entrega-components/crear-entrega/crear-
 import { PagoComponent } from './pago-components/pago/pago.component';
 import { CrearPagoComponent } from './pago-components/crear-pago/crear-pago.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './guards.ts/authguard';
 import { ZonasComponent } from './zona/zonas/zonas.component';
 import { CrearZonasComponent } from './zona/crear-zonas/crear-zonas.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponentComponent },
-  { path: "clientes", component: ClientesComponent },
-  { path: "crearTipoProducto", component: TipoproductoComponent },
-  { path: "productos", component: ProductosComponent },
-  { path: "entregas", component: EntregaComponent },
-  { path: "crearEntrega", component: CrearEntregaComponent },
-  { path: "pago", component: PagoComponent },
-  { path: "crearPago", component: CrearPagoComponent },
-  { path: "repartidores", component: RepartidorComponent },
-  { path: "tiposDePago", component: TipopagoComponent },
-  { path: "zonas", component: ZonasComponent },
-  { path: "crearZonas", component: CrearZonasComponent },
-  { path: "crearTipoPago", component: CrearTipoPagoComponent },
-  { path: "carrito", component: CarritoComponent },
-  { path: "pedidos", component: PedidosComponent },
+  { path: "clientes", component: ClientesComponent, canActivate: [AuthGuard] },
+  { path: "crearTipoProducto", component: TipoproductoComponent, canActivate: [AuthGuard] },
+  { path: "productos", component: ProductosComponent , canActivate: [AuthGuard]},
+  { path: "entregas", component: EntregaComponent , canActivate: [AuthGuard]},
+  { path: "crearEntrega", component: CrearEntregaComponent , canActivate: [AuthGuard]},
+  { path: "pago", component: PagoComponent , canActivate: [AuthGuard]},
+  { path: "crearPago", component: CrearPagoComponent , canActivate: [AuthGuard]},
+  { path: "repartidores", component: RepartidorComponent , canActivate: [AuthGuard]},
+  { path: "tiposDePago", component: TipopagoComponent , canActivate: [AuthGuard]},
+  { path: "crearTipoPago", component: CrearTipoPagoComponent , canActivate: [AuthGuard]},
+  { path: "zonas", component: ZonasComponent , canActivate: [AuthGuard] },
+  { path: "crearZonas", component: CrearZonasComponent, canActivate: [AuthGuard] },
+  { path: "carrito", component: CarritoComponent , canActivate: [AuthGuard]},
+  { path: "pedidos", component: PedidosComponent , canActivate: [AuthGuard]},
   { path: "login", component: LoginComponent },
 ];
 @NgModule({

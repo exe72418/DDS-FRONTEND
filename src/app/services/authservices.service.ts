@@ -37,7 +37,7 @@ export class AuthservicesService {
 
   // Obtener el token JWT del localStorage
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return localStorage.getItem('auth_token');
   }
 
   // Verificar si el usuario está autenticado (si hay un token)
@@ -49,6 +49,7 @@ export class AuthservicesService {
 
   // Método para cerrar sesión (eliminar el token)
   logout(): void {
-    localStorage.removeItem('token');
+    console.log('cerrando sesion')
+    localStorage.removeItem('auth_token');
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { ProductosServiceService } from './services/productos-service.service';
 import { Producto } from './models/producto';
@@ -8,6 +8,8 @@ import { LineaDeProducto } from './models/lineaProducto';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { CargaService } from './services/carga.service';
+import { LoginComponent } from './login/login.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -17,6 +19,8 @@ import { CargaService } from './services/carga.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+
+  dialog = inject(MatDialog)
 
   productos!: Producto[];
   title = 'fast';
@@ -31,9 +35,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.navigate(['home'])
-
-
   }
+  abrirLogin() {
+    this.dialog.open(LoginComponent)
+  }
+    
 
   navigateCarrito() {
     // this.router.navigate(['/home'], {

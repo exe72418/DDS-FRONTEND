@@ -12,6 +12,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrearClientesComponent } from "../crear-clientes/crear-clientes.component";
 import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CargaService } from '../../services/carga.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-clientes',
@@ -23,10 +24,14 @@ export class ClientesComponent {
   clienteSelected!: Cliente;
   clienteForm!: FormGroup;
 
-  constructor(private clienteService: ClienteService, private cargaService: CargaService) { }
+  constructor(private clienteService: ClienteService, private cargaService: CargaService, private http: HttpClient) { }
   clientes!: Cliente[];
 
   ngOnInit(): void {
+
+      this.http.get('https://jsonplaceholder.typicode.com/todos/1')
+        .subscribe();
+    
     this.clienteForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       apellidoNombre: new FormControl('', [Validators.required]),
