@@ -1,16 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TipoproductoService } from '../../services/tipoproducto.service';
 import { TipoProducto } from '../../models/tipoProducto';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { DataSource } from '@angular/cdk/collections';
-import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
 import Swal from 'sweetalert2';
-import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CrearTipoProdComponent } from "../crear-tipo-prod/crear-tipo-prod.component";
-import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CargaService } from '../../services/carga.service';
 
 @Component({
@@ -18,28 +10,29 @@ import { CargaService } from '../../services/carga.service';
   templateUrl: './tipoproducto.component.html',
   styleUrl: './tipoproducto.component.css'
 })
-
-
-
 export class TipoproductoComponent implements OnInit {
 
-
   crearEditarMode: boolean = false;
-  tipoProdSelected!: TipoProducto;
+
+  // ✅ IMPORTANTE: ahora puede ser null para modo crear
+  tipoProdSelected: TipoProducto | null = null;
+
   tipoProdForm!: FormGroup;
-
-  constructor(private tipoproductoService: TipoproductoService, private cargaService: CargaService) { }
-
   tiposProducto: TipoProducto[] = [];
+
+  constructor(
+    private tipoproductoService: TipoproductoService,
+    private cargaService: CargaService
+  ) {}
 
   ngOnInit(): void {
     this.tipoProdForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
-    })
+    });
     this.search();
-
   }
+
   search() {
     this.cargaService.show();
     this.tipoproductoService.getAll().subscribe({
@@ -60,19 +53,23 @@ export class TipoproductoComponent implements OnInit {
     });
   }
 
+
   changeEditCreate() {
-    this.crearEditarMode = false
+    this.crearEditarMode = false;
+    this.tipoProdSelected = null; 
     this.search();
   }
 
+
   new() {
+    this.tipoProdSelected = null; 
     this.crearEditarMode = true;
   }
 
+  
   editProduct(tipoprod: TipoProducto) {
-    this.crearEditarMode = true;
     this.tipoProdSelected = tipoprod;
-
+    this.crearEditarMode = true;
   }
 
   deleteProduct(tipoprod: TipoProducto) {
@@ -95,17 +92,15 @@ export class TipoproductoComponent implements OnInit {
             'success'
           );
           this.search();
-        }, (error) => {
+        }, () => {
           this.cargaService.hide();
           Swal.fire({
-              title: "Error",
-              text: 'Error al dar de baja el tipo de producto',
-              icon: "error"
-            });
-
+            title: "Error",
+            text: 'Error al dar de baja el tipo de producto',
+            icon: "error"
+          });
         });
       }
     });
   }
-
 }

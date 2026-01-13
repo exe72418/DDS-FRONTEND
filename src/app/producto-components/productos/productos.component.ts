@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomComponentsModule } from '../../modules/custom-components.module';
-import { CrearProductosComponent } from "../crear-productos/crear-productos.component";
 import { ProductosServiceService } from '../../services/productos-service.service';
 import { Producto } from '../../models/producto';
 import Swal from 'sweetalert2';
@@ -17,19 +15,24 @@ export class ProductosComponent implements OnInit {
 
   tiposProducto: TipoProducto[] | undefined;
 
-
   precioMinimo: number | null = null;
   precioMaximo: number | null = null;
-  prodSelected!: Producto;
+
+
+  prodSelected: Producto | null = null;
+
   crearEditarMode: boolean = false;
   productos!: Producto[];
   nombreString!: string;
   tipoProductoSelect!: TipoProducto;
   precio!: number;
 
-  constructor(private _productoService: ProductosServiceService, private tipoproductoService: TipoproductoService, private cargaService: CargaService) {
+  constructor(
+    private _productoService: ProductosServiceService,
+    private tipoproductoService: TipoproductoService,
+    private cargaService: CargaService
+  ) {}
 
-  }
   ngOnInit(): void {
     this.cargaService.show();
     this.search();
@@ -43,30 +46,32 @@ export class ProductosComponent implements OnInit {
         return tipoProductoFormateado;
       });
       this.cargaService.hide();
-    })
+    });
   }
+
+  // 
   changeEditCreate() {
     this.crearEditarMode = false;
+    this.prodSelected = null; 
     this.search();
   }
 
   buscarPorPrecio() {
-
+  
   }
 
   buscar() {
-    this._productoService.getProductosByFilters(this.nombreString, this.tipoProductoSelect, this.precioMinimo, this.precioMaximo).subscribe((prodFiltrado) => {
-      this.productos = prodFiltrado
-    })
+    this._productoService
+      .getProductosByFilters(this.nombreString, this.tipoProductoSelect, this.precioMinimo, this.precioMaximo)
+      .subscribe((prodFiltrado) => {
+        this.productos = prodFiltrado;
+      });
   }
 
-
   search() {
-
     this._productoService.getAll().subscribe((productos) => {
       this.productos = productos;
-    })
-
+    });
   }
 
   deleteProduct(prod: Producto) {
@@ -81,31 +86,36 @@ export class ProductosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
-        this._productoService.delete(prod).subscribe((prod) => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "Producto Dado de baja",
-            text: "",
-            icon: "success"
-          });
-          this.search();
-        }, (error) => {
-          this.cargaService.hide();
-          Swal.fire({
+        this._productoService.delete(prod).subscribe(
+          () => {
+            this.cargaService.hide();
+            Swal.fire({
+              title: "Producto Dado de baja",
+              text: "",
+              icon: "success"
+            });
+            this.search();
+          },
+          () => {
+            this.cargaService.hide();
+            Swal.fire({
               title: "Error",
-              text: 'Error al dar de baja el producto',
+              text: "Error al dar de baja el producto",
               icon: "error"
             });
-        })
+          }
+        );
       }
     });
   }
+
   editProduct(prod: Producto) {
-    this.crearEditarMode = true;
-    this.prodSelected = prod;
-  }
-  new() {
-    this.crearEditarMode = true;
+    this.prodSelected = prod;     
+    this.crearEditarMode = true;  
   }
 
+  new() {
+    this.prodSelected = null;     
+    this.crearEditarMode = true;  
+  }
 }

@@ -1,27 +1,39 @@
 <div style="display: flex; justify-content: center;">
-    <p-card >
-        <div>
-            <form  style="display: flex;flex-direction: column; justify-content: center;" [formGroup]="prodForm" (ngSubmit)="guardar(prodForm.value)">
-                <h4 *ngIf="producto != null || producto != undefined ">Modificar</h4>
-                <h4 *ngIf="producto == null || producto == undefined ">Crear</h4>
-                <label for="descripcion">Descripcion</label>
-                <input  pInputText id="descripcion" type="text" formControlName="descripcion" [disabled]="true">
-                <label for="stock">Stock</label>
-                <input  pInputText id="stock" type="text" formControlName="stock" [disabled]="true">
-                <label for="precio">Precio</label>
-                <input  pInputText id="precio" type="text" formControlName="precio" [disabled]="true">
-                <label for="tipodeprod">Tipo de Producto</label>
-                <p-dropdown 
-                    id="tipodeprod"
-                    [options]="tiposProducto" 
-                    formControlName="tipoProducto"
-                    optionLabel="nombre" 
-                    placeholder="Tipo Producto" />
-                <button style="margin-top: 10px;" pButton type="submit" class="btn btn-primary">Guardar</button>
-                
-            </form>
-        </div>
-        
-    </p-card>
-    
-</div>  
+  <p-card>
+    <div>
+      <form
+        style="display: flex; flex-direction: column; justify-content: center;"
+        [formGroup]="prodForm"
+        (ngSubmit)="guardar(prodForm.value)"
+      >
+        <!-- ✅ Título correcto según modo -->
+        <h4 *ngIf="producto?.codigo; else crearTpl">Modificar</h4>
+        <ng-template #crearTpl>
+          <h4>Crear</h4>
+        </ng-template>
+
+        <label for="descripcion">Descripcion</label>
+        <input pInputText id="descripcion" type="text" formControlName="descripcion" />
+
+        <label for="stock">Stock</label>
+        <input pInputText id="stock" type="text" formControlName="stock" />
+
+        <label for="precio">Precio</label>
+        <input pInputText id="precio" type="text" formControlName="precio" />
+
+        <label for="tipodeprod">Tipo de Producto</label>
+        <p-dropdown
+          id="tipodeprod"
+          [options]="tiposProducto"
+          formControlName="tipoProducto"
+          optionLabel="nombre"
+          placeholder="Tipo Producto"
+        ></p-dropdown>
+
+        <button style="margin-top: 10px;" pButton type="submit" class="btn btn-primary">
+          Guardar
+        </button>
+      </form>
+    </div>
+  </p-card>
+</div>

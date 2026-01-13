@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Producto } from '../../models/producto';
-import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TipoproductoService } from '../../services/tipoproducto.service';
 import { TipoProducto } from '../../models/tipoProducto';
@@ -15,28 +14,37 @@ import { CargaService } from '../../services/carga.service';
 })
 export class CrearProductosComponent implements OnInit {
 
-  @Input() producto!: Producto;
+  @Input() producto: Producto | null = null;
+
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
 
-  prodForm!: FormGroup;
+  prodForm: FormGroup;
   tiposProducto: TipoProducto[] = [];
 
-  constructor(private tipoproductoService: TipoproductoService, private cargaService: CargaService, private _productoService: ProductosServiceService) {
+  constructor(
+    private tipoproductoService: TipoproductoService,
+    private cargaService: CargaService,
+    private _productoService: ProductosServiceService
+  ) {
     this.prodForm = new FormGroup({
       codigo: new FormControl(''),
       descripcion: new FormControl('', [Validators.required]),
       stock: new FormControl('', [Validators.required]),
       precio: new FormControl('', [Validators.required]),
       tipoProducto: new FormControl('', [Validators.required]),
-
-    })
+    });
   }
+
   ngOnInit(): void {
-    if (this.producto != null) {
+
+    if (this.producto?.codigo) {
       this._productoService.findOne(this.producto.codigo).subscribe((prodBackend) => {
-        this.prodForm.patchValue(prodBackend)
-      })
+        this.prodForm.patchValue(prodBackend);
+      });
+    } else {
+      this.prodForm.reset(); // ✅ modo crear
     }
+
     this.tipoproductoService.getTiposDeProductoActivos().subscribe((data: any) => {
       this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
         const tipoProductoFormateado: TipoProducto = {
@@ -46,15 +54,18 @@ export class CrearProductosComponent implements OnInit {
         };
         return tipoProductoFormateado;
       });
-    })
+    });
   }
 
-
   guardar(prod: Producto) {
-    if (this.producto != undefined || this.producto != null) {
-      this.cargaService.show();
-      if (this.producto.codigo) {
-        this._productoService.update(prod).subscribe(prodBackend => {
+    const esEdicion = !!this.producto && !!this.producto.codigo;
+
+    this.cargaService.show();
+
+    if (esEdicion) {
+
+      this._productoService.update(prod).subscribe({
+        next: () => {
           this.cargaService.hide();
           Swal.fire({
             title: "Guardado",
@@ -62,36 +73,41 @@ export class CrearProductosComponent implements OnInit {
             icon: "success"
           });
           this.editCrear.emit(false);
-
-        }, error => {
+        },
+        error: (error) => {
           this.cargaService.hide();
           console.error('Error al modificar el producto:', error);
           Swal.fire({
-              title: "Error",
-              text: 'Error al modificar el producto',
-              icon: "error"
-            });
-        })
-      }
-    } else {
-      prod.codigo = 0;
-      this._productoService.save(prod).subscribe(prodBackend => {
-        this.cargaService.hide();
-        Swal.fire({
-          title: "Guardado",
-          text: "Producto creado",
-          icon: "success"
-        });
-        this.editCrear.emit(false);
+            title: "Error",
+            text: "Error al modificar el producto",
+            icon: "error"
+          });
+        }
+      });
 
-      }, error => {
-        this.cargaService.hide();
-        console.error('Error al crear el producto:', error);
-        Swal.fire({
-              title: "Error",
-              text: 'Error al crear el producto',
-              icon: "error"
-            });
+    } else {
+
+      prod.codigo = 0;
+
+      this._productoService.save(prod).subscribe({
+        next: () => {
+          this.cargaService.hide();
+          Swal.fire({
+            title: "Guardado",
+            text: "Producto creado",
+            icon: "success"
+          });
+          this.editCrear.emit(false);
+        },
+        error: (error) => {
+          this.cargaService.hide();
+          console.error('Error al crear el producto:', error);
+          Swal.fire({
+            title: "Error",
+            text: "Error al crear el producto",
+            icon: "error"
+          });
+        }
       });
     }
   }
