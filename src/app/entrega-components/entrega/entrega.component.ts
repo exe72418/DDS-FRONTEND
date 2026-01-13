@@ -11,11 +11,11 @@ import { CargaService } from '../../services/carga.service';
 })
 export class EntregaComponent implements OnInit {
 
-  entSelected!: Entrega;
+  entSelected: Entrega | null = null;
   crearEditarModeEntrega: boolean = false;
   entregas: Entrega[] = [];
 
-  constructor(private _entregaService: EntregaService, private cargaService: CargaService) { }
+  constructor(private _entregaService: EntregaService, private cargaService: CargaService) {}
 
   ngOnInit(): void {
     this.search();
@@ -25,11 +25,9 @@ export class EntregaComponent implements OnInit {
     this.cargaService.show();
     this._entregaService.getAll().subscribe({
       next: (response: any) => {
-        // Manejo robusto de la respuesta
         if (response) {
           this.entregas = response.data || response.entregas || response;
         } else {
-          console.error('La respuesta del backend vino vacía (undefined)');
           this.entregas = [];
         }
         this.cargaService.hide();
@@ -43,6 +41,7 @@ export class EntregaComponent implements OnInit {
 
   changeEditCreate() {
     this.crearEditarModeEntrega = false;
+    this.entSelected = null;
     this.search();
   }
 
@@ -73,18 +72,18 @@ export class EntregaComponent implements OnInit {
             text: error.error.message || error.message,
             icon: "error"
           });
-        })
+        });
       }
     });
   }
 
   editEntrega(ent: Entrega) {
-    this.crearEditarModeEntrega = true;
     this.entSelected = ent;
-  }
-  
-  new() {
     this.crearEditarModeEntrega = true;
-    this.entSelected = null!;
+  }
+
+  new() {
+    this.entSelected = null;
+    this.crearEditarModeEntrega = true;
   }
 }

@@ -1,16 +1,8 @@
 import { Cliente } from '../../models/cliente';
 import { Component, OnInit } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { DataSource } from '@angular/cdk/collections';
-import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
 import Swal from 'sweetalert2';
-import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CrearClientesComponent } from "../crear-clientes/crear-clientes.component";
-import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CargaService } from '../../services/carga.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -19,19 +11,25 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.css'
 })
-export class ClientesComponent {
-  crearEditarMode: boolean = false;
-  clienteSelected!: Cliente;
-  clienteForm!: FormGroup;
+export class ClientesComponent implements OnInit {
 
-  constructor(private clienteService: ClienteService, private cargaService: CargaService, private http: HttpClient) { }
+  crearEditarMode: boolean = false;
+
+
+  clienteSelected: Cliente | null = null;
+
+  clienteForm!: FormGroup;
   clientes!: Cliente[];
 
-  ngOnInit(): void {
+  constructor(
+    private clienteService: ClienteService,
+    private cargaService: CargaService,
+    private http: HttpClient
+  ) { }
 
-      this.http.get('https://jsonplaceholder.typicode.com/todos/1')
-        .subscribe();
-    
+  ngOnInit(): void {
+    this.http.get('https://jsonplaceholder.typicode.com/todos/1').subscribe();
+
     this.clienteForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       apellidoNombre: new FormControl('', [Validators.required]),
@@ -41,11 +39,10 @@ export class ClientesComponent {
       cuit: new FormControl('', [Validators.required]),
       disponible: new FormControl('', [Validators.required]),
       zona: new FormControl('', [Validators.required])
-    })
+    });
+
     this.search();
-
   }
-
 
   search() {
     this.cargaService.show();
@@ -64,24 +61,25 @@ export class ClientesComponent {
         return clienteFormateado;
       });
       this.cargaService.hide();
-    })
+    });
   }
 
+
   changeEditCreate() {
-    this.crearEditarMode = false
+    this.crearEditarMode = false;
+    this.clienteSelected = null; 
     this.search();
   }
 
   new() {
+    this.clienteSelected = null; 
     this.crearEditarMode = true;
   }
 
   editCliente(cliente: Cliente) {
-    this.crearEditarMode = true;
     this.clienteSelected = cliente;
-
+    this.crearEditarMode = true;
   }
-
 
   deleteCliente(cliente: Cliente) {
     Swal.fire({

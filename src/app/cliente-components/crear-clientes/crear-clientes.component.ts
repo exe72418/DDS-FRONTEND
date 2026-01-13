@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../../models/cliente';
-import { Zona } from '../../models/zona'; // Importar Zona
-import { ZonaService } from '../../services/zona.service'; // Importar ZonaService
+import { Zona } from '../../models/zona';
+import { ZonaService } from '../../services/zona.service';
 import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
 
@@ -14,14 +14,15 @@ import { CargaService } from '../../services/carga.service';
 })
 export class CrearClientesComponent implements OnInit {
 
-  @Input() cliente!: Cliente;
+  @Input() cliente: Cliente | null = null;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
+
   clienteForm: FormGroup;
-  zonas: Zona[] = []; 
+  zonas: Zona[] = [];
 
   constructor(
-    private clienteService: ClienteService, 
-    private zonaService: ZonaService, 
+    private clienteService: ClienteService,
+    private zonaService: ZonaService,
     private cargaService: CargaService
   ) {
     this.clienteForm = new FormGroup({
@@ -37,72 +38,78 @@ export class CrearClientesComponent implements OnInit {
 
   ngOnInit() {
     this.zonaService.getZonasActivas().subscribe((response: any) => {
-        this.zonas = response.data || response;
+      this.zonas = response.data || response;
     });
 
-    if (this.cliente) {
-      this.clienteForm.patchValue(this.cliente)
+    if (this.cliente?.id) {
+      this.clienteForm.patchValue(this.cliente);
+    } else {
+      this.clienteForm.reset();
     }
   }
 
   back() {
-    this.editCrear.emit(false)
+    this.editCrear.emit(false);
   }
 
   guardar(cliente: Cliente) {
-    if (this.clienteForm.valid) {
-      this.cargaService.show();
-      
-      if (!this.cliente) {
-        cliente.id = 0;
-        this.clienteService.create(cliente).subscribe(response => {
-            this.cargaService.hide();
-            Swal.fire({
-              title: "Guardado",
-              text: 'Cliente creado',
-              icon: "success"
-            });
-            this.editCrear.emit(false);
-          }, error => {
-            this.cargaService.hide();
-            console.error('Error al crear el cliente:', error);
-            Swal.fire({
-              title: "Error",
-              text: 'Error al crear el cliente',
-              icon: "error"
-            });
-          });
-
-      } else {
-        cliente.id = this.cliente.id; 
-        
-        this.clienteService.update(cliente).subscribe(response => {
-            this.cargaService.hide();
-            Swal.fire({
-              title: "Guardado",
-              text: 'Cliente actualizado',
-              icon: "success"
-            });
-            this.editCrear.emit(false);
-          }, error => {
-            this.cargaService.hide();
-            console.error('Error al modificar el cliente:', error);
-            Swal.fire({
-              title: "Error",
-              text: 'Error al modificar el cliente',
-              icon: "error"
-            });
-          });
-      }
-
-    } else {
-      this.cargaService.hide();
+    if (!this.clienteForm.valid) {
       Swal.fire({
         title: "Error",
         text: 'Formulario inválido. Verifique los datos ingresados.',
         icon: "error"
       });
-      console.error('Formulario inválido');
+      return;
+    }
+
+    const esEdicion = !!this.cliente && !!this.cliente.id;
+
+    this.cargaService.show();
+
+    if (!esEdicion) {
+      cliente.id = 0;
+      this.clienteService.create(cliente).subscribe({
+        next: () => {
+          this.cargaService.hide();
+          Swal.fire({
+            title: "Guardado",
+            text: 'Cliente creado',
+            icon: "success"
+          });
+          this.editCrear.emit(false);
+        },
+        error: (error) => {
+          this.cargaService.hide();
+          console.error('Error al crear el cliente:', error);
+          Swal.fire({
+            title: "Error",
+            text: 'Error al crear el cliente',
+            icon: "error"
+          });
+        }
+      });
+    } else {
+      cliente.id = this.cliente!.id;
+      this.clienteService.update(cliente).subscribe({
+        next: () => {
+          this.cargaService.hide();
+          Swal.fire({
+            title: "Guardado",
+            text: 'Cliente actualizado',
+            icon: "success"
+          });
+          this.editCrear.emit(false);
+        },
+        error: (error) => {
+          this.cargaService.hide();
+          console.error('Error al modificar el cliente:', error);
+          Swal.fire({
+            title: "Error",
+            text: 'Error al modificar el cliente',
+            icon: "error"
+          });
+        }
+      });
     }
   }
 }

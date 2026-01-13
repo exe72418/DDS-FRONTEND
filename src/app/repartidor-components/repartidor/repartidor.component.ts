@@ -1,16 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RepartidorService } from '../../services/repartidor.service';
 import { Repartidor } from '../../models/repartidor';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { DataSource } from '@angular/cdk/collections';
-import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
 import Swal from 'sweetalert2';
-import { CardModule } from 'primeng/card';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CrearRepartidoresComponent } from "../crear-repartidores/crear-repartidores.component";
-import { CustomComponentsModule } from '../../modules/custom-components.module';
 import { CargaService } from '../../services/carga.service';
 
 @Component({
@@ -21,12 +13,15 @@ import { CargaService } from '../../services/carga.service';
 export class RepartidorComponent implements OnInit {
 
   crearEditarMode: boolean = false;
-  repartidorSelected!: Repartidor;
+  repartidorSelected: Repartidor | null = null;
   repartidorForm!: FormGroup;
 
-  constructor(private repartidorService: RepartidorService, private cargaService: CargaService) { }
-
   repartidores: Repartidor[] = [];
+
+  constructor(
+    private repartidorService: RepartidorService,
+    private cargaService: CargaService
+  ) {}
 
   ngOnInit(): void {
     this.repartidorForm = new FormGroup({
@@ -35,10 +30,11 @@ export class RepartidorComponent implements OnInit {
       apellidoNombre: new FormControl('', [Validators.required]),
       vehiculo: new FormControl('', [Validators.required]),
       zona: new FormControl('', [Validators.required]),
-    })
-    this.search();
+    });
 
+    this.search();
   }
+
   search() {
     this.cargaService.show();
     this.repartidorService.getAll().subscribe((data: any) => {
@@ -54,22 +50,23 @@ export class RepartidorComponent implements OnInit {
         return repartidorFormateado;
       });
       this.cargaService.hide();
-    })
+    });
   }
 
   changeEditCreate() {
-    this.crearEditarMode = false
+    this.crearEditarMode = false;
+    this.repartidorSelected = null;
     this.search();
   }
 
   new() {
+    this.repartidorSelected = null;
     this.crearEditarMode = true;
   }
 
   editRepartidor(repartidor: Repartidor) {
-    this.crearEditarMode = true;
     this.repartidorSelected = repartidor;
-
+    this.crearEditarMode = true;
   }
 
   deleteRepartidor(repartidor: Repartidor) {
@@ -99,9 +96,8 @@ export class RepartidorComponent implements OnInit {
             text: error.message,
             icon: "error"
           });
-        })
+        });
       }
     });
   }
-
 }
