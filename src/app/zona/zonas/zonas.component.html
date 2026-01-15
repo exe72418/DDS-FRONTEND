@@ -19,9 +19,9 @@
         <td>{{ zona.disponible }}</td>
         <td>
           <div style="margin-right: 10px; display: flex; justify-content: space-around;">
-            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
+            <p-button [disabled]="!zona.disponible" icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
               (onClick)="editZona(zona)"></p-button>
-            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+            <p-button [disabled]="!zona.disponible" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
               (onClick)="deleteZona(zona)"></p-button>
           </div>
         </td>
