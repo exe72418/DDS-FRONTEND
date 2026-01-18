@@ -3,7 +3,6 @@ import { ZonaService } from '../../services/zona.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Zona } from '../../models/zona';
 import Swal from 'sweetalert2';
-// Asegurate que CargaService esté importado correctamente
 import { CargaService } from '../../services/carga.service';
 
 @Component({
@@ -40,8 +39,7 @@ export class CrearZonasComponent implements OnInit {
       this.cargaService.show();
       
       if (!this.zona) {
-        // CREAR
-        zona.id = 0; // O undefined, dependiendo de tu backend, pero 0 suele funcionar si se ignora en el create
+        zona.id = 0; 
 
         this.zonaService.create(zona)
           .subscribe(response => {
@@ -64,8 +62,6 @@ export class CrearZonasComponent implements OnInit {
           });
 
       } else {
-        // ACTUALIZAR
-        // Aseguramos que el ID venga del objeto original si el form no lo tiene
         zona.id = this.zona.id; 
 
         this.zonaService.update(zona)

@@ -12,12 +12,10 @@ export class ZonaService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<Zona[]> {
-    // Apunta a /api/v2/zonas/
     return this.httpClient.get<Zona[]>(environment.serverUrl + 'zonas/');
   }
 
   getZonasActivas(): Observable<Zona[]> {
-    // Apunta a /api/v2/zonas/activos/
     return this.httpClient.get<Zona[]>(environment.serverUrl + 'zonas/activos/');
   }
 

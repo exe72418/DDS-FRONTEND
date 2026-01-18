@@ -7,6 +7,7 @@ import { Pedido } from '../../models/pedido';
 import { TipopagoService } from '../../services/tipopago.service';
 import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-crear-pago',
@@ -19,7 +20,7 @@ export class CrearPagoComponent implements OnInit {
 
   pagoForm: FormGroup;
   tiposPago: TipoPago[] = [];
-  pedidosSinPago: Pedido[] = [];
+  pedidosDisponibles: Pedido[] = [];
 
   constructor(
     private tipopagoService: TipopagoService,
@@ -35,33 +36,60 @@ export class CrearPagoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tipopagoService.getTiposDePagoActivos().subscribe((data: any) => {
-      this.tiposPago = data['data'].map((tipoPago: TipoPago) => ({
-        id: tipoPago.id,
-        nombre: tipoPago.nombre,
-        descripcion: tipoPago.descripcion,
-        disponible: tipoPago.disponible
-      }));
+    this.cargaService.show();
+
+    forkJoin({
+        tipos: this.tipopagoService.getTiposDePagoActivos(),
+        pedidos: this.pagoService.getPedidosSinPago()
+    }).subscribe({
+        next: (res: any) => {
+            this.tiposPago = res.tipos.data || res.tipos;
+
+            const listaPedidosLibres = res.pedidos.data || res.pedidos;
+            const mapaPedidos = new Map<number, Pedido>();
+
+            listaPedidosLibres.forEach((p: Pedido) => {
+                if(p.nroPedido) mapaPedidos.set(p.nroPedido!, p);
+            });
+
+            if (this.pago && this.pago.pedido) {
+                if(this.pago.pedido.nroPedido) {
+                    mapaPedidos.set(this.pago.pedido.nroPedido!, this.pago.pedido);
+                }
+            }
+
+            this.pedidosDisponibles = Array.from(mapaPedidos.values());
+
+            if (this.pago && this.pago.id) {
+                this.configurarEdicion();
+            } else {
+                this.pagoForm.reset();
+                this.pagoForm.get('fecha')?.setValue(new Date()); 
+                this.cargaService.hide();
+            }
+        },
+        error: (err) => {
+            console.error(err);
+            this.cargaService.hide();
+        }
+    });
+  }
+
+  configurarEdicion() {
+    const fechaPago = new Date(this.pago!.fecha as any);
+    
+    const tipoSeleccionado = this.tiposPago.find(t => t.id === this.pago!.tipoPago.id!);
+    
+    const pedidoSeleccionado = this.pedidosDisponibles.find(p => p.nroPedido === this.pago!.pedido!.nroPedido!);
+
+    this.pagoForm.patchValue({
+        id: this.pago!.id,
+        fecha: fechaPago,
+        tipoPago: tipoSeleccionado,
+        pedido: pedidoSeleccionado
     });
 
-    this.pagoService.getPedidosSinPago().subscribe((data: any) => {
-      this.pedidosSinPago = data['data'].map((pedido: Pedido) => ({
-        nroPedido: pedido.nroPedido,
-        fecha: new Date(pedido.fecha),
-        total: pedido.total,
-        cliente: pedido.cliente,
-        entrega: pedido.entrega,
-        pago: pedido.pago,
-        lineas: pedido.lineas
-      }));
-    });
-
-    if (this.pago?.id) {
-      this.pago.fecha = new Date(this.pago.fecha as any);
-      this.pagoForm.patchValue(this.pago);
-    } else {
-      this.pagoForm.reset();
-    }
+    this.cargaService.hide();
   }
 
   back() {
@@ -69,48 +97,42 @@ export class CrearPagoComponent implements OnInit {
   }
 
   guardar(pag: Pago) {
-    pag.fecha = new Date(pag.fecha as any);
+    if (this.pagoForm.invalid) {
+        Swal.fire({ title: "Error", text: "Formulario inválido", icon: "warning" });
+        return;
+    }
+
+    if (pag.fecha) {
+        pag.fecha = new Date(pag.fecha);
+    }
 
     const esEdicion = !!this.pago && !!this.pago.id;
+    this.cargaService.show();
 
     if (esEdicion) {
-      this.cargaService.show();
-      this.pagoService.update(pag).subscribe(() => {
-        this.cargaService.hide();
-        Swal.fire({
-          title: "Guardado",
-          text: "Pago actualizado",
-          icon: "success"
-        });
-        this.editCrear.emit(false);
-      }, error => {
-        this.cargaService.hide();
-        console.error('Error al modificar el pago:', error);
-        Swal.fire({
-          title: "Error",
-          text: "Error al modificar el pago",
-          icon: "error"
-        });
+      this.pagoService.update(pag).subscribe({
+        next: () => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Guardado", text: "Pago actualizado", icon: "success" });
+            this.editCrear.emit(false);
+        },
+        error: (error) => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Error", text: error.error.message || "Error al modificar", icon: "error" });
+        }
       });
     } else {
-      pag.id = 0;
-      this.cargaService.show();
-      this.pagoService.save(pag).subscribe(() => {
-        this.cargaService.hide();
-        Swal.fire({
-          title: "Guardado",
-          text: "Pago creado",
-          icon: "success"
-        });
-        this.editCrear.emit(false);
-      }, error => {
-        this.cargaService.hide();
-        console.error('Error al crear el pago:', error);
-        Swal.fire({
-          title: "Error",
-          text: "Error al crear el pago",
-          icon: "error"
-        });
+      pag.id = 0; 
+      this.pagoService.save(pag).subscribe({
+        next: () => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Guardado", text: "Pago creado", icon: "success" });
+            this.editCrear.emit(false);
+        },
+        error: (error) => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Error", text: error.error.message || "Error al crear", icon: "error" });
+        }
       });
     }
   }

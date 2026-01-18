@@ -27,15 +27,17 @@
           formControlName="tipoPago"
           optionLabel="nombre"
           placeholder="TipoPago"
+          dataKey="id"
         ></p-dropdown>
 
         <label for="pedido">Pedido</label>
         <p-dropdown
           id="pedido"
-          [options]="pedidosSinPago"
+          [options]="pedidosDisponibles"
           formControlName="pedido"
           optionLabel="nroPedido"
           placeholder="Pedido"
+          dataKey="nroPedido"
         ></p-dropdown>
 
         <div style="display: flex; justify-content: center;">

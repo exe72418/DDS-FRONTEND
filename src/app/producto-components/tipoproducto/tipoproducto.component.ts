@@ -14,7 +14,6 @@ export class TipoproductoComponent implements OnInit {
 
   crearEditarMode: boolean = false;
 
-  // ✅ IMPORTANTE: ahora puede ser null para modo crear
   tipoProdSelected: TipoProducto | null = null;
 
   tipoProdForm!: FormGroup;

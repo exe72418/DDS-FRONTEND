@@ -22,12 +22,10 @@ export class CrearEntregaComponent implements OnInit {
 
   entregaForm!: FormGroup;
 
-  // Listas "Maestras"
   zonas: Zona[] = [];
   todosLosRepartidores: Repartidor[] = [];
   todosLosPedidos: Pedido[] = [];
 
-  // Listas "Visibles" (Filtradas)
   repartidoresFiltrados: Repartidor[] = [];
   pedidosFiltrados: Pedido[] = [];
 
@@ -55,58 +53,43 @@ export class CrearEntregaComponent implements OnInit {
       pedidos: this._entregaService.getPedidosPagosSinEntrega()
     }).subscribe({
       next: (result: any) => {
-        // 1. Zonas
         this.zonas = result.zonas.data || result.zonas;
 
-        // 2. Repartidores
         this.todosLosRepartidores = result.repartidores.data || result.repartidores;
 
-        // 3. Pedidos (Unificación robusta)
         const pedidosSinEntrega = result.pedidos.data || result.pedidos;
 
-        // Mapa para evitar duplicados por ID
         const mapaPedidos = new Map<number, Pedido>();
 
-        // A. Agregamos los pedidos libres (sin entrega)
         pedidosSinEntrega.forEach((p: Pedido) => {
           if (p.nroPedido) mapaPedidos.set(p.nroPedido, p);
         });
 
-        // B. Si estamos editando, agregamos los pedidos de ESTA entrega
         if (this.entrega && this.entrega.pedidos) {
           this.entrega.pedidos.forEach((p: Pedido) => {
             if (p.nroPedido) {
 
-              // --- CORRECCIÓN AQUÍ: Validar formato de cliente ---
-
-              // Caso 1: Cliente llega como ID numérico (causa del error)
               if (typeof p.cliente === 'number') {
                 const clienteId = p.cliente;
-                // Lo convertimos a objeto forzosamente
                 p.cliente = {
                   id: clienteId,
                   zona: this.entrega!.zona
                 } as any;
               }
-              // Caso 2: Cliente no existe
               else if (!p.cliente) {
                 p.cliente = { zona: this.entrega!.zona } as any;
               }
-              // Caso 3: Cliente es objeto pero le falta la zona
               else if (typeof p.cliente === 'object' && !(p.cliente as any).zona) {
                 (p.cliente as any).zona = this.entrega!.zona;
               }
 
-              // Ahora es seguro agregarlo al mapa
               mapaPedidos.set(p.nroPedido, p);
             }
           });
         }
 
-        // Convertimos el mapa a array final
         this.todosLosPedidos = Array.from(mapaPedidos.values());
 
-        // 4. Configurar Edición si corresponde
         if (this.entrega) {
           this.configurarModoEdicion();
         } else {
@@ -126,22 +109,16 @@ export class CrearEntregaComponent implements OnInit {
   configurarModoEdicion() {
     this.entrega!.fecha = new Date(this.entrega!.fecha as any);
 
-    // 1. Zona
     if (this.entrega!.zona) {
-      // Buscamos la zona en la lista cargada para tener la misma referencia
       const zonaSeleccionada = this.zonas.find(z => z.id === this.entrega!.zona.id!);
 
-      // Filtramos sin borrar selecciones (false)
       this.filtrarPorZona(zonaSeleccionada || this.entrega!.zona, false);
 
       this.entregaForm.get('zona')?.setValue(zonaSeleccionada || this.entrega!.zona);
     }
 
-    // 2. Repartidor
     const repartidorEnLista = this.repartidoresFiltrados.find(r => r.id === this.entrega!.repartidor.id!);
 
-    // 3. Pedidos
-    // Buscamos los objetos equivalentes en la lista filtrada para que el multiselect los reconozca
     const pedidosSeleccionados: Pedido[] = [];
 
     if (this.entrega!.pedidos && this.entrega!.pedidos.length > 0) {
@@ -153,7 +130,6 @@ export class CrearEntregaComponent implements OnInit {
       });
     }
 
-    // 4. Patch completo
     this.entregaForm.patchValue({
       id: this.entrega!.id,
       fecha: this.entrega!.fecha,
@@ -172,13 +148,10 @@ export class CrearEntregaComponent implements OnInit {
       return;
     }
 
-    // Filtrar Repartidores
     this.repartidoresFiltrados = this.todosLosRepartidores.filter(
       rep => rep.zona && rep.zona.id === zona.id
     );
 
-    // Filtrar Pedidos
-    // Nota: Aquí ya es seguro acceder a p.cliente.zona gracias a la corrección del ngOnInit
     this.pedidosFiltrados = this.todosLosPedidos.filter(
       ped => ped.cliente && ped.cliente.zona && ped.cliente.zona.id === zona.id
     );
@@ -200,7 +173,6 @@ export class CrearEntregaComponent implements OnInit {
       this.cargaService.show();
 
       if (this.entrega && this.entrega.id) {
-        // UPDATE
         ent.id = this.entrega.id;
         this._entregaService.update(ent).subscribe(() => {
           this.cargaService.hide();
@@ -211,7 +183,6 @@ export class CrearEntregaComponent implements OnInit {
           Swal.fire({ title: "Error", text: error.error.message || 'Error al modificar', icon: "error" });
         });
       } else {
-        // CREATE
         ent.id = 0;
         this._entregaService.save(ent).subscribe(() => {
           this.cargaService.hide();

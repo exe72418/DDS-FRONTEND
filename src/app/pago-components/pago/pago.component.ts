@@ -13,7 +13,7 @@ export class PagoComponent implements OnInit {
 
   pagoSelected: Pago | null = null;
   crearEditarModePago: boolean = false;
-  pagos!: Pago[];
+  pagos: Pago[] = [];
 
   constructor(private _pagoService: PagoService, private cargaService: CargaService) {}
 
@@ -23,8 +23,8 @@ export class PagoComponent implements OnInit {
   }
 
   search() {
-    this._pagoService.getAll().subscribe((pagos) => {
-      this.pagos = pagos;
+    this._pagoService.getAll().subscribe((response: any) => {
+      this.pagos = response.data || response.pagos || response;
       this.cargaService.hide();
     });
   }

@@ -32,7 +32,6 @@ export class ProductosServiceService {
   ): Observable<Producto[]> {
     let params = new HttpParams();
 
-    // Solo añadir los parámetros que están presentes
     if (descripcion) {
       params = params.set('descripcion', descripcion);
     }
