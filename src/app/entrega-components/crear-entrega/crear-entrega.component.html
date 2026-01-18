@@ -38,14 +38,14 @@
           [options]="repartidoresFiltrados"
           formControlName="repartidor"
           optionLabel="apellidoNombre"
-          placeholder="Repartidor (Filtrado por Zona)"
+          placeholder="Repartidor"
           [showClear]="true"
           [disabled]="!entregaForm.get('zona')?.value"
           emptyMessage="No hay repartidores en esta zona"
           dataKey="id"
         ></p-dropdown>
 
-        <label for="pedidos">Pedidos (Pagos y de la Zona)</label>
+        <label for="pedidos">Pedidos</label>
         <p-multiSelect
           id="pedidos"
           [options]="pedidosFiltrados"
