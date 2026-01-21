@@ -17,27 +17,26 @@ import { CargaService } from '../services/carga.service';
 })
 export class CrearPedidoComponent implements OnInit {
 
-
-
   @Input() pedido!: Pedido;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
 
-  clientes!: Cliente[];
+  clientes: Cliente[] = [];
   clienteSelected!: Cliente;
   fechaSelected!: Date;
   pagoSelected!: boolean;
   entregaSelected!: boolean;
   pedidoForm!: FormGroup;
-  pagos!: Pago[];
+  pagos: Pago[] = [];
   lineasSelected: LineaDeProducto[] = [];
 
-  constructor(private _clienteService: ClienteService, private cargaService: CargaService, private _pagoService: PagoService,
+  constructor(
+    private _clienteService: ClienteService,
+    private cargaService: CargaService,
+    private _pagoService: PagoService,
     private _pedidoService: PedidoServiceService
-  ) {
+  ) {}
 
-  }
   ngOnInit(): void {
-
     this.pedidoForm = new FormGroup({
       nroPedido: new FormControl(''),
       cliente: new FormControl('', [Validators.required]),
@@ -46,43 +45,44 @@ export class CrearPedidoComponent implements OnInit {
       total: new FormControl(''),
       entrega: new FormControl(''),
       pago: new FormControl('')
+    });
 
-    })
     if (this.pedido) {
-      this.pedidoForm.patchValue(this.pedido)
+      this.pedidoForm.patchValue(this.pedido);
       this.fechaSelected = this.pedido.fecha;
       this.lineasSelected = this.pedido.lineas;
     }
 
-    this._clienteService.getAll().subscribe(data => {
-      this.clientes = data['data'].map((cliente: Cliente) => {
-        const clienteFormateado: Cliente = {
-          id: cliente.id,
-          apellidoNombre: cliente.apellidoNombre,
-          telefono: cliente.telefono,
-          email: cliente.email,
-          domicilio: cliente.domicilio,
-          cuit: cliente.cuit,
-          disponible: cliente.disponible,
-          zona: cliente.zona
-        };
-        return clienteFormateado;
-      });
-    });
+    
+      this._clienteService.getClientesActivos().subscribe((resp: any) => {
+      const list = (resp.data || resp).filter((c: Cliente) => c.disponible === true);
+
+  this.clientes = list.map((cliente: Cliente) => ({
+    id: cliente.id,
+    apellidoNombre: cliente.apellidoNombre,
+    telefono: cliente.telefono,
+    email: cliente.email,
+    domicilio: cliente.domicilio,
+    cuit: cliente.cuit,
+    disponible: cliente.disponible,
+    zona: cliente.zona
+  }));
+});
+
+
     this._pagoService.getAll().subscribe((pagos) => {
-      this.pagos = pagos
-    })
+      this.pagos = pagos;
+    });
   }
 
   back() {
-    this.editCrear.emit(false)
+    this.editCrear.emit(false);
   }
 
   savePedido() {
-
     this.pedidoForm.controls['fecha'].setValue(this.fechaSelected);
-    let totalValue = this.pedidoForm.value.total;
 
+    let totalValue = this.pedidoForm.value.total;
     let totalInteger = Number(totalValue);
 
     if (!isNaN(totalInteger)) {
@@ -91,46 +91,40 @@ export class CrearPedidoComponent implements OnInit {
 
     if (this.pedido != null) {
       this.cargaService.show();
-      this._pedidoService.editar(this.pedidoForm.value).subscribe((ped) => {
+      this._pedidoService.editar(this.pedidoForm.value).subscribe(() => {
         this.cargaService.hide();
         Swal.fire({
           title: "Pedido guardado",
           text: "",
           icon: "success"
         });
-        this.editCrear.emit()
-      },
-        (err: any) => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "No se pudo guardar el pedido",
-            text: "",
-            icon: "error"
-          });
+        this.editCrear.emit();
+      }, () => {
+        this.cargaService.hide();
+        Swal.fire({
+          title: "No se pudo guardar el pedido",
+          text: "",
+          icon: "error"
         });
-    }
-    else {
-      this._pedidoService.guardar(this.pedidoForm.value).subscribe((ped) => {
+      });
+    } else {
+      this.cargaService.show();
+      this._pedidoService.guardar(this.pedidoForm.value).subscribe(() => {
         this.cargaService.hide();
         Swal.fire({
           title: "Pedido guardado",
           text: "",
           icon: "success"
         });
-        this.editCrear.emit()
-      },
-        (err: any) => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "No se pudo guardar el pedido",
-            text: "",
-            icon: "error"
-          });
+        this.editCrear.emit();
+      }, () => {
+        this.cargaService.hide();
+        Swal.fire({
+          title: "No se pudo guardar el pedido",
+          text: "",
+          icon: "error"
         });
+      });
     }
-
-
-
   }
-
 }

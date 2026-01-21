@@ -1,27 +1,59 @@
 <form [formGroup]="pedidoForm">
-    <div style="display: flex; justify-content: center;">
-        <p-card header="Pedido">
-            <label for="nroPedido">Nro Pedido</label>
-            <div id="nroPedido" *ngIf="pedido">
-                {{pedido.nroPedido}}
-            </div>
-            <p-dropdown id="cliente" [options]="clientes" formControlName="cliente" optionLabel="apellidoNombre"
-                placeholder="Clientes" />
-            <div class="card flex justify-content-center">
-                <p-calendar placeholder="Fecha" id="fecha" [(ngModel)]="fechaSelected"
-                    [ngModelOptions]="{standalone: true}" dateFormat="dd/mm/yy" showIcon="true" />
-            </div>
-            <label for="lineas" *ngIf="pedido">Lineas de producto</label>
-            <p-multiSelect id="lineas" *ngIf="pedido.lineas != null" id="pedidos" [options]="pedido.lineas"
-                formControlName="lineas" optionLabel="id" placeholder="Seleccione las lineas de los productos"
-                [disabled]="false" display="chip"></p-multiSelect>
-            <label for="total" *ngIf="!pedido">Total</label>
-            <input id="total" pInputText formControlName="total" *ngIf="!pedido" type="text">
-        </p-card>
-    </div>
+  <div style="display: flex; justify-content: center;">
+    <p-card header="Pedido">
 
+      <h4 *ngIf="pedido?.nroPedido; else crearTpl">Modificar</h4>
+      <ng-template #crearTpl>
+        <h4>Crear</h4>
+      </ng-template>
+
+      <label for="nroPedido">Nro Pedido</label>
+      <div id="nroPedido" *ngIf="pedido?.nroPedido">
+        {{ pedido.nroPedido }}
+      </div>
+
+      <label for="cliente">Cliente</label>
+      <p-dropdown
+        id="cliente"
+        [options]="clientes"
+        formControlName="cliente"
+        optionLabel="apellidoNombre"
+        placeholder="Clientes"
+        [showClear]="true"
+        dataKey="id"
+      ></p-dropdown>
+
+      <div class="card flex justify-content-center">
+        <p-calendar
+          placeholder="Fecha"
+          id="fecha"
+          [(ngModel)]="fechaSelected"
+          [ngModelOptions]="{ standalone: true }"
+          dateFormat="dd/mm/yy"
+          showIcon="true"
+        ></p-calendar>
+      </div>
+
+      <label for="lineas" *ngIf="pedido?.lineas">Lineas de producto</label>
+      <p-multiSelect
+        id="lineas"
+        *ngIf="pedido?.lineas"
+        [options]="pedido.lineas"
+        formControlName="lineas"
+        optionLabel="id"
+        placeholder="Seleccione las lineas de los productos"
+        [disabled]="false"
+        display="chip"
+      ></p-multiSelect>
+
+      <label for="total" *ngIf="!pedido?.nroPedido">Total</label>
+      <input id="total" pInputText formControlName="total" *ngIf="!pedido?.nroPedido" type="text">
+
+    </p-card>
+  </div>
 </form>
+
 <div style="display: flex; justify-content: center;">
-    <button pButton style="margin: 10px;" (click)="back()">Volver</button>
-    <button pButton style="margin: 10px;" (click)="savePedido()">Guardar</button>
+  <button pButton type="button" style="margin: 10px;" (click)="back()">Volver</button>
+  <button pButton type="button" style="margin: 10px;" (click)="savePedido()">Guardar</button>
 </div>

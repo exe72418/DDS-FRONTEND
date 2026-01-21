@@ -20,7 +20,7 @@ export class PedidosComponent implements OnInit {
   clienteSelect!: Cliente;
   fechaInicio!: Date;
   fechaFin!: Date;
-  clientes!: Cliente[];
+  clientes: Cliente[] = [];
 
   constructor(
     private _pedidoService: PedidoServiceService,
@@ -31,8 +31,9 @@ export class PedidosComponent implements OnInit {
 
   ngOnInit(): void {
     this.search();
-    this._clienteService.getAll().subscribe(data => {
-      this.clientes = data['data'];
+    this._clienteService.getClientesActivos().subscribe((resp: any) => {
+      const list: Cliente[] = resp.data || resp;
+      this.clientes = list;
     });
   }
 
@@ -40,8 +41,10 @@ export class PedidosComponent implements OnInit {
     this.cargaService.show();
     this._pedidoService.getAll().subscribe((pedidos) => {
       this.pedidos = pedidos;
+      this.cargaService.hide();
+    }, () => {
+      this.cargaService.hide();
     });
-    this.cargaService.hide();
   }
 
   buscar() {
@@ -149,7 +152,6 @@ export class PedidosComponent implements OnInit {
         </tr>
       `;
     });
-
 
     Swal.fire({
       title: 'Detalle de líneas de productos',
