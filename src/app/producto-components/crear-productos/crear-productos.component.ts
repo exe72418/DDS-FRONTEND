@@ -42,7 +42,7 @@ export class CrearProductosComponent implements OnInit {
         this.prodForm.patchValue(prodBackend);
       });
     } else {
-      this.prodForm.reset(); // ✅ modo crear
+      this.prodForm.reset(); 
     }
 
     this.tipoproductoService.getTiposDeProductoActivos().subscribe((data: any) => {

@@ -6,7 +6,6 @@
         [formGroup]="prodForm"
         (ngSubmit)="guardar(prodForm.value)"
       >
-        <!-- ✅ Título correcto según modo -->
         <h4 *ngIf="producto?.codigo; else crearTpl">Modificar</h4>
         <ng-template #crearTpl>
           <h4>Crear</h4>

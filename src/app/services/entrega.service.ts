@@ -13,13 +13,11 @@ export class EntregaService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<Entrega[]> {
-    // CAMBIO AQUÍ: usamos <any> para que TS no se queje y mapeamos 'response.data'
     return this.httpClient.get<any>(environment.serverUrl + 'entregas')
       .pipe(
-        map((response: any) => response.data) // <--- ESTO ES LO QUE FALTABA
+        map((response: any) => response.data) 
       );
   }
-  // ARMAR EL UPDATE CON UN ID
   update(entrega: Entrega): Observable<Entrega> {
     return this.httpClient.put<Entrega>(environment.serverUrl + 'entregas/' + entrega.id, entrega)
   }

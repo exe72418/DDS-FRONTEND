@@ -6,7 +6,6 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-// Asegúrate de importar el componente CrearZonasComponent
 import { CrearZonasComponent } from "../crear-zonas/crear-zonas.component"; 
 import { CargaService } from '../../services/carga.service';
 
@@ -17,14 +16,13 @@ import { CargaService } from '../../services/carga.service';
 })
 export class ZonasComponent implements OnInit {
   crearEditarMode: boolean = false;
-  zonaSelected!: Zona; // Variable para pasar al hijo
-  zonaForm!: FormGroup; // Se mantiene por consistencia con tu código original
+  zonaSelected!: Zona; 
+  zonaForm!: FormGroup;
   zonas: Zona[] = [];
 
   constructor(private zonaService: ZonaService, private cargaService: CargaService) { }
 
   ngOnInit(): void {
-    // Inicialización similar a tu ejemplo
     this.zonaForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
@@ -35,7 +33,6 @@ export class ZonasComponent implements OnInit {
   search() {
     this.cargaService.show();
     this.zonaService.getAll().subscribe((data: any) => {
-      // Mapeamos la respuesta asegurándonos de que coincida con la interfaz Zona
       this.zonas = data['data'].map((zona: Zona) => {
         const zonaFormateada: Zona = {
           id: zona.id,
@@ -54,12 +51,11 @@ export class ZonasComponent implements OnInit {
 
   changeEditCreate() {
     this.crearEditarMode = false;
-    this.search(); // Recargamos la lista al volver
+    this.search(); 
   }
 
   new() {
     this.crearEditarMode = true;
-    // Nota: Es recomendable limpiar zonaSelected aquí para evitar que el formulario hijo aparezca con datos viejos
     this.zonaSelected = null!; 
   }
 
@@ -81,7 +77,6 @@ export class ZonasComponent implements OnInit {
       if (result.isConfirmed) {
         this.cargaService.show();
         
-        // Asumimos que zona.id nunca es undefined aquí
         this.zonaService.delete(zona.id!).subscribe(() => {
           this.cargaService.hide();
           Swal.fire(

@@ -13,9 +13,10 @@ export class PagoService {
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<Pago[]> {
-    return this.httpClient.get<Pago[]>(environment.serverUrl + 'pago')
+    return this.httpClient.get<any>(environment.serverUrl + 'pago')
       .pipe(
-        map((response: any) => response.pagos))
+        map((response: any) => response.data)
+      );
   }
 
   update(pago: Pago): Observable<Pago> {
@@ -31,7 +32,9 @@ export class PagoService {
   }
 
   getPedidosSinPago(): Observable<Pedido[]> {
-    return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/pedidos/impagos/');
+    return this.httpClient.get<any>(environment.serverUrl + 'pedido/pedidos/impagos/')
+      .pipe(
+        map((response: any) => response.data || response)
+      );
   }
-
 }

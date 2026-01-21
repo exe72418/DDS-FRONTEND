@@ -6,7 +6,6 @@
                 {{ product.descripcion }}
             </p>
 
-            <!-- Mostrar la cantidad y los botones de control -->
             <div *ngFor="let linea of pedido.lineas">
                 <div *ngIf="product.codigo == linea.producto.codigo">
                     <p>Cantidad: {{ linea.cantidad }}</p>
