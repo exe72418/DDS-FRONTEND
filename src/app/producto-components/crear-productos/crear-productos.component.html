@@ -29,9 +29,10 @@
           placeholder="Tipo Producto"
         ></p-dropdown>
 
-        <button style="margin-top: 10px;" pButton type="submit" class="btn btn-primary">
-          Guardar
-        </button>
+        <div style="display: flex; justify-content: center;">
+          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
+          <button style="margin: 10px;" pButton type="button" (click)="back()" label="Volver"></button>
+        </div>
       </form>
     </div>
   </p-card>

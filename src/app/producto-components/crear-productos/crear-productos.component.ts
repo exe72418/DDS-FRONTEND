@@ -35,6 +35,10 @@ export class CrearProductosComponent implements OnInit {
     });
   }
 
+    back() {
+    this.editCrear.emit(false);
+  }
+  
   ngOnInit(): void {
 
     if (this.producto?.codigo) {

@@ -3,6 +3,8 @@ import { EntregaService } from '../../services/entrega.service';
 import { Entrega } from '../../models/entrega';
 import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
+import { ClienteService } from '../../services/cliente.service';
+import { Cliente } from '../../models/cliente';
 
 @Component({
   selector: 'app-entrega',
@@ -13,36 +15,56 @@ export class EntregaComponent implements OnInit {
 
   entSelected: Entrega | null = null;
   crearEditarModeEntrega: boolean = false;
-  entregas: Entrega[] = [];
+  
+  entregas: Entrega[] = []; 
+  clientes: Cliente[] = [];
 
-  constructor(private _entregaService: EntregaService, private cargaService: CargaService) {}
+  fechaDesde: Date | null = null;
+  fechaHasta: Date | null = null;
+  clienteSelect: Cliente | null = null;
+
+  constructor(
+    private _entregaService: EntregaService, 
+    private cargaService: CargaService,
+    private clienteService: ClienteService
+  ) {}
 
   ngOnInit(): void {
-    this.search();
+    this.cargaService.show();
+    this.cargarClientes();
+    this.buscar(); 
   }
 
-  search() {
-    this.cargaService.show();
-    this._entregaService.getAll().subscribe({
-      next: (response: any) => {
-        if (response) {
-          this.entregas = response.data || response.entregas || response;
-        } else {
-          this.entregas = [];
-        }
-        this.cargaService.hide();
+  cargarClientes() {
+    this.clienteService.getAll().subscribe({
+      next: (res: any) => {
+        this.clientes = res.data || res.clientes || res;
       },
-      error: (error) => {
-        console.error('Error HTTP:', error);
-        this.cargaService.hide();
-      }
+      error: (err) => console.error(err)
     });
+  }
+
+  buscar() {
+    const clienteId = this.clienteSelect ? this.clienteSelect.id : null;
+    
+    this._entregaService
+      .getEntregasByFilters(this.fechaDesde, this.fechaHasta, clienteId)
+      .subscribe({
+        next: (entregasFiltradas) => {
+          this.entregas = entregasFiltradas;
+          this.cargaService.hide();
+        },
+        error: (err) => {
+          console.error(err);
+          this.cargaService.hide();
+        }
+      });
   }
 
   changeEditCreate() {
     this.crearEditarModeEntrega = false;
     this.entSelected = null;
-    this.search();
+    this.buscar(); 
   }
 
   deleteEntrega(ent: Entrega) {
@@ -64,11 +86,11 @@ export class EntregaComponent implements OnInit {
             text: "",
             icon: "success"
           });
-          this.search();
+          this.buscar(); 
         }, (error) => {
           this.cargaService.hide();
           Swal.fire({
-            title: "No se pudo borrar la entrega",
+            title: "No se pudo borrar",
             text: error.error.message || error.message,
             icon: "error"
           });

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Entrega } from '../models/entrega';
 import { Pedido } from '../models/pedido';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -31,5 +31,31 @@ export class EntregaService {
 
   getPedidosPagosSinEntrega(): Observable<Pedido[]> {
     return this.httpClient.get<Pedido[]>(environment.serverUrl + 'pedido/pedidos/noentregados/');
+  }
+
+  getEntregasByFilters(
+    fechaDesde: Date | null, 
+    fechaHasta: Date | null, 
+    clienteId: number | null
+  ): Observable<Entrega[]> {
+    
+    let params = new HttpParams();
+
+    if (fechaDesde) {
+      params = params.set('fechaDesde', fechaDesde.toISOString());
+    }
+
+    if (fechaHasta) {
+      params = params.set('fechaHasta', fechaHasta.toISOString());
+    }
+
+    if (clienteId) {
+      params = params.set('clienteId', clienteId.toString());
+    }
+
+    return this.httpClient.get<any>(environment.serverUrl + 'entregas/filter', { params })
+      .pipe(
+        map(response => response.data || response.entregas)
+      );
   }
 }

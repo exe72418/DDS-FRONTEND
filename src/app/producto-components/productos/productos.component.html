@@ -1,59 +1,93 @@
+<div class="container">
+    <div *ngIf="!crearEditarMode">
+        
+        <div class="mb-3" style="display: flex; justify-content: center;">
+            <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
+        </div>
 
-<div class=" container">
-<div class="col" *ngIf="crearEditarMode == false" style="display: flex; justify-content: center; margin-bottom: 20px;">
-    <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
-</div>
-<div class="d-flex flex-wrap justify-content-center mb-3">
+        <div class="d-flex flex-wrap justify-content-center mb-3" style="gap: 10px; align-items: center;">
+            
+            <input 
+                pInputText 
+                type="text" 
+                placeholder="Buscar por nombre" 
+                [(ngModel)]="nombreString" 
+                (change)="buscar()">
+            
+            <input 
+                pInputText 
+                type="text" 
+                placeholder="Precio Máximo" 
+                [(ngModel)]="precioMaximo" 
+                (change)="buscar()">
+            
+            <input 
+                pInputText 
+                type="text" 
+                placeholder="Precio Mínimo" 
+                [(ngModel)]="precioMinimo" 
+                (change)="buscar()">
 
-    <input type="text" placeholder="Buscar por nombre" [(ngModel)]="nombreString" pInputText (change)="buscar()">
-    <input type="text" placeholder="Buscar por precio maximo" [(ngModel)]="precioMaximo" pInputText (change)="buscar()">
-    <input type="text" placeholder="Buscar por precio minimo" [(ngModel)]="precioMinimo" pInputText (change)="buscar()">
+            <p-dropdown 
+                id="tipodeprod" 
+                [options]="tiposProducto" 
+                optionLabel="nombre" 
+                [(ngModel)]="tipoProductoSelect"
+                (onChange)="buscar()" 
+                [showClear]="true" 
+                placeholder="Tipo Producto"
+                [style]="{'width':'200px'}">
+            </p-dropdown>
+        </div>
 
-    <p-dropdown
-                    id="tipodeprod"
-                    [options]="tiposProducto"
-                    optionLabel="nombre"
-                    [(ngModel)]="tipoProductoSelect"
-                    (onChange)="buscar()"
-                    [showClear]="true"
-                    placeholder="Tipo Producto" />
-</div>
-<div class="col" style="width: 100%; justify-content: center;">
-    <p-table *ngIf="crearEditarMode == false" [value]="productos" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Nombre</th>
-                <th>Stock</th>
-                <th>Precio</th>
-                <th>Tipo de Producto</th>
-                <th>Disponible</th>
-                <th style="text-align: center;">Editar/Borrar</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product of productos>
-            <tr>
-                <td>{{ product.descripcion }}</td>
-                <td>{{ product.stock }}</td>
-                <td>{{ product.precio }}</td>
-                <td>{{ product.tipoProducto.nombre}}</td>
-                <td>{{ product.disponible}}</td>
+        <div style="width: 100%; justify-content: center;">
+            <p-table [value]="productos" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Stock</th>
+                        <th>Precio</th>
+                        <th>Tipo de Producto</th>
+                        <th>Disponible</th>
+                        <th style="text-align: center;">Editar/Borrar</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.descripcion }}</td>
+                        <td>{{ product.stock }}</td>
+                        <td>{{ product.precio | currency }}</td> <td>{{ product.tipoProducto.nombre}}</td>
+                        <td>{{ product.disponible }}</td>
+                        <td>
+                            <div style="margin-right: 10px; display: flex; justify-content: space-around;">
+                                <p-button 
+                                    [disabled]="!product.disponible" 
+                                    icon="pi pi-pencil" 
+                                    class="mr-2"
+                                    [rounded]="true" 
+                                    [outlined]="true" 
+                                    severity="success"
+                                    (onClick)="editProduct(product)" />
+                                
+                                <p-button 
+                                    [disabled]="!product.disponible" 
+                                    icon="pi pi-trash" 
+                                    severity="danger"
+                                    [rounded]="true" 
+                                    [outlined]="true" 
+                                    (onClick)="deleteProduct(product)" />
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
 
-                <td>
-                    <div  style="margin-right: 10px; display: flex;justify-content: space-around;">
-                        <p-button [disabled]="!product.disponible" icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
-                            (onClick)="editProduct(product)" />
-                        <p-button [disabled]="!product.disponible" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                            (onClick)="deleteProduct(product)" />
-                    </div>
-
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
-</div>
-
-<div class="col">
-    <app-crear-productos (editCrear)="changeEditCreate()" [producto]="prodSelected"
-        *ngIf="crearEditarMode"></app-crear-productos>
-</div>
+    <div *ngIf="crearEditarMode">
+        <app-crear-productos 
+            (editCrear)="changeEditCreate()" 
+            [producto]="prodSelected">
+        </app-crear-productos>
+    </div>
 </div>

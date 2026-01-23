@@ -1,9 +1,42 @@
 <div class="container">
     <div *ngIf="!crearEditarModeEntrega">
+        
         <div class="mb-3" style="display: flex; justify-content: center;">
             <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
         </div>
 
+        <div class="d-flex flex-wrap justify-content-center mb-3" style="gap: 10px; align-items: center;">
+            
+            <p-calendar 
+                [(ngModel)]="fechaDesde" 
+                placeholder="Fecha Desde" 
+                dateFormat="dd/mm/yy" 
+                showIcon="true"
+                (onSelect)="buscar()"
+                (onClear)="buscar()"
+                [showClear]="true">
+            </p-calendar>
+
+            <p-calendar 
+                [(ngModel)]="fechaHasta" 
+                placeholder="Fecha Hasta" 
+                dateFormat="dd/mm/yy" 
+                showIcon="true"
+                (onSelect)="buscar()"
+                (onClear)="buscar()"
+                [showClear]="true">
+            </p-calendar>
+
+            <p-dropdown 
+                [options]="clientes" 
+                [(ngModel)]="clienteSelect" 
+                optionLabel="apellidoNombre" 
+                placeholder="Filtrar por Cliente"
+                (onChange)="buscar()"
+                [showClear]="true"
+                [style]="{'width':'220px'}">
+            </p-dropdown>
+        </div>
         <p-table [value]="entregas" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template pTemplate="header">
                 <tr>
@@ -21,7 +54,12 @@
                     <td>{{ entrega.repartidor?.apellidoNombre }}</td>
                     <td>
                         <ul>
-                            <li *ngFor="let pedido of entrega.pedidos">{{ pedido.nroPedido }}</li>
+                            <li *ngFor="let pedido of entrega.pedidos">
+                                N° {{ pedido.nroPedido }}
+                                <span *ngIf="pedido.cliente" style="color: gray; font-size: 0.9em;">
+                                    ({{ pedido.cliente.apellidoNombre }})
+                                </span>
+                            </li>
                         </ul>
                     </td>
                     <td>
