@@ -29,6 +29,9 @@ export class CrearPedidoComponent implements OnInit {
   pagos: Pago[] = [];
   lineasSelected: LineaDeProducto[] = [];
 
+  minDateCalendar!: Date;
+  fechaOriginalPedido!: Date | null;
+
   constructor(
     private _clienteService: ClienteService,
     private cargaService: CargaService,
@@ -47,28 +50,44 @@ export class CrearPedidoComponent implements OnInit {
       pago: new FormControl('')
     });
 
+    const hoy = new Date();
+    const hoySoloFecha = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+
     if (this.pedido) {
       this.pedidoForm.patchValue(this.pedido);
-      this.fechaSelected = this.pedido.fecha;
+
+      this.fechaOriginalPedido = this.pedido.fecha ? new Date(this.pedido.fecha) : null;
+      this.fechaSelected = this.fechaOriginalPedido ? new Date(this.fechaOriginalPedido) : hoySoloFecha;
+
+      const fechaOriginalSoloFecha = new Date(
+        this.fechaSelected.getFullYear(),
+        this.fechaSelected.getMonth(),
+        this.fechaSelected.getDate()
+      );
+
+      this.minDateCalendar = fechaOriginalSoloFecha < hoySoloFecha ? fechaOriginalSoloFecha : hoySoloFecha;
+
       this.lineasSelected = this.pedido.lineas;
+    } else {
+      this.fechaOriginalPedido = null;
+      this.fechaSelected = hoySoloFecha;
+      this.minDateCalendar = hoySoloFecha;
     }
 
-    
-      this._clienteService.getClientesActivos().subscribe((resp: any) => {
+    this._clienteService.getClientesActivos().subscribe((resp: any) => {
       const list = (resp.data || resp).filter((c: Cliente) => c.disponible === true);
 
-  this.clientes = list.map((cliente: Cliente) => ({
-    id: cliente.id,
-    apellidoNombre: cliente.apellidoNombre,
-    telefono: cliente.telefono,
-    email: cliente.email,
-    domicilio: cliente.domicilio,
-    cuit: cliente.cuit,
-    disponible: cliente.disponible,
-    zona: cliente.zona
-  }));
-});
-
+      this.clientes = list.map((cliente: Cliente) => ({
+        id: cliente.id,
+        apellidoNombre: cliente.apellidoNombre,
+        telefono: cliente.telefono,
+        email: cliente.email,
+        domicilio: cliente.domicilio,
+        cuit: cliente.cuit,
+        disponible: cliente.disponible,
+        zona: cliente.zona
+      }));
+    });
 
     this._pagoService.getAll().subscribe((pagos) => {
       this.pagos = pagos;
@@ -80,6 +99,41 @@ export class CrearPedidoComponent implements OnInit {
   }
 
   savePedido() {
+    const hoy = new Date();
+    const hoySoloFecha = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+
+    const fechaElegida = new Date(this.fechaSelected);
+    const fechaElegidaSoloFecha = new Date(
+      fechaElegida.getFullYear(),
+      fechaElegida.getMonth(),
+      fechaElegida.getDate()
+    );
+
+    if (this.pedido && this.fechaOriginalPedido) {
+      const original = new Date(this.fechaOriginalPedido);
+      const originalSoloFecha = new Date(original.getFullYear(), original.getMonth(), original.getDate());
+
+      const cambioFecha = fechaElegidaSoloFecha.getTime() !== originalSoloFecha.getTime();
+
+      if (cambioFecha && fechaElegidaSoloFecha < hoySoloFecha) {
+        Swal.fire({
+          title: "Error",
+          text: "Solo podés cambiar la fecha por una igual o posterior a hoy",
+          icon: "warning"
+        });
+        return;
+      }
+    } else {
+      if (fechaElegidaSoloFecha < hoySoloFecha) {
+        Swal.fire({
+          title: "Error",
+          text: "La fecha no puede ser menor a la actual",
+          icon: "warning"
+        });
+        return;
+      }
+    }
+
     this.pedidoForm.controls['fecha'].setValue(this.fechaSelected);
 
     let totalValue = this.pedidoForm.value.total;

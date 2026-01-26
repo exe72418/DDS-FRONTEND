@@ -29,6 +29,7 @@
           id="fecha"
           [(ngModel)]="fechaSelected"
           [ngModelOptions]="{ standalone: true }"
+          [minDate]="minDateCalendar"
           dateFormat="dd/mm/yy"
           showIcon="true"
         ></p-calendar>
