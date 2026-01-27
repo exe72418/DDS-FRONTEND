@@ -32,7 +32,7 @@
             <div style="display: flex; justify-content: center; gap: 10px;">
               <p-button [disabled]="pedido.pago" icon="pi pi-pencil" rounded outlined severity="success"
                 (onClick)="editProduct(pedido)"></p-button>
-              <p-button [disabled]="pedido.pago" icon="pi pi-trash" rounded outlined severity="danger"
+              <p-button [disabled]="pedido.entrega" icon="pi pi-trash" rounded outlined severity="danger"
                 (onClick)="deleteProduct(pedido)"></p-button>
             </div>
           </td>

@@ -2,13 +2,13 @@
   <div style="display: flex; justify-content: center;">
     <p-card header="Pedido">
 
-      <h4 *ngIf="pedido?.nroPedido; else crearTpl">Modificar</h4>
+      <h4 *ngIf="pedido.nroPedido; else crearTpl">Modificar</h4>
       <ng-template #crearTpl>
         <h4>Crear</h4>
       </ng-template>
 
       <label for="nroPedido">Nro Pedido</label>
-      <div id="nroPedido" *ngIf="pedido?.nroPedido">
+      <div id="nroPedido" *ngIf="pedido.nroPedido">
         {{ pedido.nroPedido }}
       </div>
 
@@ -35,10 +35,10 @@
         ></p-calendar>
       </div>
 
-      <label for="lineas" *ngIf="pedido?.lineas">Lineas de producto</label>
+      <label for="lineas" *ngIf="pedido.lineas">Lineas de producto</label>
       <p-multiSelect
         id="lineas"
-        *ngIf="pedido?.lineas"
+        *ngIf="pedido.lineas"
         [options]="pedido.lineas"
         formControlName="lineas"
         optionLabel="id"
@@ -47,8 +47,8 @@
         display="chip"
       ></p-multiSelect>
 
-      <label for="total" *ngIf="!pedido?.nroPedido">Total</label>
-      <input id="total" pInputText formControlName="total" *ngIf="!pedido?.nroPedido" type="text">
+      <label for="total" *ngIf="!pedido.nroPedido">Total</label>
+      <input id="total" pInputText formControlName="total" *ngIf="!pedido.nroPedido" type="text">
 
     </p-card>
   </div>

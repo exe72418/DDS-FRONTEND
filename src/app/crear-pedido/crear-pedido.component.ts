@@ -34,8 +34,6 @@ export class CrearPedidoComponent implements OnInit {
   fechaOriginalPedido!: Date | null;
 
 
-  lineasOriginales: LineaDeProducto[] = [];
-
   constructor(
     private _clienteService: ClienteService,
     private cargaService: CargaService,
@@ -47,7 +45,7 @@ export class CrearPedidoComponent implements OnInit {
     this.pedidoForm = new FormGroup({
       nroPedido: new FormControl(''),
       cliente: new FormControl('', [Validators.required]),
-      lineas: new FormControl([], [Validators.required]),
+      lineas: new FormControl('', [Validators.required]),
       fecha: new FormControl(''),
       total: new FormControl(''),
       entrega: new FormControl(''),
@@ -72,23 +70,12 @@ export class CrearPedidoComponent implements OnInit {
 
       this.minDateCalendar = fechaOriginalSoloFecha < hoySoloFecha ? fechaOriginalSoloFecha : hoySoloFecha;
 
-
-      this.lineasOriginales = Array.isArray(this.pedido.lineas) ? [...this.pedido.lineas] : [];
-      this.lineasSelected = [...this.lineasOriginales];
-
-
-      this.pedidoForm.get('lineas')?.setValue(this.lineasSelected);
-
- 
-      this.recalcularTotalPorLineas(this.lineasSelected);
+      this.lineasSelected = this.pedido.lineas;
     } else {
       this.fechaOriginalPedido = null;
       this.fechaSelected = hoySoloFecha;
       this.minDateCalendar = hoySoloFecha;
 
-
-      this.lineasOriginales = [];
-      this.lineasSelected = [];
     }
 
     this._clienteService.getClientesActivos().subscribe((resp: any) => {
@@ -110,21 +97,6 @@ export class CrearPedidoComponent implements OnInit {
       this.pagos = pagos;
     });
 
-    this.pedidoForm.get('lineas')?.valueChanges.subscribe((val: LineaDeProducto[]) => {
-      if (Array.isArray(val)) {
-        this.lineasSelected = val;
-        this.recalcularTotalPorLineas(this.lineasSelected);
-      }
-    });
-  }
-
-  private recalcularTotalPorLineas(lineas: LineaDeProducto[]) {
-    const total = (lineas || []).reduce((acc: number, l: any) => {
-      const sub = Number(l?.subtotal ?? 0);
-      return acc + (isNaN(sub) ? 0 : sub);
-    }, 0);
-
-    this.pedidoForm.get('total')?.setValue(total, { emitEvent: false });
   }
 
   back() {
@@ -170,16 +142,11 @@ export class CrearPedidoComponent implements OnInit {
 
     this.pedidoForm.controls['fecha'].setValue(this.fechaSelected);
 
- 
-    const lineasFinales = Array.isArray(this.lineasSelected) ? this.lineasSelected : [];
-    this.pedidoForm.get('lineas')?.setValue(lineasFinales, { emitEvent: false });
-    this.recalcularTotalPorLineas(lineasFinales);
+    let totalValue = this.pedidoForm.value.total;
+    let totalInteger = Number(totalValue);
 
-
-    const totalValue = this.pedidoForm.value.total;
-    const totalInteger = Number(totalValue);
     if (!isNaN(totalInteger)) {
-      this.pedidoForm.controls['total'].setValue(totalInteger, { emitEvent: false });
+      this.pedidoForm.controls['total'].setValue(totalInteger);
     }
 
     if (this.pedido != null) {
