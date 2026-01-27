@@ -73,7 +73,7 @@ export class CrearPedidoComponent implements OnInit {
       this.fechaSelected = hoySoloFecha;
       this.minDateCalendar = hoySoloFecha;
     }
-
+    //Pruebacommit
     this._clienteService.getClientesActivos().subscribe((resp: any) => {
       const list = (resp.data || resp).filter((c: Cliente) => c.disponible === true);
 
@@ -108,7 +108,7 @@ export class CrearPedidoComponent implements OnInit {
       fechaElegida.getMonth(),
       fechaElegida.getDate()
     );
-
+    
     if (this.pedido && this.fechaOriginalPedido) {
       const original = new Date(this.fechaOriginalPedido);
       const originalSoloFecha = new Date(original.getFullYear(), original.getMonth(), original.getDate());
