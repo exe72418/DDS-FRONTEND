@@ -21,12 +21,22 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
   pedido!: Pedido;
 
   ngOnInit(): void {
+    this.cargaService.show();
     this._productoService.getProductosActivos().subscribe((productos) => {
+      this.cargaService.hide();
       this.productos = productos;
     });
     this.pedido = new Pedido();
     this.pedido.lineas = [];
     this.pedido.total = 0;
+  }
+
+    getCantidadEnPedido(prod: Producto): number {
+    if(!this.pedido || !this.pedido.lineas) return 0;
+    
+    const linea = this.pedido.lineas.find(l => l.producto && l.producto.codigo == prod.codigo);
+    
+    return linea ? linea.cantidad : 0;
   }
 
   agregar(producto: Producto) {

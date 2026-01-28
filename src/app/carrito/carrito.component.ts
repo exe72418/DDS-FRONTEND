@@ -10,6 +10,7 @@ import { ClienteService } from '../../../src/app/services/cliente.service';
 import { PedidoServiceService } from '../../../src/app/services/pedido-service.service';
 import { Router } from '@angular/router';
 import { CargaService } from '../services/carga.service';
+import { PagoService } from '../services/pago.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,8 @@ export class CarritoComponent implements OnInit {
     private apiService: ClienteService,
     private router: Router,
     private _pedidoService: PedidoServiceService,
-    private cargaService: CargaService
+    private cargaService: CargaService,
+    private _pagoService: PagoService
   ) {}
 
   ngOnInit(): void {
@@ -66,25 +68,36 @@ export class CarritoComponent implements OnInit {
     });
   }
 
-  pagar() {
+
+pagar() {
     this.cargaService.show();
     this.pedidoSelectSnapShot.fecha = this.fechaSelected;
 
-    this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe(() => {
-      this.cargaService.hide();
-      Swal.fire({
-        title: "Pedido guardado",
-        text: "",
-        icon: "success"
-      });
-      this.router.navigate(['pedidos']);
-    }, () => {
-      this.cargaService.hide();
-      Swal.fire({
-        title: "No se pudo guardar el pedido",
-        text: "",
-        icon: "error"
-      });
+    this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe({
+      next: (response: any) => {
+        this.cargaService.hide();
+        
+        const pedidoCreado = response.data || response;
+        const nroPedido = pedidoCreado.nroPedido;
+
+        Swal.fire({
+          title: "Pedido guardado",
+          text: "Redirigiendo a pagos...",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+            
+            this._pagoService.pedidoPendienteId = nroPedido;
+
+            this.router.navigate(['/pago']);
+        });
+
+      },
+      error: () => {
+        this.cargaService.hide();
+        Swal.fire({ title: "Error", text: "No se pudo guardar", icon: "error" });
+      }
     });
   }
 }

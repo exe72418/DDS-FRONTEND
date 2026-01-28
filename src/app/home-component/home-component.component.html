@@ -1,28 +1,41 @@
-<div class="tabla">
-    <div style="margin-left: 10px; margin-bottom: 10px;" *ngFor="let product of productos">
-        <p-card header="" [style]="{ width: '250px' }">
-            <ng-template pTemplate="header"></ng-template>
-            <p>
-                {{ product.descripcion }}
-            </p>
+<div class="container-fluid">
 
-            <div *ngFor="let linea of pedido.lineas">
-                <div *ngIf="product.codigo == linea.producto.codigo">
-                    <p>Cantidad: {{ linea.cantidad }}</p>
-                    <span style="margin-right: 10px;">
-                        <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning"></button>
-                    </span>
-                    <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger"></button>
-                </div>
-            </div>
+    <div class="tabla" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px;">
+        
+        <div *ngFor="let product of productos">
+            <p-card [style]="{ width: '250px', 'text-align': 'center' }">
 
-            <ng-template pTemplate="footer">
-                <div class="flex gap-3 mt-1">
-                    <p-button (click)="agregar(product)" label="Comprar" class="w-full" styleClass="w-full" />
-                </div>
-            </ng-template>
-        </p-card>
+                <h4 style="margin: 10px 0; font-size: 1.1rem; height: 3em; overflow: hidden;">{{ product.descripcion }}</h4>
+                <p style="font-weight: bold;">{{ product.precio | currency }}</p>
+                <p style="font-weight: bold; color: #555;">Stock: {{ product.stock }}</p>
+
+                <ng-container *ngIf="getCantidadEnPedido(product) > 0; else botonComprar">
+                    
+                    <p style="font-size: 1.1rem; font-weight: bold; color: #007ad9;">
+                        Cantidad: {{ getCantidadEnPedido(product) }}
+                    </p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+                        <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning p-button-rounded"></button>
+                        <button (click)="agregar(product)" pButton icon="pi pi-plus" class="p-button-primary p-button-rounded"></button>
+                        <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
+                    </div>
+
+                </ng-container>
+
+                <ng-template #botonComprar>
+                    <div class="flex gap-3 mt-1" style="margin-top: 10px;">
+                        <p-button (click)="agregar(product)" label="Comprar" class="w-full" styleClass="w-full" />
+                    </div>
+                </ng-template>
+
+            </p-card>
+        </div>
+
     </div>
 
-    <button style="grid-column: 2/3;" pButton routerLink="/carrito"> Ir al Carrito</button>
+    <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
+        <button pButton label="Ir al Carrito" icon="pi pi-shopping-cart" class="p-button-success p-button-lg" routerLink="/carrito"> </button>
+    </div>
+
 </div>

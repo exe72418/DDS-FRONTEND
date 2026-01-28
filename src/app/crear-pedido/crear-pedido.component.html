@@ -1,60 +1,98 @@
-<form [formGroup]="pedidoForm">
-  <div style="display: flex; justify-content: center;">
-    <p-card header="Pedido">
+<div class="container-fluid">
+    
+    <p-card styleClass="mb-3">
+        <form [formGroup]="pedidoForm" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+            
+            <div *ngIf="pedido.nroPedido">
+                <label style="font-weight: bold; margin-right: 5px;">Nro Pedido:</label>
+                <span>{{ pedido.nroPedido }}</span>
+            </div>
 
-      <h4 *ngIf="pedido.nroPedido; else crearTpl">Modificar</h4>
-      <ng-template #crearTpl>
-        <h4>Crear</h4>
-      </ng-template>
+            <div class="flex-column">
+                <span class="p-float-label">
+                    <p-dropdown 
+                        id="cliente" 
+                        [options]="clientes" 
+                        formControlName="cliente" 
+                        optionLabel="apellidoNombre"
+                        placeholder="Seleccione Cliente" 
+                        [showClear]="true" 
+                        dataKey="id"
+                        [style]="{'width':'250px'}">
+                    </p-dropdown>
+                </span>
+            </div>
 
-      <label for="nroPedido">Nro Pedido</label>
-      <div id="nroPedido" *ngIf="pedido.nroPedido">
-        {{ pedido.nroPedido }}
-      </div>
+            <div class="flex-column">
+                <p-calendar 
+                    placeholder="Fecha del Pedido" 
+                    id="fecha" 
+                    formControlName="fecha"
+                    dateFormat="dd/mm/yy" 
+                    [showIcon]="true"
+                    [minDate]="minDateCalendar">
+                </p-calendar>
+            </div>
 
-      <label for="cliente">Cliente</label>
-      <p-dropdown
-        id="cliente"
-        [options]="clientes"
-        formControlName="cliente"
-        optionLabel="apellidoNombre"
-        placeholder="Clientes"
-        [showClear]="true"
-        dataKey="id"
-      ></p-dropdown>
-
-      <div class="card flex justify-content-center">
-        <p-calendar
-          placeholder="Fecha"
-          id="fecha"
-          [(ngModel)]="fechaSelected"
-          [ngModelOptions]="{ standalone: true }"
-          [minDate]="minDateCalendar"
-          dateFormat="dd/mm/yy"
-          showIcon="true"
-        ></p-calendar>
-      </div>
-
-      <label for="lineas" *ngIf="pedido.lineas">Lineas de producto</label>
-      <p-multiSelect
-        id="lineas"
-        *ngIf="pedido.lineas"
-        [options]="pedido.lineas"
-        formControlName="lineas"
-        optionLabel="id"
-        placeholder="Seleccione las lineas de los productos"
-        [disabled]="false"
-        display="chip"
-      ></p-multiSelect>
-
-      <label for="total" *ngIf="!pedido.nroPedido">Total</label>
-      <input id="total" pInputText formControlName="total" *ngIf="!pedido.nroPedido" type="text">
-
+            <div style="margin-left: auto; font-size: 1.5rem; font-weight: bold; color: #28a745;">
+                Total: {{ pedido.total | currency }}
+            </div>
+        </form>
     </p-card>
-  </div>
-</form>
 
-<div style="display: flex; justify-content: center;">
-  <button pButton type="button" style="margin: 10px;" (click)="back()">Volver</button>
-  <button pButton type="button" style="margin: 10px;" (click)="savePedido()">Guardar</button>
+    <div class="d-flex flex-wrap justify-content-center mb-3 gap-2" style="gap: 10px;">
+        <input pInputText type="text" placeholder="Buscar producto..." [(ngModel)]="filtroNombre" (keyup)="aplicarFiltros()">
+        <input pInputText type="number" placeholder="Precio Min" [(ngModel)]="filtroPrecioMin" (keyup)="aplicarFiltros()">
+        <input pInputText type="number" placeholder="Precio Max" [(ngModel)]="filtroPrecioMax" (keyup)="aplicarFiltros()">
+        
+        <p-dropdown 
+            [options]="tiposProducto" 
+            [(ngModel)]="filtroTipo" 
+            optionLabel="nombre" 
+            placeholder="Tipo Producto" 
+            [showClear]="true"
+            (onChange)="aplicarFiltros()"
+            [style]="{'width':'200px'}">
+        </p-dropdown>
+    </div>
+
+    <div class="tabla" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+        
+        <div *ngFor="let product of productosFiltrados">
+            <p-card [style]="{ width: '250px', 'text-align': 'center' }">
+
+                <h4 style="margin: 10px 0; font-size: 1.1rem; height: 3em; overflow: hidden;">{{ product.descripcion }}</h4>
+                <p style="font-weight: bold;">{{ product.precio | currency }}</p>
+                <p style="font-weight: bold; color: #555;">Stock: {{ product.stock }}</p>
+
+                <ng-container *ngIf="getCantidadEnPedido(product) > 0; else botonComprar">
+                    
+                    <p style="font-size: 1.1rem; font-weight: bold; color: #007ad9;">
+                        Cantidad: {{ getCantidadEnPedido(product) }}
+                    </p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+                        <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning p-button-rounded"></button>
+                        <button (click)="agregar(product)" pButton icon="pi pi-plus" class="p-button-primary p-button-rounded"></button>
+                        <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
+                    </div>
+
+                </ng-container>
+
+                <ng-template #botonComprar>
+                    <div class="flex gap-3 mt-1" style="margin-top: 10px;">
+                        <p-button (click)="agregar(product)" label="Comprar" class="w-full" styleClass="w-full" />
+                    </div>
+                </ng-template>
+
+            </p-card>
+        </div>
+
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
+        <button pButton type="button" label="Volver" class="p-button-secondary" style="margin-right: 10px;" (click)="back()"></button>
+        <button pButton type="button" label="Guardar Pedido" class="p-button-success" (click)="savePedido()"></button>
+    </div>
+
 </div>

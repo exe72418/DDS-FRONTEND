@@ -1,4 +1,5 @@
 <div *ngIf="!crearEditarModePago" class="container">
+
   <div *ngIf="crearEditarModePago == false" style="display: flex; justify-content: center; margin-bottom: 20px;">
     <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
   </div>
@@ -33,6 +34,9 @@
     </p-table>
   </div>
 </div>
-<div>
-  <app-crear-pago (editCrear)="changeEditCreate()" [pago]="pagoSelected" *ngIf="crearEditarModePago"></app-crear-pago>
+<div *ngIf="crearEditarModePago">
+  <app-crear-pago 
+      (editCrear)="changeEditCreate()" 
+      [pago]="pagoSelected"
+      [nroPedidoPreseleccionado]="pedidoHijo"> </app-crear-pago>
 </div>

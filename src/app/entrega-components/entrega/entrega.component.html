@@ -55,10 +55,7 @@
                     <td>
                         <ul>
                             <li *ngFor="let pedido of entrega.pedidos">
-                                N° {{ pedido.nroPedido }}
-                                <span *ngIf="pedido.cliente" style="color: gray; font-size: 0.9em;">
-                                    ({{ pedido.cliente.apellidoNombre }})
-                                </span>
+                                N° {{ pedido.nroPedido }} - Cliente: {{ pedido.cliente.apellidoNombre }}
                             </li>
                         </ul>
                     </td>

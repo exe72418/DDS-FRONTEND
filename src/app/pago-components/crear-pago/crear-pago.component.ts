@@ -17,6 +17,7 @@ import { forkJoin } from 'rxjs';
 export class CrearPagoComponent implements OnInit {
   @Input() pago: Pago | null = null;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
+  @Input() nroPedidoPreseleccionado: number | null = null;
 
   pagoForm: FormGroup;
   tiposPago: TipoPago[] = [];
@@ -64,7 +65,17 @@ export class CrearPagoComponent implements OnInit {
                 this.configurarEdicion();
             } else {
                 this.pagoForm.reset();
-                this.pagoForm.get('fecha')?.setValue(new Date()); 
+                this.pagoForm.get('fecha')?.setValue(new Date());
+
+                if (this.nroPedidoPreseleccionado) {
+                    
+                    const pedidoEncontrado = this.pedidosDisponibles.find(p => p.nroPedido == this.nroPedidoPreseleccionado);
+                    
+                    if (pedidoEncontrado) {
+                        this.pagoForm.patchValue({ pedido: pedidoEncontrado });
+                    }
+                }
+                
                 this.cargaService.hide();
             }
         },

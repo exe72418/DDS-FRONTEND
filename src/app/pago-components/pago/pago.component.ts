@@ -14,12 +14,22 @@ export class PagoComponent implements OnInit {
   pagoSelected: Pago | null = null;
   crearEditarModePago: boolean = false;
   pagos: Pago[] = [];
+  pedidoHijo: number | null = null;
 
-  constructor(private _pagoService: PagoService, private cargaService: CargaService) {}
+  constructor(private _pagoService: PagoService, 
+    private cargaService: CargaService) {}
 
   ngOnInit(): void {
     this.cargaService.show();
     this.search();
+    if (this._pagoService.pedidoPendienteId) {
+
+        this.pedidoHijo = this._pagoService.pedidoPendienteId;
+        
+        this.crearEditarModePago = true; 
+
+        this._pagoService.pedidoPendienteId = null;
+    }
   }
 
   search() {

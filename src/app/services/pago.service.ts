@@ -10,6 +10,8 @@ import { environment } from '../environments/environment';
 })
 export class PagoService {
 
+  public pedidoPendienteId: number | null = null;
+  
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<Pago[]> {
