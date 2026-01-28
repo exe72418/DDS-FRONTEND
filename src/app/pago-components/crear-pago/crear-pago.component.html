@@ -1,7 +1,6 @@
 <div style="display: flex; justify-content: center;">
-  <p-card>
-    <div>
-      <form
+  <p-card [style]="{'width': '100%', 'max-width': '600px'}"> <div>
+        <form
         style="display: flex; flex-direction: column; justify-content: center;"
         [formGroup]="pagoForm"
         (ngSubmit)="guardar(pagoForm.value)"
@@ -40,6 +39,35 @@
           dataKey="nroPedido"
         ></p-dropdown>
 
+        <div *ngIf="pedidoSeleccionado" style="margin-top: 10px;">
+            
+            <p-card styleClass="resumen-card" >
+                
+                <div class="lista-resumen">
+                    <div *ngFor="let linea of pedidoSeleccionado.lineas" class="item-linea">
+                        <div class="nombre-prod">
+                            {{ linea.producto?.descripcion }}
+                        </div>
+                        <div class="detalles-prod">
+                            <span><span class="label">Cant:</span> {{ linea.cantidad }}</span>
+                            <span >|</span>
+                            <span><span class="label">Precio:</span> {{ linea.producto?.precio | currency }}</span>
+                            <span>|</span>
+                            <span class="subtotal-item">Subtotal: {{ (linea.subtotal || (linea.cantidad * linea.producto?.precio!)) | currency }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="total-bloque">
+                    <hr>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 1.1rem; font-weight: bold;">Total a Pagar:</span>
+                        <span class="precio-final">{{ pedidoSeleccionado.total | currency }}</span>
+                    </div>
+                </div>
+            </p-card>
+
+        </div>
         <div style="display: flex; justify-content: center;">
           <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
           <button pButton type="button" style="margin: 10px;" (click)="back()" label="Volver"></button>

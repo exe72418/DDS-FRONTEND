@@ -6,6 +6,8 @@ import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/cliente';
 import { LineaProductoService } from '../services/lineaproducto-service.service';
 import { CargaService } from '../services/carga.service';
+import { PagoService } from '../services/pago.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pedidos',
@@ -26,7 +28,9 @@ export class PedidosComponent implements OnInit {
     private _pedidoService: PedidoServiceService,
     private _clienteService: ClienteService,
     private _lineaProductoService: LineaProductoService,
-    private cargaService: CargaService
+    private cargaService: CargaService,
+    private _pagoService: PagoService, 
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -161,4 +165,13 @@ export class PedidosComponent implements OnInit {
       confirmButtonText: 'Cerrar'
     });
   }
+
+  irAPago(pedido: Pedido) {
+      if (pedido.nroPedido) {
+          this._pagoService.pedidoPendienteId = pedido.nroPedido;
+
+          this.router.navigate(['/pago']);
+      }
+  }
+  
 }

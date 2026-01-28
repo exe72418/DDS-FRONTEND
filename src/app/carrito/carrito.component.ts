@@ -82,7 +82,6 @@ pagar() {
 
         Swal.fire({
           title: "Pedido guardado",
-          text: "Redirigiendo a pagos...",
           icon: "success",
           timer: 1500,
           showConfirmButton: false

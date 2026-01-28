@@ -1,25 +1,41 @@
 <div *ngIf="pedidoSelectSnapShot != undefined || pedidoSelectSnapShot != null">
     <div *ngIf="pedidoSelectSnapShot.lineas != null" class="div">
 
-        <p-card header="Productos" class="card">
-            <div *ngFor="let linea of pedidoSelectSnapShot.lineas" class="divdentrocard">
-                <ng-template pTemplate="header">
-                </ng-template>
-                <p>
-                    {{linea.cantidad}} de {{linea.producto.descripcion}}
-                </p>
-
-                <ng-template pTemplate="footer">
-                    <div class="flex gap-3 mt-1">
+        <p-card header="Resumen del Pedido" class="card">
+            
+            <div class="lista-resumen">
+                <div *ngFor="let linea of pedidoSelectSnapShot.lineas" class="item-linea">
+                    <div class="nombre-prod">
+                        {{ linea.producto.descripcion }}
                     </div>
-                </ng-template>
+                    <div class="detalles-prod">
+                        <span><span class="label">Cant:</span> {{ linea.cantidad }}</span>
+                        <span class="separador">|</span>
+                        <span><span class="label">Precio:</span> {{ linea.producto.precio | currency }}</span>
+                        <span class="separador">|</span>
+                        <span class="subtotal-item">Subtotal: {{ linea.cantidad * linea.producto.precio | currency }}</span>
+                    </div>
+                </div>
             </div>
-            <p-dropdown id="tipodeprod" [options]="clientes" optionLabel="apellidoNombre"
-                (onChange)="setearCliente($event.value)" placeholder="Clientes" />
-            <div style="margin-top: 10px;" class="card flex justify-content-center">
-                <p-calendar placeholder="Fecha" id="fecha" [ngModelOptions]="{standalone: true}"
-                    [(ngModel)]="fechaSelected" dateFormat="dd/mm/yy" showIcon="true" />
+
+            <div class="total-bloque">
+                <hr>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 1.1rem;">Total a Pagar:</span>
+                    <span class="precio-final">{{ pedidoSelectSnapShot.total | currency }}</span>
+                </div>
             </div>
+
+            <div style="margin-top: 20px;">
+                <p-dropdown id="tipodeprod" [options]="clientes" optionLabel="apellidoNombre"
+                    (onChange)="setearCliente($event.value)" placeholder="Seleccionar Cliente" [style]="{'width':'100%'}" />
+                
+                <div style="margin-top: 10px;">
+                    <p-calendar placeholder="Fecha de entrega" id="fecha" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="fechaSelected" dateFormat="dd/mm/yy" showIcon="true" [style]="{'width':'100%'}" />
+                </div>
+            </div>
+
         </p-card>
 
         <p-button [disabled]="fechaSelected ==null 

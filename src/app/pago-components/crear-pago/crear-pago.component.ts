@@ -86,6 +86,10 @@ export class CrearPagoComponent implements OnInit {
     });
   }
 
+  get pedidoSeleccionado(): Pedido | null {
+  return this.pagoForm.get('pedido')?.value;
+}
+
   configurarEdicion() {
     const fechaPago = new Date(this.pago!.fecha as any);
     

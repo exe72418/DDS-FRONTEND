@@ -34,6 +34,8 @@
                 (onClick)="editProduct(pedido)"></p-button>
               <p-button [disabled]="pedido.entrega" icon="pi pi-trash" rounded outlined severity="danger"
                 (onClick)="deleteProduct(pedido)"></p-button>
+              <p-button [disabled]="pedido.pago" icon="pi pi-dollar" rounded outlined severity="help"
+              (onClick)="irAPago(pedido)"></p-button>
             </div>
           </td>
         </tr>

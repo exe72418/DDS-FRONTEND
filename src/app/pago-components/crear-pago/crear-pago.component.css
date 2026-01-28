@@ -1,0 +1,41 @@
+.lista-resumen {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.item-linea {
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.nombre-prod {
+    font-weight: bold;
+    color: #333;
+    font-size: 1rem;
+}
+
+.detalles-prod {
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.label {
+    font-weight: 600;
+}
+
+.subtotal-item {
+    color: #007ad9;
+    font-weight: bold;
+    margin-left: auto; 
+}
+
+.precio-final {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+}
