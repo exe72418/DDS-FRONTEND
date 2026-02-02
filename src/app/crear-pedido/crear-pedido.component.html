@@ -73,7 +73,7 @@
                     
                     <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
                         <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning p-button-rounded"></button>
-                        <button (click)="agregar(product)" pButton icon="pi pi-plus" class="p-button-primary p-button-rounded"></button>
+                        <button (click)="agregar(product)" pButton icon="pi pi-plus" class="p-button-success p-button-rounded"></button>
                         <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
                     </div>
 
@@ -91,8 +91,8 @@
     </div>
 
     <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
-        <button pButton type="button" label="Volver" style="margin-right: 10px;" (click)="back()"></button>
-        <button pButton type="button" label="Guardar Pedido" (click)="savePedido()"></button>
+        <button pButton label="Volver" severity="contrast" style="margin-right: 10px;" (click)="back()"></button>
+        <button pButton label="Guardar Pedido" severity="success" style="margin-right: 10px;" (click)="savePedido()"></button>
     </div>
 
 </div>

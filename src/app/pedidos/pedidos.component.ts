@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Pedido } from '../models/pedido';
-import { PedidoServiceService } from '../services/pedido-service.service';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog'; 
+import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
-import { ClienteService } from '../services/cliente.service';
+import { Pedido } from '../models/pedido';
 import { Cliente } from '../models/cliente';
+import { PedidoServiceService } from '../services/pedido-service.service';
+import { ClienteService } from '../services/cliente.service';
 import { LineaProductoService } from '../services/lineaproducto-service.service';
 import { CargaService } from '../services/carga.service';
 import { PagoService } from '../services/pago.service';
-import { Router } from '@angular/router';
+import { DetallePedidoComponent } from '../detalle-pedido/detalle-pedido.component';
 
 @Component({
   selector: 'app-pedidos',
@@ -19,6 +22,7 @@ export class PedidosComponent implements OnInit {
   crearMode: boolean = false;
   pedidos!: Pedido[];
   pedidoSelected!: Pedido;
+  
   clienteSelect!: Cliente;
   fechaInicio!: Date;
   fechaFin!: Date;
@@ -30,11 +34,18 @@ export class PedidosComponent implements OnInit {
     private _lineaProductoService: LineaProductoService,
     private cargaService: CargaService,
     private _pagoService: PagoService, 
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog 
   ) { }
 
   ngOnInit(): void {
     this.search();
+    this.cargarClientes();
+  }
+
+
+
+  cargarClientes() {
     this._clienteService.getClientesActivos().subscribe((resp: any) => {
       const list: Cliente[] = resp.data || resp;
       this.clientes = list;
@@ -43,11 +54,14 @@ export class PedidosComponent implements OnInit {
 
   search() {
     this.cargaService.show();
-    this._pedidoService.getAll().subscribe((pedidos) => {
-      this.pedidos = pedidos;
-      this.cargaService.hide();
-    }, () => {
-      this.cargaService.hide();
+    this._pedidoService.getAll().subscribe({
+      next: (pedidos) => {
+        this.pedidos = pedidos;
+        this.cargaService.hide();
+      },
+      error: () => {
+        this.cargaService.hide();
+      }
     });
   }
 
@@ -69,6 +83,11 @@ export class PedidosComponent implements OnInit {
     this.search();
   }
 
+  editProduct(ped: Pedido) {
+    this.pedidoSelected = ped;
+    this.crearMode = true;
+  }
+
   deleteProduct(ped: Pedido) {
     Swal.fire({
       title: "Atención",
@@ -81,97 +100,62 @@ export class PedidosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
-        this._pedidoService.delete(ped).subscribe(() => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "Pedido borrado",
-            icon: "success"
-          });
-          this.search();
-        }, (error) => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "Error",
-            text: error.message,
-            icon: "error"
-          });
+        this._pedidoService.delete(ped).subscribe({
+          next: () => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Pedido borrado", icon: "success" });
+            this.search();
+          },
+          error: (error) => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Error", text: error.message, icon: "error" });
+          }
         });
       }
     });
-  }
-
-  editProduct(ped: Pedido) {
-    this.pedidoSelected = ped;
-    this.crearMode = true;
   }
 
   showProductDetails(pedido: Pedido) {
     this.cargaService.show();
+    
     if (!pedido.nroPedido) {
       this.cargaService.hide();
-      Swal.fire({
-        title: 'Error',
-        text: 'No se pudo encontrar el pedido.',
-        icon: 'error'
-      });
       return;
     }
 
-    this._lineaProductoService.getLineasByPedidoId(pedido.nroPedido).subscribe((lineas) => {
-      if (lineas.length === 0) {
+    this._lineaProductoService.getLineasByPedidoId(pedido.nroPedido).subscribe({
+      next: (lineas) => {
         this.cargaService.hide();
-        Swal.fire({
-          title: 'Sin líneas de producto',
-          text: 'Este pedido no tiene líneas de producto.',
-          icon: 'info'
+
+        if (lineas.length === 0) {
+          Swal.fire({
+            title: 'Sin líneas',
+            text: 'Este pedido no tiene productos cargados.',
+            icon: 'info'
+          });
+          return;
+        }
+
+        this.dialog.open(DetallePedidoComponent, {
+          data: { 
+            lineas: lineas,
+            nroPedido: pedido.nroPedido
+          }
         });
-        return;
+      },
+      error: (error) => {
+        this.cargaService.hide();
+        console.error(error);
+        Swal.fire({ title: 'Error', text: 'No se pudieron cargar los detalles', icon: 'error' });
       }
-      this.cargaService.hide();
-      this.generateProductTable(lineas);
     });
   }
 
-  generateProductTable(lineas: any[]) {
-    let htmlContent = `
-      <table class="table table-bordered" style="width: 100%; text-align: left;">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
-
-    lineas.forEach(linea => {
-      htmlContent += `
-        <tr>
-          <td>${linea.producto.descripcion}</td>
-          <td>${linea.cantidad}</td>
-          <td>${new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(linea.producto.precio)}</td>
-          <td>${new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(linea.subtotal)}</td>
-        </tr>
-      `;
-    });
-
-    Swal.fire({
-      title: 'Detalle de líneas de productos',
-      html: htmlContent,
-      icon: 'info',
-      showCloseButton: true,
-      confirmButtonText: 'Cerrar'
-    });
-  }
 
   irAPago(pedido: Pedido) {
       if (pedido.nroPedido) {
           this._pagoService.pedidoPendienteId = pedido.nroPedido;
-
           this.router.navigate(['/pago']);
       }
   }
-  
 }

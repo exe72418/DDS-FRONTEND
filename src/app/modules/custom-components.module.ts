@@ -40,7 +40,9 @@ import { CalendarModule } from "primeng/calendar";
 import { LoginComponent } from "../login/login.component";
 import { CargaComponent } from '../carga/carga/carga.component.js';
 import { AuthInterceptor } from "../app.interceptor";
-import {MatDialogModule} from "@angular/material/dialog"
+import {MatDialogModule} from "@angular/material/dialog";
+import { DetallePedidoComponent } from '../detalle-pedido/detalle-pedido.component'
+import { DialogModule } from 'primeng/dialog';
 
 @Injectable({
     providedIn: 'root'
@@ -68,7 +70,8 @@ import {MatDialogModule} from "@angular/material/dialog"
         LoginComponent,
         CargaComponent,
         ZonasComponent,
-        CrearZonasComponent
+        CrearZonasComponent,
+        DetallePedidoComponent
     ],
     imports: [
         NgxsModule.forRoot([PedidoState], { developmentMode: true }),
@@ -90,7 +93,8 @@ import {MatDialogModule} from "@angular/material/dialog"
         HttpClientModule,
         BrowserAnimationsModule,
         CalendarModule,
-        FormsModule
+        FormsModule,
+        DialogModule
     ],
     exports: [
         TableModule,

@@ -7,8 +7,7 @@
     <p-table *ngIf="!crearMode" [value]="pedidos" [tableStyle]="{ 'min-width': '50rem' }" class="table-striped">
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="cliente.apellidoNombre">Cliente <p-sortIcon field="cliente.apellidoNombre"></p-sortIcon>
-          </th>
+          <th pSortableColumn="cliente.apellidoNombre">Cliente <p-sortIcon field="cliente.apellidoNombre"></p-sortIcon></th>
           <th pSortableColumn="entrega.id">Entrega <p-sortIcon field="entrega.id"></p-sortIcon></th>
           <th pSortableColumn="fecha">Fecha <p-sortIcon field="fecha"></p-sortIcon></th>
           <th pSortableColumn="pago.id">Pago <p-sortIcon field="pago.id"></p-sortIcon></th>
@@ -35,7 +34,7 @@
               <p-button [disabled]="pedido.entrega" icon="pi pi-trash" rounded outlined severity="danger"
                 (onClick)="deleteProduct(pedido)"></p-button>
               <p-button [disabled]="pedido.pago" icon="pi pi-dollar" rounded outlined severity="help"
-              (onClick)="irAPago(pedido)"></p-button>
+                (onClick)="irAPago(pedido)"></p-button>
             </div>
           </td>
         </tr>

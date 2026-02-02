@@ -1,45 +1,56 @@
-<div style="display: flex; justify-content: center;">
+<div class="main-container">
   <p-card>
-    <div>
-      <form
-        style="display: flex; flex-direction: column; justify-content: center;"
-        [formGroup]="clienteForm"
-        (ngSubmit)="guardar(clienteForm.value)"
-      >
-        <h4 *ngIf="cliente?.id; else crearTpl">Modificar</h4>
+    <div class="form-container">
+      <form [formGroup]="clienteForm" (ngSubmit)="guardar(clienteForm.value)">
+        
+        <h4 *ngIf="cliente?.id; else crearTpl">Modificar Cliente</h4>
         <ng-template #crearTpl>
-          <h4>Crear</h4>
+          <h4>Crear Cliente</h4>
         </ng-template>
 
-        <label for="apellidoNombre">Nombre y Apellido</label>
-        <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre" />
-
-        <label for="cuit">Cuit</label>
-        <input pInputText id="cuit" type="text" formControlName="cuit" />
-
-        <label for="email">Email</label>
-        <input pInputText id="email" type="text" formControlName="email" />
-
-        <label for="telefono">Telefono</label>
-        <input pInputText id="telefono" type="text" formControlName="telefono" />
-
-        <label for="domicilio">Domicilio</label>
-        <input pInputText id="domicilio" type="text" formControlName="domicilio" />
-
-        <label for="zona">Zona</label>
-        <p-dropdown
-          id="zona"
-          [options]="zonas"
-          formControlName="zona"
-          optionLabel="nombre"
-          placeholder="Seleccione Zona"
-          [showClear]="true"
-        ></p-dropdown>
-
-        <div style="display: flex; justify-content: center;">
-          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-          <button pButton type="button" style="margin: 10px;" (click)="back()" label="Volver"></button>
+        <div class="form-group">
+          <label for="apellidoNombre">Nombre y Apellido</label>
+          <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre" />
         </div>
+
+        <div class="form-group">
+          <label for="cuit">Cuit</label>
+          <input pInputText id="cuit" type="text" formControlName="cuit" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input pInputText id="email" type="text" formControlName="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="telefono">Telefono</label>
+          <input pInputText id="telefono" type="text" formControlName="telefono" />
+        </div>
+
+        <div class="form-group">
+          <label for="domicilio">Domicilio</label>
+          <input pInputText id="domicilio" type="text" formControlName="domicilio" />
+        </div>
+
+        <div class="form-group">
+          <label for="zona">Zona</label>
+          <p-dropdown
+            id="zona"
+            [options]="zonas"
+            formControlName="zona"
+            optionLabel="nombre"
+            placeholder="Seleccione Zona"
+            [showClear]="true"
+            styleClass="w-full"
+          ></p-dropdown>
+        </div>
+
+        <div class="button-group">
+          <button pButton label="Guardar" severity="success" type="submit"></button>
+          <button pButton label="Volver" severity="contrast" (click)="back()"></button>
+        </div>
+
       </form>
     </div>
   </p-card>

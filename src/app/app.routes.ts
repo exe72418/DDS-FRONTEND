@@ -19,6 +19,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards.ts/authguard';
 import { ZonasComponent } from './zona/zonas/zonas.component';
 import { CrearZonasComponent } from './zona/crear-zonas/crear-zonas.component';
+import { DetallePedidoComponent } from './detalle-pedido/detalle-pedido.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponentComponent },
@@ -37,6 +38,7 @@ export const routes: Routes = [
   { path: "carrito", component: CarritoComponent , canActivate: [AuthGuard]},
   { path: "pedidos", component: PedidosComponent , canActivate: [AuthGuard]},
   { path: "login", component: LoginComponent },
+  { path: "detallePedido", component: DetallePedidoComponent }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
