@@ -1,42 +1,97 @@
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+/* === Card principal === */
+.clientes-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  padding: 18px;
 }
 
-.top-actions {
+/* === Header centrado === */
+.clientes-header.center {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
+.clientes-header h5 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* Botón Nuevo */
+:host ::ng-deep .btn-nuevo {
+  min-width: 100px;
+  padding: 0.45rem 0.9rem;
+}
+
+/* === Tabla === */
+:host ::ng-deep .clientes-table .p-datatable-thead > tr > th {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+:host ::ng-deep .clientes-table .p-datatable-tbody > tr > td {
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+/* Columna acciones */
 .col-actions {
   text-align: center;
+  width: 150px;
 }
 
+/* Botones de acción */
 .action-buttons {
-  display: flex;
-  justify-content: center;
+  display: inline-flex;
   gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Botones icon-only */
+:host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
+  height: 34px;
+  width: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estado disponible */
+.estado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.estado.ok {
+  background: rgba(25, 135, 84, 0.12);
+  color: #198754;
+}
+
+.estado.no {
+  background: rgba(108, 117, 125, 0.14);
+  color: #6c757d;
+}
+
+/* Empty */
+.empty {
+  text-align: center;
+  padding: 18px;
+  opacity: 0.65;
+}
+
+/* Wrapper del form */
 .form-wrapper {
-  margin-top: 20px;
-}
-
-:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
-    background-color: #e6e6e6; 
-    font-weight: bold;
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
-    background-color: #ffffff !important;
+  margin-top: 18px;
 }
