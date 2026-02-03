@@ -1,0 +1,86 @@
+.form-container {
+  width: 100%;
+  max-width: 450px; 
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 12px; 
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea; 
+}
+
+h4 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.form-group {
+  margin-bottom: 20px; 
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #5d6d7e; 
+  font-size: 0.9rem;
+}
+
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-calendar,
+:host ::ng-deep .p-multiselect {
+  width: 100%;
+  border-radius: 8px; 
+}
+
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-multiselect {
+    border: 1px solid #dce1e6;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+:host ::ng-deep input.p-inputtext {
+    padding: 12px 15px;
+}
+
+:host ::ng-deep .p-inputtext:focus,
+:host ::ng-deep .p-dropdown.p-focus,
+:host ::ng-deep .p-multiselect.p-focus {
+  border-color: #2196F3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  outline: none;
+}
+
+:host ::ng-deep .p-inputtext:hover,
+:host ::ng-deep .p-dropdown:hover,
+:host ::ng-deep .p-multiselect:hover {
+  border-color: #b0b9c2;
+}
+
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-multiselect {
+  padding: 0; 
+  align-items: center;
+}
+:host ::ng-deep .p-dropdown .p-inputtext,
+:host ::ng-deep .p-multiselect .p-inputtext {
+    border: none;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  gap: 15px;
+}
+
+.button-group button {
+    flex: 1; 
+}

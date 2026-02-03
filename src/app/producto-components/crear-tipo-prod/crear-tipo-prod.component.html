@@ -1,25 +1,28 @@
-<div style="display: flex; justify-content: center;">
-  <p-card>
-    <div>
-      <form
-        style="display: flex; flex-direction: column; justify-content: center;"
-        [formGroup]="tipoProdForm"
-        (ngSubmit)="guardar(tipoProdForm.value)"
-      >
-       
-        <h4 *ngIf="tipoProd?.id; else crearTpl">Modificar</h4>
-        <ng-template #crearTpl>
-          <h4>Crear</h4>
-        </ng-template>
+<div>
+  <div class="form-container">
+    <form [formGroup]="tipoProdForm" (ngSubmit)="guardar(tipoProdForm.value)">
+      
+      <h4 *ngIf="tipoProd?.id; else crearTpl">Modificar Tipo de Producto</h4>
+      <ng-template #crearTpl>
+        <h4>Registrar Nuevo Tipo de Producto</h4>
+      </ng-template>
 
+      <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input pInputText id="nombre" type="text" formControlName="nombre" />
+        <input 
+            pInputText 
+            id="nombre" 
+            type="text" 
+            formControlName="nombre" 
+            placeholder="Ej: Electrónica, Bebidas, Limpieza, etc" 
+        />
+      </div>
 
-        <div style="display: flex; justify-content: center;">
-          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-          <button style="margin: 10px;" pButton type="button" (click)="back()" label="Volver"></button>
-        </div>
-      </form>
-    </div>
-  </p-card>
+      <div class="button-group">
+        <button pButton label="Cancelar" class="p-button-outlined p-button-secondary" type="button" (click)="back()"></button>
+        <button pButton label="Guardar Tipo" severity="primary" type="submit"></button>
+      </div>
+
+    </form>
+  </div>
 </div>

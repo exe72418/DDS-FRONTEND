@@ -1,48 +1,46 @@
-<div style="display: flex; justify-content: center;">
-  <p-card>
-    <div>
-      <form
-        style="display: flex; flex-direction: column; justify-content: center;"
-        [formGroup]="repartidorForm"
-        (ngSubmit)="guardar(repartidorForm.value)"
-      >
-        <h4 *ngIf="repartidor?.id; else crearTpl">Modificar</h4>
-        <ng-template #crearTpl>
-          <h4>Crear</h4>
-        </ng-template>
+<div>
+  <div class="form-container">
+    <form [formGroup]="repartidorForm" (ngSubmit)="guardar(repartidorForm.value)">
+      
+      <h4 *ngIf="repartidor?.id; else crearTpl">Modificar Repartidor</h4>
+      <ng-template #crearTpl>
+        <h4>Registrar Nuevo Repartidor</h4>
+      </ng-template>
 
-        <div class="form-group">
-          <label for="cuit">Cuit</label>
-          <input pInputText id="cuit" type="text" formControlName="cuit" />
-        </div>
+      <div class="form-group">
+        <label for="cuit">CUIT</label>
+        <input pInputText id="cuit" type="text" formControlName="cuit"/>
+      </div>
 
-        <div class="form-group">
-          <label for="apellidoNombre">Apellido y Nombre</label>
-          <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre" />
-        </div>
+      <div class="form-group">
+        <label for="apellidoNombre">Apellido y Nombre</label>
+        <input pInputText id="apellidoNombre" type="text" formControlName="apellidoNombre" placeholder="Ej: Lionel Messi" />
+      </div>
 
-        <div class="form-group">
-          <label for="vehiculo">Vehiculo</label>
-          <input pInputText id="vehiculo" type="text" formControlName="vehiculo" />
-        </div>
+      <div class="form-group">
+        <label for="vehiculo">Vehículo</label>
+        <input pInputText id="vehiculo" type="text" formControlName="vehiculo" placeholder="Ej: Ford Ka 2011" />
+      </div>
 
-        <div class="form-group">
-          <label for="zona">Zona</label>
-          <p-dropdown
-            id="zona"
-            [options]="zonas"
-            formControlName="zona"
-            optionLabel="nombre"
-            placeholder="Seleccione una zona"
-            [showClear]="true"
-          ></p-dropdown>
-        </div>
+      <div class="form-group">
+        <label for="zona">Zona</label>
+        <p-dropdown
+          id="zona"
+          [options]="zonas"
+          formControlName="zona"
+          optionLabel="nombre"
+          placeholder="Seleccione una zona"
+          [showClear]="true"
+          styleClass="w-full"
+          appendTo="body"
+        ></p-dropdown>
+      </div>
 
-        <div style="display: flex; justify-content: center;">
-          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-          <button pButton type="button" style="margin: 10px;" (click)="back()" label="Volver"></button>
-        </div>
-      </form>
-    </div>
-  </p-card>
+      <div class="button-group">
+        <button pButton label="Cancelar" class="p-button-outlined p-button-secondary" type="button" (click)="back()"></button>
+        <button pButton label="Guardar Repartidor" severity="primary" type="submit"></button>
+      </div>
+
+    </form>
+  </div>
 </div>

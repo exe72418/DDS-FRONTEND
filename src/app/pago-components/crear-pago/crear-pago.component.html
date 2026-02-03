@@ -1,78 +1,89 @@
-<div style="display: flex; justify-content: center;">
-  <p-card [style]="{'width': '100%', 'max-width': '600px'}"> <div>
-        <form
-        style="display: flex; flex-direction: column; justify-content: center;"
-        [formGroup]="pagoForm"
-        (ngSubmit)="guardar(pagoForm.value)"
-      >
-        <h4 *ngIf="pago?.id; else crearTpl">Modificar</h4>
-        <ng-template #crearTpl>
-          <h4>Crear</h4>
-        </ng-template>
+<div>
+  <div class="form-container">
+    <form [formGroup]="pagoForm" (ngSubmit)="guardar(pagoForm.value)">
+      
+      <h4 *ngIf="pago?.id; else crearTpl">Modificar Pago</h4>
+      <ng-template #crearTpl>
+        <h4>Registrar Nuevo Pago</h4>
+      </ng-template>
 
+      <div class="form-group">
         <label for="fecha">Fecha</label>
         <p-calendar
           id="fecha"
           formControlName="fecha"
-          placeholder="Seleccione una fecha"
+          placeholder="dd/mm/aaaa"
           dateFormat="dd/mm/yy"
-          showIcon="true"
+          [showIcon]="true"
+          styleClass="w-full"
+          appendTo="body"
         ></p-calendar>
+      </div>
 
-        <label for="tipoPago">Tipo Pago</label>
+      <div class="form-group">
+        <label for="tipoPago">Tipo de Pago</label>
         <p-dropdown
           id="tipoPago"
           [options]="tiposPago"
           formControlName="tipoPago"
           optionLabel="nombre"
-          placeholder="TipoPago"
+          placeholder="Seleccione método"
           dataKey="id"
+          styleClass="w-full"
+          appendTo="body"
         ></p-dropdown>
+      </div>
 
+      <div class="form-group">
         <label for="pedido">Pedido</label>
         <p-dropdown
           id="pedido"
           [options]="pedidosDisponibles"
           formControlName="pedido"
           optionLabel="nroPedido"
-          placeholder="Pedido"
+          placeholder="Seleccione un pedido"
           dataKey="nroPedido"
+          styleClass="w-full"
+          appendTo="body"
         ></p-dropdown>
+      </div>
 
-        <div *ngIf="pedidoSeleccionado" style="margin-top: 10px;">
-            
-            <p-card styleClass="resumen-card" >
-                
-                <div class="lista-resumen">
-                    <div *ngFor="let linea of pedidoSeleccionado.lineas" class="item-linea">
-                        <div class="nombre-prod">
-                            {{ linea.producto?.descripcion }}
-                        </div>
-                        <div class="detalles-prod">
-                            <span><span class="label">Cant:</span> {{ linea.cantidad }}</span>
-                            <span >|</span>
-                            <span><span class="label">Precio:</span> {{ linea.producto?.precio | currency }}</span>
-                            <span>|</span>
-                            <span class="subtotal-item">Subtotal: {{ (linea.subtotal || (linea.cantidad * linea.producto?.precio!)) | currency }}</span>
-                        </div>
-                    </div>
-                </div>
+      <div *ngIf="pedidoSeleccionado" class="resumen-wrapper">
+        <p-card header="Resumen del Pedido" styleClass="resumen-card">
+           
+           <div class="lista-resumen">
+               <div *ngFor="let linea of pedidoSeleccionado.lineas" class="item-linea">
+                   
+                   <div class="nombre-prod">
+                       {{ linea.producto?.descripcion }}
+                   </div>
 
-                <div class="total-bloque">
-                    <hr>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 1.1rem; font-weight: bold;">Total a Pagar:</span>
-                        <span class="precio-final">{{ pedidoSeleccionado.total | currency }}</span>
-                    </div>
-                </div>
-            </p-card>
+                   <div class="detalles-prod">
+                       <span><span class="label">Cant:</span> {{ linea.cantidad }}</span>
+                       <span class="separador">|</span>
+                       <span><span class="label">Precio:</span> {{ linea.producto?.precio | currency }}</span>
+                       <span class="separador">|</span>
+                       <span class="subtotal-item">Subtotal: {{ (linea.subtotal || (linea.cantidad * linea.producto?.precio!)) | currency }}</span>
+                   </div>
 
-        </div>
-        <div style="display: flex; justify-content: center;">
-          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-          <button pButton type="button" style="margin: 10px;" (click)="back()" label="Volver"></button>
-        </div>
-      </form>
-    </div>
-  </p-card>
+               </div>
+           </div>
+
+           <div class="total-bloque">
+               <hr class="separador-total">
+               <div class="fila-total">
+                   <span class="label-total">Total a Pagar:</span>
+                   <span class="precio-final">{{ pedidoSeleccionado.total | currency }}</span>
+               </div>
+           </div>
+
+        </p-card>
+      </div>
+      <div class="button-group">
+        <button pButton label="Cancelar" class="p-button-outlined p-button-secondary" type="button" (click)="back()"></button>
+        <button pButton label="Guardar Pago" severity="primary" type="submit"></button>
+      </div>
+
+    </form>
+  </div>
 </div>
