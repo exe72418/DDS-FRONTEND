@@ -1,35 +1,90 @@
-<div class="container">
-<div *ngIf="!crearEditarMode" style="display: flex; justify-content: center; margin-bottom: 10px;">
-  <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()"></p-button>
-</div>
+<div class="container py-4">
 
-  <p-table *ngIf="!crearEditarMode" [value]="tiposPago" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Disponible</th>
-        <th style="text-align: center;">Editar/Borrar</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-tipoPago>
-      <tr>
-        <td>{{ tipoPago.nombre }}</td>
-        <td>{{ tipoPago.descripcion }}</td>
-        <td>{{ tipoPago.disponible }}</td>
-        <td>
-          <div style="margin-right: 10px; display: flex; justify-content: space-around;">
-            <p-button [disabled]="!tipoPago.disponible" icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
-              (onClick)="editTipoPago(tipoPago)"></p-button>
-            <p-button [disabled]="!tipoPago.disponible" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-              (onClick)="deleteTipoPago(tipoPago)"></p-button>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+  <div *ngIf="!crearEditarMode" class="tipospago-card">
 
-  <div *ngIf="crearEditarMode">
-    <app-crear-tipopago (editCrear)="changeEditCreate()" [tipoPago]="tipoPagoelected"></app-crear-tipopago>
+    <div class="tipospago-header center">
+      <h5>Tipos de Pago</h5>
+
+      <p-button
+        label="Nuevo"
+        icon="pi pi-plus"
+        styleClass="p-button-sm btn-nuevo"
+        (onClick)="new()">
+      </p-button>
+    </div>
+
+    <p-table
+      [value]="tiposPago"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [responsiveLayout]="'scroll'"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      styleClass="p-datatable-sm p-datatable-striped tipospago-table"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th style="width: 120px;">Disponible</th>
+          <th class="col-actions">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-tipoPago>
+        <tr>
+          <td class="fw-semibold">{{ tipoPago.nombre }}</td>
+          <td>{{ tipoPago.descripcion }}</td>
+
+          <td>
+            <span class="estado" [class.ok]="tipoPago.disponible" [class.no]="!tipoPago.disponible">
+              {{ tipoPago.disponible ? 'Sí' : 'No' }}
+            </span>
+          </td>
+
+          <td class="col-actions">
+            <div class="action-buttons">
+              <p-button
+                [disabled]="!tipoPago.disponible"
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [outlined]="true"
+                severity="success"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="editTipoPago(tipoPago)">
+              </p-button>
+
+              <p-button
+                [disabled]="!tipoPago.disponible"
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="deleteTipoPago(tipoPago)">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4" class="empty">
+            No hay tipos de pago para mostrar.
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
   </div>
- </div>
+
+  <div *ngIf="crearEditarMode" class="form-wrapper">
+    <app-crear-tipopago
+      (editCrear)="changeEditCreate()"
+      [tipoPago]="tipoPagoelected">
+    </app-crear-tipopago>
+  </div>
+
+</div>
