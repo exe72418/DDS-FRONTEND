@@ -1,79 +1,125 @@
-<div class="container">
-    <div *ngIf="!crearEditarModeEntrega">
-        
-        <div class="mb-3" style="display: flex; justify-content: center;">
-            <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
-        </div>
+<div class="container py-4">
 
-        <div class="d-flex flex-wrap justify-content-center mb-3" style="gap: 10px; align-items: center;">
-            
-            <p-calendar 
-                [(ngModel)]="fechaDesde" 
-                placeholder="Fecha Desde" 
-                dateFormat="dd/mm/yy" 
-                showIcon="true"
-                (onSelect)="buscar()"
-                (onClear)="buscar()"
-                [showClear]="true">
-            </p-calendar>
+  <div *ngIf="!crearEditarModeEntrega" class="entregas-card">
 
-            <p-calendar 
-                [(ngModel)]="fechaHasta" 
-                placeholder="Fecha Hasta" 
-                dateFormat="dd/mm/yy" 
-                showIcon="true"
-                (onSelect)="buscar()"
-                (onClear)="buscar()"
-                [showClear]="true">
-            </p-calendar>
+    <div class="entregas-header center">
+      <h5>Entregas</h5>
 
-            <p-dropdown 
-                [options]="clientes" 
-                [(ngModel)]="clienteSelect" 
-                optionLabel="apellidoNombre" 
-                placeholder="Filtrar por Cliente"
-                (onChange)="buscar()"
-                [showClear]="true"
-                [style]="{'width':'220px'}">
-            </p-dropdown>
-        </div>
-        <p-table [value]="entregas" [tableStyle]="{ 'min-width': '50rem' }">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Zona</th>
-                    <th>Repartidor</th>
-                    <th>Pedido/s</th>
-                    <th style="text-align: center;">Editar/Borrar</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-entrega>
-                <tr>
-                    <td>{{ entrega.fecha | date: 'dd/MM/yyyy'}}</td>
-                    <td>{{ entrega.zona?.nombre }}</td>
-                    <td>{{ entrega.repartidor?.apellidoNombre }}</td>
-                    <td>
-                        <ul>
-                            <li *ngFor="let pedido of entrega.pedidos">
-                                N° {{ pedido.nroPedido }} - Cliente: {{ pedido.cliente.apellidoNombre }}
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <div style="margin-right: 10px; display: flex;justify-content: space-around;">
-                            <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
-                                severity="success" (onClick)="editEntrega(entrega)" />
-                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                                (onClick)="deleteEntrega(entrega)" />
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
+      <p-button
+        label="Nuevo"
+        icon="pi pi-plus"
+        styleClass="p-button-sm btn-nuevo"
+        (onClick)="new()">
+      </p-button>
     </div>
 
-    <div *ngIf="crearEditarModeEntrega">
-        <app-crear-entrega (editCrear)="changeEditCreate()" [entrega]="entSelected">
-        </app-crear-entrega>
+    <div class="filters-bar">
+      <p-calendar
+        [(ngModel)]="fechaDesde"
+        placeholder="Fecha Desde"
+        dateFormat="dd/mm/yy"
+        showIcon="true"
+        (onSelect)="buscar()"
+        (onClear)="buscar()"
+        [showClear]="true">
+      </p-calendar>
+
+      <p-calendar
+        [(ngModel)]="fechaHasta"
+        placeholder="Fecha Hasta"
+        dateFormat="dd/mm/yy"
+        showIcon="true"
+        (onSelect)="buscar()"
+        (onClear)="buscar()"
+        [showClear]="true">
+      </p-calendar>
+
+      <p-dropdown
+        [options]="clientes"
+        [(ngModel)]="clienteSelect"
+        optionLabel="apellidoNombre"
+        placeholder="Filtrar por Cliente"
+        (onChange)="buscar()"
+        [showClear]="true"
+        styleClass="dropdown-cliente">
+      </p-dropdown>
     </div>
+
+    <p-table
+      [value]="entregas"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [responsiveLayout]="'scroll'"
+      styleClass="p-datatable-sm p-datatable-striped entregas-table"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 130px;">Fecha</th>
+          <th style="width: 180px;">Zona</th>
+          <th style="width: 220px;">Repartidor</th>
+          <th>Pedido/s</th>
+          <th class="col-actions">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-entrega>
+        <tr>
+          <td>{{ entrega.fecha | date: 'dd/MM/yyyy' }}</td>
+          <td class="fw-semibold">{{ entrega.zona?.nombre }}</td>
+          <td>{{ entrega.repartidor?.apellidoNombre }}</td>
+
+          <td>
+            <ul class="pedidos-list">
+              <li *ngFor="let pedido of entrega.pedidos">
+                <span class="pedido-chip">
+                  N° {{ pedido.nroPedido }}
+                </span>
+                <span class="pedido-text">
+                  Cliente: {{ pedido.cliente.apellidoNombre }}
+                </span>
+              </li>
+            </ul>
+          </td>
+
+          <td class="col-actions">
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [outlined]="true"
+                severity="success"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="editEntrega(entrega)">
+              </p-button>
+
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="deleteEntrega(entrega)">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="empty">
+            No hay entregas para mostrar.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>
+
+  <div *ngIf="crearEditarModeEntrega" class="form-wrapper">
+    <app-crear-entrega (editCrear)="changeEditCreate()" [entrega]="entSelected">
+    </app-crear-entrega>
+  </div>
+
 </div>

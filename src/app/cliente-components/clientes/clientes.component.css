@@ -6,7 +6,7 @@
   padding: 18px;
 }
 
-/* === Header centrado === */
+
 .clientes-header.center {
   display: flex;
   flex-direction: column;
@@ -22,13 +22,13 @@
   letter-spacing: 0.3px;
 }
 
-/* Botón Nuevo */
+
 :host ::ng-deep .btn-nuevo {
   min-width: 100px;
   padding: 0.45rem 0.9rem;
 }
 
-/* === Tabla === */
+
 :host ::ng-deep .clientes-table .p-datatable-thead > tr > th {
   font-weight: 700;
   font-size: 13px;
@@ -39,13 +39,13 @@
   font-size: 13px;
 }
 
-/* Columna acciones */
+
 .col-actions {
   text-align: center;
   width: 150px;
 }
 
-/* Botones de acción */
+
 .action-buttons {
   display: inline-flex;
   gap: 10px;
@@ -53,7 +53,7 @@
   align-items: center;
 }
 
-/* Botones icon-only */
+
 :host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
   height: 34px;
   width: 34px;
@@ -63,7 +63,7 @@
   justify-content: center;
 }
 
-/* Estado disponible */
+
 .estado {
   display: inline-flex;
   align-items: center;
@@ -84,14 +84,12 @@
   color: #6c757d;
 }
 
-/* Empty */
 .empty {
   text-align: center;
   padding: 18px;
   opacity: 0.65;
 }
 
-/* Wrapper del form */
 .form-wrapper {
   margin-top: 18px;
 }
