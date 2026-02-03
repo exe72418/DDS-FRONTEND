@@ -1,25 +1,26 @@
-<div style="display: flex; justify-content: center;">
-  <p-card>
-    <div>
-      <form
-        style="display: flex; flex-direction: column; justify-content: center;"
-        [formGroup]="entregaForm"
-        (ngSubmit)="guardar(entregaForm.value)"
-      >
-        <h4 *ngIf="entrega?.id; else crearTpl">Modificar</h4>
-        <ng-template #crearTpl>
-          <h4>Crear</h4>
-        </ng-template>
+<div>
+  <div class="form-container">
+    <form [formGroup]="entregaForm" (ngSubmit)="guardar(entregaForm.value)">
+      
+      <h4 *ngIf="entrega?.id; else crearTpl">Modificar Entrega</h4>
+      <ng-template #crearTpl>
+        <h4>Registrar Nueva Entrega</h4>
+      </ng-template>
 
+      <div class="form-group">
         <label for="fecha">Fecha</label>
         <p-calendar
           id="fecha"
           formControlName="fecha"
-          placeholder="Seleccione una fecha"
+          placeholder="dd/mm/aaaa"
           dateFormat="dd/mm/yy"
-          showIcon="true"
+          [showIcon]="true"
+          styleClass="w-full"
+          appendTo="body"
         ></p-calendar>
+      </div>
 
+      <div class="form-group">
         <label for="zona">Zona</label>
         <p-dropdown
           id="zona"
@@ -30,21 +31,29 @@
           (onChange)="filtrarPorZona($event.value)"
           [showClear]="true"
           dataKey="id"
+          styleClass="w-full"
+          appendTo="body"
         ></p-dropdown>
+      </div>
 
+      <div class="form-group">
         <label for="repartidor">Repartidor</label>
         <p-dropdown
           id="repartidor"
           [options]="repartidoresFiltrados"
           formControlName="repartidor"
           optionLabel="apellidoNombre"
-          placeholder="Repartidor"
+          placeholder="Seleccione Repartidor"
           [showClear]="true"
           [disabled]="!entregaForm.get('zona')?.value"
           emptyMessage="No hay repartidores en esta zona"
           dataKey="id"
+          styleClass="w-full"
+          appendTo="body"
         ></p-dropdown>
+      </div>
 
+      <div class="form-group">
         <label for="pedidos">Pedidos</label>
         <p-multiSelect
           id="pedidos"
@@ -56,13 +65,16 @@
           [disabled]="!entregaForm.get('zona')?.value"
           emptyMessage="No hay pedidos pagos para esta zona"
           dataKey="nroPedido"
+          styleClass="w-full"
+          appendTo="body"
         ></p-multiSelect>
+      </div>
 
-        <div style="display: flex; justify-content: center;">
-          <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-          <button pButton type="button" style="margin: 10px;" (click)="back()" label="Volver"></button>
-        </div>
-      </form>
-    </div>
-  </p-card>
+      <div class="button-group">
+        <button pButton label="Cancelar" class="p-button-outlined p-button-secondary" type="button" (click)="back()"></button>
+        <button pButton label="Guardar Entrega" severity="primary" type="submit"></button>
+      </div>
+
+    </form>
+  </div>
 </div>

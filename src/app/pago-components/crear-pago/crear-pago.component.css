@@ -1,3 +1,113 @@
+/* ========================================= */
+/* ESTILO FORMULARIO (Standard FAST)         */
+/* ========================================= */
+
+.form-container {
+  width: 100%;
+  max-width: 600px; /* Mismo ancho que el carrito */
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px; 
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea; 
+}
+
+h4 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 20px; 
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #5d6d7e; 
+  font-size: 0.9rem;
+}
+
+/* --- Overrides de PrimeNG (Inputs) --- */
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-calendar {
+  width: 100%;
+  border-radius: 8px; 
+}
+
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-dropdown {
+    border: 1px solid #dce1e6;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+:host ::ng-deep input.p-inputtext {
+    padding: 12px 15px;
+}
+
+:host ::ng-deep .p-inputtext:focus,
+:host ::ng-deep .p-dropdown.p-focus {
+  border-color: #2196F3; 
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  outline: none;
+}
+
+:host ::ng-deep .p-dropdown {
+  padding: 0; 
+  align-items: center;
+}
+:host ::ng-deep .p-dropdown .p-inputtext {
+    border: none;
+}
+
+/* Botones */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+.button-group button {
+    flex: 1; 
+}
+
+
+/* ========================================= */
+/* ESTILOS DEL RESUMEN (Estilo Carrito)      */
+/* ========================================= */
+
+.resumen-wrapper {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+/* Estilo de la tarjeta interna (Grisácea como en el carrito) */
+:host ::ng-deep .resumen-card {
+    box-shadow: none !important;
+    border: 1px solid #f0f0f0; 
+    background-color: #fafafa;
+}
+
+:host ::ng-deep .resumen-card .p-card-body {
+    padding: 1.25rem; 
+}
+
+/* Ajuste para que el título del p-card sea sutil */
+:host ::ng-deep .resumen-card .p-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 1rem;
+}
+
 .lista-resumen {
     display: flex;
     flex-direction: column;
@@ -5,32 +115,62 @@
     margin-bottom: 15px;
 }
 
+.item-linea {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
 .nombre-prod {
     font-weight: bold;
     color: #333;
     font-size: 1rem;
+    margin-bottom: 4px; 
 }
 
 .detalles-prod {
     font-size: 0.9rem;
     color: #666;
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 8px;
+    flex-wrap: wrap; /* Permite que baje si es muy largo */
 }
 
 .label {
     font-weight: 600;
+    color: #555;
+}
+
+.separador {
+    color: #ccc;
 }
 
 .subtotal-item {
-    color: #007ad9;
+    color: #007ad9; 
     font-weight: bold;
-    margin-left: auto; 
+}
+
+/* Bloque Total */
+.separador-total {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}
+
+.fila-total {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.label-total {
+    font-size: 1.1rem; 
+    color: #333;
+    font-weight: 600;
 }
 
 .precio-final {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #28a745;
+    color: #28a745; 
 }

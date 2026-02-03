@@ -1,23 +1,39 @@
-<div style="display: flex; justify-content: center;">
-    <p-card>
-        <div>
-            <form style="display: flex; flex-direction: column; justify-content: center;" [formGroup]="zonaForm"
-                (ngSubmit)="guardar(zonaForm.value)">
-                
-                <h4 *ngIf="zona">Modificar</h4>
-                <h4 *ngIf="!zona">Crear</h4>
+<div>
+  <div class="form-container">
+    <form [formGroup]="zonaForm" (ngSubmit)="guardar(zonaForm.value)">
+      
+      <h4 *ngIf="zona?.id; else crearTpl">Modificar Zona</h4>
+      <ng-template #crearTpl>
+        <h4>Registrar Nueva Zona</h4>
+      </ng-template>
 
-                <label for="nombre">Nombre</label>
-                <input pInputText id="nombre" type="text" formControlName="nombre">
-                
-                <label for="descripcion">Descripción</label>
-                <input pInputText id="descripcion" type="text" formControlName="descripcion">
-                
-                <div style="display: flex; justify-content: center;">
-                    <button style="margin: 10px;" pButton type="submit" label="Guardar"></button>
-                    <button pButton type="button" style="margin: 10px;" (click)="back()">Volver</button>
-                </div>           
-             </form>
-        </div>
-    </p-card>
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input 
+            pInputText 
+            id="nombre" 
+            type="text" 
+            formControlName="nombre" 
+            placeholder="Ej: Norte, Sur, Centro, etc" 
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <input 
+            pInputText 
+            id="descripcion" 
+            type="text" 
+            formControlName="descripcion" 
+            placeholder="Ej: Zona Centro de la ciudad de Rosario" 
+        />
+      </div>
+
+      <div class="button-group">
+        <button pButton label="Cancelar" class="p-button-outlined p-button-secondary" type="button" (click)="back()"></button>
+        <button pButton label="Guardar Zona" severity="primary" type="submit"></button>
+      </div>
+
+    </form>
+  </div>
 </div>

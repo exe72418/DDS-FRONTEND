@@ -1,15 +1,19 @@
-<div class="container-fluid">
-    
-    <p-card styleClass="mb-3">
-        <form [formGroup]="pedidoForm" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+<div class="main-wrapper">
+
+    <div class="form-container header-section">
+        <form [formGroup]="pedidoForm">
             
-            <div *ngIf="pedido.nroPedido">
-                <label style="font-weight: bold; margin-right: 5px;">Nro Pedido:</label>
-                <span>{{ pedido.nroPedido }}</span>
+            <div class="header-top">
+                <h4>
+                    <span *ngIf="pedido.nroPedido; else nuevoTit">Pedido #{{ pedido.nroPedido }}</span>
+                    <ng-template #nuevoTit>Nuevo Pedido</ng-template>
+                </h4>
             </div>
 
-            <div class="flex-column">
-                <span class="p-float-label">
+            <div class="header-row">
+                
+                <div class="form-group flex-item">
+                    <label for="cliente">Cliente</label>
                     <p-dropdown 
                         id="cliente" 
                         [options]="clientes" 
@@ -18,32 +22,38 @@
                         placeholder="Seleccione Cliente" 
                         [showClear]="true" 
                         dataKey="id"
-                        [style]="{'width':'250px'}">
+                        styleClass="w-full"
+                        appendTo="body">
                     </p-dropdown>
-                </span>
+                </div>
+
+                <div class="form-group flex-item">
+                    <label for="fecha">Fecha</label>
+                    <p-calendar 
+                        id="fecha" 
+                        formControlName="fecha"
+                        placeholder="dd/mm/aaaa"
+                        dateFormat="dd/mm/yy" 
+                        [showIcon]="true"
+                        [minDate]="minDateCalendar"
+                        styleClass="w-full"
+                        appendTo="body">
+                    </p-calendar>
+                </div>
+
             </div>
 
-            <div class="flex-column">
-                <p-calendar 
-                    placeholder="Fecha del Pedido" 
-                    id="fecha" 
-                    formControlName="fecha"
-                    dateFormat="dd/mm/yy" 
-                    [showIcon]="true"
-                    [minDate]="minDateCalendar">
-                </p-calendar>
-            </div>
-
-            <div style="margin-left: auto; font-size: 1.5rem; font-weight: bold; color: #28a745;">
+            <div class="total-display">
                 Total: {{ pedido.total | currency }}
             </div>
-        </form>
-    </p-card>
 
-    <div class="d-flex flex-wrap justify-content-center mb-3 gap-2" style="gap: 10px;">
-        <input pInputText type="text" placeholder="Buscar producto..." [(ngModel)]="filtroNombre" (keyup)="aplicarFiltros()">
-        <input pInputText type="number" placeholder="Precio Min" [(ngModel)]="filtroPrecioMin" (keyup)="aplicarFiltros()">
-        <input pInputText type="number" placeholder="Precio Max" [(ngModel)]="filtroPrecioMax" (keyup)="aplicarFiltros()">
+        </form>
+    </div>
+
+    <div class="filters-bar">
+        <input pInputText type="text" placeholder="Buscar producto..." [(ngModel)]="filtroNombre" (keyup)="aplicarFiltros()" class="filter-input search-input">
+        <input pInputText type="number" placeholder="Min $" min="0" [(ngModel)]="filtroPrecioMin" (keyup)="aplicarFiltros()" class="filter-input">
+        <input pInputText type="number" placeholder="Max $" min="0" [(ngModel)]="filtroPrecioMax" (keyup)="aplicarFiltros()" class="filter-input">
         
         <p-dropdown 
             [options]="tiposProducto" 
@@ -52,26 +62,28 @@
             placeholder="Tipo Producto" 
             [showClear]="true"
             (onChange)="aplicarFiltros()"
-            [style]="{'width':'200px'}">
+            styleClass="w-full filter-dropdown"
+            appendTo="body">
         </p-dropdown>
     </div>
 
-    <div class="tabla" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+    <div class="product-grid">
         
-        <div *ngFor="let product of productosFiltrados">
-            <p-card [style]="{ width: '250px', 'text-align': 'center' }">
+        <div *ngFor="let product of productosFiltrados" class="product-wrapper">
+            <p-card styleClass="product-card">
 
-                <h4 style="margin: 10px 0; font-size: 1.1rem; height: 3em; overflow: hidden;">{{ product.descripcion }}</h4>
-                <p style="font-weight: bold;">{{ product.precio | currency }}</p>
-                <p style="font-weight: bold; color: #555;">Stock: {{ product.stock }}</p>
+                <h4 class="prod-title">{{ product.descripcion }}</h4>
+                
+                <p class="prod-price">{{ product.precio | currency }}</p>
+                <p class="prod-stock">Stock: {{ product.stock }}</p>
 
                 <ng-container *ngIf="getCantidadEnPedido(product) > 0; else botonComprar">
                     
-                    <p style="font-size: 1.1rem; font-weight: bold; color: #007ad9;">
+                    <p class="cant-display">
                         Cantidad: {{ getCantidadEnPedido(product) }}
                     </p>
                     
-                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+                    <div class="control-buttons">
                         <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning p-button-rounded"></button>
                         <button (click)="agregar(product)" pButton icon="pi pi-plus" class="p-button-success p-button-rounded"></button>
                         <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
@@ -80,8 +92,8 @@
                 </ng-container>
 
                 <ng-template #botonComprar>
-                    <div class="flex gap-3 mt-1" style="margin-top: 10px;">
-                        <p-button (click)="agregar(product)" label="Comprar" class="w-full" styleClass="w-full" />
+                    <div class="comprar-btn-wrapper">
+                        <p-button (click)="agregar(product)" label="Comprar" styleClass="w-full" />
                     </div>
                 </ng-template>
 
@@ -90,9 +102,9 @@
 
     </div>
 
-    <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
-        <button pButton label="Volver" severity="contrast" style="margin-right: 10px;" (click)="back()"></button>
-        <button pButton label="Guardar Pedido" severity="success" style="margin-right: 10px;" (click)="savePedido()"></button>
+    <div class="button-group main-actions">
+        <button pButton label="Volver" severity="secondary" type="button" (click)="back()"></button>
+        <button pButton label="Guardar Pedido" severity="success" (click)="savePedido()"></button>
     </div>
 
 </div>
