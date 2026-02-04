@@ -1,104 +1,63 @@
-/* Estilos generales */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+.pedidos-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  padding: 18px;
 }
 
-/* Estilos para el título "FAST" */
-.navbar-brand {
-  margin-left: 5%;
-  font-family: 'Arial', sans-serif;
-  font-size: 24px;
-  font-weight: bold;
-  color: #000;
-  text-transform: uppercase;
-}
-
-/* Iconos */
-.iconos {
+.pedidos-header.center {
   display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
-.iconos:hover {
-  cursor: pointer;
+.pedidos-header h5 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
-/* Estilos para la navbar */
-.navbar {
-  background-color: white;
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
+.btn-nuevo {
+  min-width: 140px;
+  padding: 0.45rem 0.9rem;
+}
+
+:host ::ng-deep .pedidos-table .p-datatable-thead > tr > th {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+:host ::ng-deep .pedidos-table .p-datatable-tbody > tr > td {
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.col-actions {
+  text-align: center;
+  width: 190px;
+}
+
+.action-buttons {
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
   align-items: center;
 }
 
-.navbar-nav {
-  list-style: none;
-  margin: 0;
+:host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
+  height: 34px;
+  width: 34px;
   padding: 0;
-  display: flex;
-}
-
-.nav-item {
-  margin-right: 20px;
-}
-
-.nav-link {
-  display: block;
-  padding: 8px 12px;
-  text-decoration: none;
-  color: #000;
-}
-
-.nav-link:hover {
-  background-color: #f2f2f2;
-}
-
-/* Estilos para la tabla */
-.tabla-centrada {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  margin-top: 20px;
-  background-color: white;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-}
-
-th,
-td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: left;
-  background-color: white;
-}
-
-th {
-  background-color: white;
-  font-weight: bold;
-  color: #000;
-}
-
-tbody tr:nth-child(odd),
-tbody tr:nth-child(even) {
-  background-color: white;
-}
-
-/* Botones en la tabla */
-p-button {
-  background-color: white;
-  color: #000;
-  border: 1px solid #ddd;
-}
-
-p-button:hover {
-  background-color: #f2f2f2;
+.empty {
+  text-align: center;
+  padding: 18px;
+  opacity: 0.65;
 }

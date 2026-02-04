@@ -1,47 +1,122 @@
-<div class="container">
-  <div class="col" *ngIf="!crearMode" style="display: flex; justify-content: center; margin-bottom: 20px;">
-    <button pButton icon="pi pi-plus" routerLink="/home" label="Crear Pedido"></button>
-  </div>
+<div class="container py-4">
 
-  <div class="col">
-    <p-table *ngIf="!crearMode" [value]="pedidos" [tableStyle]="{ 'min-width': '50rem' }" class="table-striped">
+  <div *ngIf="!crearMode" class="pedidos-card">
+
+    <div class="pedidos-header center">
+      <h5>Pedidos</h5>
+
+      <button
+        pButton
+        icon="pi pi-plus"
+        routerLink="/home"
+        label="Crear Pedido"
+        class="p-button-sm btn-nuevo">
+      </button>
+    </div>
+
+    <p-table
+      *ngIf="!crearMode"
+      [value]="pedidos"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [responsiveLayout]="'scroll'"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      styleClass="p-datatable-sm p-datatable-striped pedidos-table"
+    >
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="cliente.apellidoNombre">Cliente <p-sortIcon field="cliente.apellidoNombre"></p-sortIcon>
+          <th pSortableColumn="cliente.apellidoNombre">
+            Cliente <p-sortIcon field="cliente.apellidoNombre"></p-sortIcon>
           </th>
-          <th pSortableColumn="entrega.id">Entrega <p-sortIcon field="entrega.id"></p-sortIcon></th>
-          <th pSortableColumn="fecha">Fecha <p-sortIcon field="fecha"></p-sortIcon></th>
-          <th pSortableColumn="pago.id">Pago <p-sortIcon field="pago.id"></p-sortIcon></th>
-          <th pSortableColumn="total">Total <p-sortIcon field="total"></p-sortIcon></th>
-          <th>Detalles</th>
-          <th style="text-align: center;">Acciones</th>
+          <th pSortableColumn="entrega.id" style="width: 110px;">
+            Entrega <p-sortIcon field="entrega.id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="fecha" style="width: 140px;">
+            Fecha <p-sortIcon field="fecha"></p-sortIcon>
+          </th>
+          <th pSortableColumn="pago.id" style="width: 110px;">
+            Pago <p-sortIcon field="pago.id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="total" style="width: 140px;">
+            Total <p-sortIcon field="total"></p-sortIcon>
+          </th>
+          <th style="width: 110px; text-align: center;">Detalles</th>
+          <th class="col-actions">Acciones</th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-pedido>
         <tr>
-          <td>{{ pedido.cliente.apellidoNombre }}</td>
+          <td class="fw-semibold">{{ pedido.cliente?.apellidoNombre }}</td>
           <td>{{ pedido.entrega ? pedido.entrega.id : '—' }}</td>
           <td>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</td>
           <td>{{ pedido.pago ? pedido.pago.id : '—' }}</td>
           <td>{{ pedido.total | currency }}</td>
-          <td style="text-align: center;">
-            <p-button icon="pi pi-eye" severity="info" rounded (onClick)="showProductDetails(pedido)"></p-button>
+
+          <td class="text-center">
+            <p-button
+              icon="pi pi-eye"
+              severity="info"
+              [rounded]="true"
+              [outlined]="true"
+              styleClass="p-button-sm p-button-icon-only"
+              (onClick)="showProductDetails(pedido)">
+            </p-button>
           </td>
-          <td style="text-align: center;">
-            <div style="display: flex; justify-content: center; gap: 10px;">
-              <p-button [disabled]="pedido.pago" icon="pi pi-pencil" rounded outlined severity="success"
-                (onClick)="editProduct(pedido)"></p-button>
-              <p-button [disabled]="pedido.entrega" icon="pi pi-trash" rounded outlined severity="danger"
-                (onClick)="deleteProduct(pedido)"></p-button>
-              <p-button [disabled]="pedido.pago" icon="pi pi-dollar" rounded outlined severity="help"
-              (onClick)="irAPago(pedido)"></p-button>
+
+          <td class="col-actions">
+            <div class="action-buttons">
+              <p-button
+                [disabled]="pedido.pago"
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [outlined]="true"
+                severity="success"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="editProduct(pedido)">
+              </p-button>
+
+              <p-button
+                [disabled]="pedido.entrega"
+                icon="pi pi-trash"
+                [rounded]="true"
+                [outlined]="true"
+                severity="danger"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="deleteProduct(pedido)">
+              </p-button>
+
+              <p-button
+                [disabled]="pedido.pago"
+                icon="pi pi-dollar"
+                [rounded]="true"
+                [outlined]="true"
+                severity="help"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="irAPago(pedido)">
+              </p-button>
             </div>
           </td>
         </tr>
       </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="empty">
+            No hay pedidos para mostrar.
+          </td>
+        </tr>
+      </ng-template>
+
     </p-table>
+
   </div>
 
-  <app-crear-pedido (editCrear)="changeEditCreate()" [pedido]="pedidoSelected" *ngIf="crearMode"></app-crear-pedido>
+  <app-crear-pedido
+    (editCrear)="changeEditCreate()"
+    [pedido]="pedidoSelected"
+    *ngIf="crearMode">
+  </app-crear-pedido>
+
 </div>

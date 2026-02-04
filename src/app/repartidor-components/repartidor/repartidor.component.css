@@ -1,98 +1,87 @@
-/* Estilos generales */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+.repartidores-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  padding: 18px;
 }
 
-/* Estilos para el título "FAST" */
-.navbar-brand {
-  margin-left: 5%;
-  font-family: 'Arial', sans-serif;
-  font-size: 24px;
-  font-weight: bold;
-  color: #2196F3;
-  text-transform: uppercase;
-}
-
-.iconos {
+.repartidores-header.center {
   display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
-.iconos:hover {
-  cursor: pointer;
+.repartidores-header h5 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
+:host ::ng-deep .btn-nuevo {
+  min-width: 100px;
+  padding: 0.45rem 0.9rem;
+}
 
-/* Estilos para la navbar */
-.navbar {
-  background-color: #f0f0f0;
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
+:host ::ng-deep .repartidores-table .p-datatable-thead > tr > th {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+:host ::ng-deep .repartidores-table .p-datatable-tbody > tr > td {
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.col-actions {
+  text-align: center;
+  width: 150px;
+}
+
+.action-buttons {
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
   align-items: center;
 }
 
-.navbar-brand {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.navbar-nav {
-  list-style: none;
-  margin: 0;
+:host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
+  height: 34px;
+  width: 34px;
   padding: 0;
-  display: flex;
-}
-
-.nav-item {
-  margin-right: 20px;
-}
-
-.nav-link {
-  display: block;
-  padding: 8px 12px;
-  text-decoration: none;
-  color: #333;
-}
-
-.nav-link:hover {
-  background-color: #eee;
-}
-
-/* Estilos para la tabla */
-.tabla-centrada {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  margin-top: 20px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #f9f9f9;
+.estado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
 }
 
-th,
-td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: left;
+.estado.ok {
+  background: rgba(25, 135, 84, 0.12);
+  color: #198754;
 }
 
-th {
-  background-color: #e6e6e6;
-  font-weight: bold;
+.estado.no {
+  background: rgba(108, 117, 125, 0.14);
+  color: #6c757d;
 }
 
-tbody tr:nth-child(odd) {
-  background-color: #fff;
+.empty {
+  text-align: center;
+  padding: 18px;
+  opacity: 0.65;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f5f5f5;
+.form-wrapper {
+  margin-top: 18px;
 }

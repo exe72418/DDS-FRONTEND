@@ -1,25 +1,90 @@
-.card{
-/*     width: 300px;
- */}
-.div{
-    display: grid;
-    justify-content: center;
-}
-.divdentrocard{
-    width: 100%;
+/* ========================================= */
+/* ESTILO ESTÁNDAR FAST (Contenedor y Inputs)*/
+/* ========================================= */
 
+.form-container {
+  width: 100%;
+  max-width: 600px; /* Ancho cómodo para el carrito */
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px; 
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea; 
 }
-.button{
-    display: flex;
+
+h4 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 20px; 
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #5d6d7e; 
+  font-size: 0.9rem;
+}
+
+/* --- Overrides de PrimeNG (Inputs) --- */
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-calendar {
+  width: 100%;
+  border-radius: 8px; 
+}
+
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-dropdown {
+    border: 1px solid #dce1e6;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+:host ::ng-deep input.p-inputtext {
+    padding: 12px 15px;
+}
+
+:host ::ng-deep .p-inputtext:focus,
+:host ::ng-deep .p-dropdown.p-focus {
+  border-color: #28a745; /* Verde para indicar compra/éxito, o usa #2196F3 para azul */
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+  outline: none;
+}
+
+:host ::ng-deep .p-dropdown {
+  padding: 0; 
+  align-items: center;
+}
+:host ::ng-deep .p-dropdown .p-inputtext {
+    border: none;
+}
+
+/* Botones */
+.button-group {
+  margin-top: 30px;
+  display: flex;
+}
+
+.button-group button {
+    width: 100%; /* Botón full width */
     justify-content: center;
-    margin-top: 10px;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 1rem;
 }
-:host ::ng-deep {
-    .p-card .p-card-body {
-        padding: 1.25rem;
-/*         width: 400px;
- */    }
-}
+
+
+/* ========================================= */
+/* ESTILOS DEL RESUMEN (Originales)          */
+/* ========================================= */
 
 .lista-resumen {
     display: flex;
@@ -36,6 +101,8 @@
 .nombre-prod {
     font-weight: bold;
     color: #333;
+    font-size: 1rem;
+    margin-bottom: 4px;
 }
 
 .detalles-prod {
@@ -44,6 +111,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap; 
 }
 
 .label {
@@ -60,8 +128,23 @@
     font-weight: bold;
 }
 
-.total-bloque {
-    margin-top: 10px;
+/* Total Final */
+.separador-total {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}
+
+.fila-total {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.label-total {
+    font-size: 1.1rem; 
+    color: #333;
+    font-weight: 600;
 }
 
 .precio-final {

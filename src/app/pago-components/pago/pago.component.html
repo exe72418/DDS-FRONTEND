@@ -1,42 +1,85 @@
-<div *ngIf="!crearEditarModePago" class="container">
+<div class="container py-4">
 
-  <div *ngIf="crearEditarModePago == false" style="display: flex; justify-content: center; margin-bottom: 20px;">
-    <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()" />
-  </div>
-  <div style="width: 100%; justify-content: center;">
-    <p-table *ngIf="crearEditarModePago == false" [value]="pagos" [tableStyle]="{ 'min-width': '50rem' }">
+  <div *ngIf="!crearEditarModePago" class="pagos-card">
+
+    <div class="pagos-header center">
+      <h5>Pagos</h5>
+
+      <p-button
+        label="Nuevo"
+        icon="pi pi-plus"
+        styleClass="p-button-sm btn-nuevo"
+        (onClick)="new()">
+      </p-button>
+    </div>
+
+    <p-table
+      [value]="pagos"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [responsiveLayout]="'scroll'"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      styleClass="p-datatable-sm p-datatable-striped pagos-table"
+    >
       <ng-template pTemplate="header">
         <tr>
-          <th>Id</th>
-          <th>Fecha</th>
-          <th>TipoPago</th>
-          <th>Pedido</th>
-          <th style="text-align: center;">Editar/Borrar</th>
+          <th style="width: 80px;">Id</th>
+          <th style="width: 140px;">Fecha</th>
+          <th>Tipo de Pago</th>
+          <th style="width: 120px;">Pedido</th>
+          <th class="col-actions">Acciones</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-pago of pagos>
+
+      <ng-template pTemplate="body" let-pago>
         <tr>
           <td>{{ pago.id }}</td>
-          <td>{{ pago.fecha | date: 'dd/MM/yyyy'}}</td>
-          <td>{{ pago.tipoPago.nombre}}</td>
-          <td>{{ pago.pedido.nroPedido}}</td>
-          <td>
-            <div style="margin-right: 10px; display: flex;justify-content: space-around;">
-              <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
-                (onClick)="editPago(pago)" />
-              <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                (onClick)="deletePago(pago)" />
-            </div>
+          <td>{{ pago.fecha | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ pago.tipoPago?.nombre }}</td>
+          <td>{{ pago.pedido?.nroPedido }}</td>
 
+          <td class="col-actions">
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [outlined]="true"
+                severity="success"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="editPago(pago)">
+              </p-button>
+
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="deletePago(pago)">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="empty">
+            No hay pagos para mostrar.
           </td>
         </tr>
       </ng-template>
     </p-table>
+
   </div>
-</div>
-<div *ngIf="crearEditarModePago">
-  <app-crear-pago 
-      (editCrear)="changeEditCreate()" 
+
+  <div *ngIf="crearEditarModePago" class="form-wrapper">
+    <app-crear-pago
+      (editCrear)="changeEditCreate()"
       [pago]="pagoSelected"
-      [nroPedidoPreseleccionado]="pedidoHijo"> </app-crear-pago>
+      [nroPedidoPreseleccionado]="pedidoHijo">
+    </app-crear-pago>
+  </div>
+
 </div>

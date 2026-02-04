@@ -8,6 +8,7 @@ import { TipopagoService } from '../../services/tipopago.service';
 import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
 import { forkJoin } from 'rxjs';
+import { LineaProductoService } from '../../services/lineaproducto-service.service';
 
 @Component({
   selector: 'app-crear-pago',
@@ -26,7 +27,8 @@ export class CrearPagoComponent implements OnInit {
   constructor(
     private tipopagoService: TipopagoService,
     private cargaService: CargaService,
-    private pagoService: PagoService
+    private pagoService: PagoService,
+    private lineaProductoService: LineaProductoService
   ) {
     this.pagoForm = new FormGroup({
       id: new FormControl(''),
@@ -90,21 +92,41 @@ export class CrearPagoComponent implements OnInit {
   return this.pagoForm.get('pedido')?.value;
 }
 
-  configurarEdicion() {
+configurarEdicion() {
     const fechaPago = new Date(this.pago!.fecha as any);
     
     const tipoSeleccionado = this.tiposPago.find(t => t.id === this.pago!.tipoPago.id!);
     
     const pedidoSeleccionado = this.pedidosDisponibles.find(p => p.nroPedido === this.pago!.pedido!.nroPedido!);
 
-    this.pagoForm.patchValue({
-        id: this.pago!.id,
-        fecha: fechaPago,
-        tipoPago: tipoSeleccionado,
-        pedido: pedidoSeleccionado
-    });
+    if (pedidoSeleccionado && (!pedidoSeleccionado.lineas || pedidoSeleccionado.lineas.length === 0)) {
+        
+        this.lineaProductoService.getLineasByPedidoId(pedidoSeleccionado.nroPedido!).subscribe({
+            next: (lineas) => {
+                pedidoSeleccionado.lineas = lineas;
 
-    this.cargaService.hide();
+                this.pagoForm.patchValue({
+                    id: this.pago!.id,
+                    fecha: fechaPago,
+                    tipoPago: tipoSeleccionado,
+                    pedido: pedidoSeleccionado 
+                });
+                this.cargaService.hide();
+            },
+            error: (err) => {
+                console.error("Error cargando lineas del pedido", err);
+                this.cargaService.hide();
+            }
+        });
+    } else {
+        this.pagoForm.patchValue({
+            id: this.pago!.id,
+            fecha: fechaPago,
+            tipoPago: tipoSeleccionado,
+            pedido: pedidoSeleccionado
+        });
+        this.cargaService.hide();
+    }
   }
 
   back() {

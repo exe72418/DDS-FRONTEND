@@ -1,35 +1,93 @@
-<div class="container">
-  <div *ngIf="!crearEditarMode" style="display: flex; justify-content: center; margin-bottom: 10px;">
-    <p-button label="Nuevo" icon="pi pi-plus" (onClick)="new()"></p-button>
+<div class="container py-4">
+
+  <!-- LISTADO -->
+  <div *ngIf="!crearEditarMode" class="zonas-card">
+
+    <!-- HEADER CENTRADO -->
+    <div class="zonas-header center">
+      <h5>Zonas</h5>
+
+      <p-button
+        label="Nuevo"
+        icon="pi pi-plus"
+        styleClass="p-button-sm btn-nuevo"
+        (onClick)="new()">
+      </p-button>
+    </div>
+
+    <!-- TABLA -->
+    <p-table
+      *ngIf="!crearEditarMode"
+      [value]="zonas"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [responsiveLayout]="'scroll'"
+      styleClass="p-datatable-sm p-datatable-striped zonas-table"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th style="width: 120px;">Disponible</th>
+          <th class="col-actions">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-zona>
+        <tr>
+          <td class="fw-semibold">{{ zona.nombre }}</td>
+          <td>{{ zona.descripcion }}</td>
+
+          <td>
+            <span class="estado" [class.ok]="zona.disponible" [class.no]="!zona.disponible">
+              {{ zona.disponible ? 'Sí' : 'No' }}
+            </span>
+          </td>
+
+          <td class="col-actions">
+            <div class="action-buttons">
+              <p-button
+                [disabled]="!zona.disponible"
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [outlined]="true"
+                severity="success"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="editZona(zona)">
+              </p-button>
+
+              <p-button
+                [disabled]="!zona.disponible"
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+                styleClass="p-button-sm p-button-icon-only"
+                (onClick)="deleteZona(zona)">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4" class="empty">
+            No hay zonas para mostrar.
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 
-  <p-table *ngIf="!crearEditarMode" [value]="zonas" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Disponible</th>
-        <th style="text-align: center;">Editar/Borrar</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-zona>
-      <tr>
-        <td>{{ zona.nombre }}</td>
-        <td>{{ zona.descripcion }}</td>
-        <td>{{ zona.disponible }}</td>
-        <td>
-          <div style="margin-right: 10px; display: flex; justify-content: space-around;">
-            <p-button [disabled]="!zona.disponible" icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true" severity="success"
-              (onClick)="editZona(zona)"></p-button>
-            <p-button [disabled]="!zona.disponible" icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-              (onClick)="deleteZona(zona)"></p-button>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
 
-  <div *ngIf="crearEditarMode">
-    <app-crear-zonas (editCrear)="changeEditCreate()" [zona]="zonaSelected"></app-crear-zonas>
+  <div *ngIf="crearEditarMode" class="form-wrapper">
+    <app-crear-zonas
+      (editCrear)="changeEditCreate()"
+      [zona]="zonaSelected">
+    </app-crear-zonas>
   </div>
+
 </div>
