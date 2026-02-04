@@ -24,15 +24,12 @@ export class AuthservicesService {
       );
   }
 
-  register(username: string, password: string): Observable<any> {
-    return this.http
-      .post<any>(environment.serverUrl + 'login/register', { username, password })
-      .pipe(
-        catchError((error) => {
-          console.error('Error de autenticación:', error);
-          throw error;
-        })
-      );
+  
+  register(data: any) {
+  return this.http.post(
+    environment.serverUrl + 'login/register',
+    data
+  );
   }
 
   // Obtener el token JWT del localStorage
@@ -45,6 +42,19 @@ export class AuthservicesService {
     const token = this.getToken();
     // Aquí puedes agregar una lógica extra para verificar la validez del token (por ejemplo, expiración)
     return token !== null;
+  }
+
+  getUserData(): { userId: number; role: string } | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const payload = token.split('.')[1];
+    const decoded = JSON.parse(atob(payload));
+
+    return {
+      userId: decoded.userId,
+      role: decoded.role,
+    };
   }
 
   // Método para cerrar sesión (eliminar el token)

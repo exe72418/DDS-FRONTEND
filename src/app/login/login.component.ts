@@ -13,9 +13,23 @@ import Swal from 'sweetalert2';
 export class LoginComponent implements OnInit {
 
 
-  loginForm: FormGroup;
-  register: boolean = false;
-  isAutenticated: boolean = false;
+  loginForm = new FormGroup({
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+  });
+
+  registerForm = new FormGroup({
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    cuit: new FormControl('', Validators.required),
+    apellidoNombre: new FormControl('', Validators.required),
+    telefono: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    domicilio: new FormControl('', Validators.required),
+  });
+
+  isRegister = false;
+  isAutenticated!: boolean;
 
   constructor(private authService: AuthservicesService, private cargaService: CargaService, 
     private router: Router,  public dialogRef: MatDialogRef<LoginComponent>,
@@ -30,71 +44,54 @@ export class LoginComponent implements OnInit {
   }
 
   cambiarRegister() {
-    this.register = !this.register;
+    this.isRegister = !this.isRegister;
   }
 
   logout() {
     this.authService.logout();
     this.isAutenticated = false;
+    this.router.navigate(['home'])
+
   }
 
-  onSubmit(accion: string) {
-    if(accion === 'inicio'){
-      this.cargaService.show();
-      if (this.loginForm.valid) {
-        const { username, password } = this.loginForm.value;
-        this.authService.login(username, password).subscribe(
-          (response) => {
-            this.cargaService.hide();
-            console.log('Token JWT recibido:', response.token);
-            localStorage.setItem('auth_token', response.token); 
-            this.isAutenticated = true;
-            this.dialogRef.close()
-            Swal.fire({
-              title: "Usuario autenticado",
-              text: "",
-              icon: "success"
-            });
-            this.router.navigate(['home'])
-          },
-          (error) => {
-            this.cargaService.hide();
-            Swal.fire({
-              title: "Error",
-              text: "No fue posible loguearse",
-              icon: "error"
-            });
-            console.error('Error de autenticación:', error);
-          }
-        );
-      }
-    }else if(accion==='registrar'){
-      if (this.loginForm.valid) {
-        const { username, password } = this.loginForm.value;
-        this.authService.register(username, password).subscribe(
-          (response) => {
-            console.log('usuario regsitrado', response);
-            this.isAutenticated = true;
-            Swal.fire({
-              title: "Usuario autenticado",
-              text: "",
-              icon: "success"
-            });
-            this.dialogRef.close()
-            
-          },
-          (error) => {
-            Swal.fire({
-              title: "Error",
-              text: "No fue posible registrarse",
-              icon: "error"
-            });
-            console.error('Error de autenticación:', error);
-          }
-        );
-      }
-    }
-    
+  isAdmin(): boolean {
+    return this.authService.getUserData()?.role === 'admin';
+  } 
+  isCliente(){
+    return this.authService.getUserData()?.role === 'cliente';
+  }
+
+  login() {
+    const { username, password } = this.loginForm.value;
+
+    this.authService.login(username!, password!).subscribe(res => {
+      localStorage.setItem('auth_token', res.token);
+      this.isAutenticated = true;
+      this.dialogRef.close() 
+      Swal.fire({ title: "Usuario autenticado", text: "", icon: "success" }); 
+      this.router.navigate(['home'])
+      }, 
+      (error) => { 
+        this.cargaService.hide(); Swal.fire({ title: "Error", text: "No fue posible loguearse", icon: "error" 
+      });
+    });
+  }
+
+  register() {
+  this.authService.register(this.registerForm.value).subscribe(() => {
+    const { username, password } = this.registerForm.value;
+    this.authService.login(username!, password!).subscribe(res => {
+      localStorage.setItem('auth_token', res.token);
+      this.isAutenticated = true;
+      this.dialogRef.close();
+      Swal.fire({ title: "Usuario autenticado", text: "", icon: "success" }); 
+      this.router.navigate(['home']);
+      }, 
+      (error) => { 
+        this.cargaService.hide(); Swal.fire({ title: "Error", text: "No fue posible loguearse", icon: "error" 
+      });
+    });
+  });
   }
 
     

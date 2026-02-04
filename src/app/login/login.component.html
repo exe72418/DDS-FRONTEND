@@ -1,47 +1,54 @@
 <p-card>
-    <form *ngIf="!isAutenticated" [formGroup]="loginForm">
-        <div>
-          <label for="username">Usuario:</label>
-          <input  id="username" formControlName="username" type="text" placeholder="Ingresa tu usuario" />
-          <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
-            <small class="error">El usuario es obligatorio.</small>
+  <p-button *ngIf="isAutenticated" (click)="logout()">Cerrar Sesion</p-button>
+  <!-- LOGIN -->
+  <form *ngIf="!isRegister && !isAutenticated" [formGroup]="loginForm">
+    <div>
+          <input style="margin: 10px;" formControlName="username" placeholder="Usuario" />
+          <input style="margin: 10px;" type="password" formControlName="password" placeholder="Contraseña" />
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center;">
+          <div style="margin: 10px;">
+            <p-button label="Iniciar sesión"
+              (click)="login()"
+              [disabled]="loginForm.invalid">
+            </p-button>
           </div>
-        </div>
-      
-        <div>
-          <label for="password">Contraseña:</label>
-          <input  id="password" formControlName="password" type="password" placeholder="Ingresa tu contraseña" />
-          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-            <small class="error">La contraseña es obligatoria.</small>
-          </div>
-        </div>
-      
-        <p-button (click)="onSubmit('inicio')" class="margin" type="submit" label="Iniciar sesión" severity="success" [disabled]="loginForm.invalid"></p-button>
-        <p-button (click)="onSubmit('registrar')" type="submit">Registrar</p-button>
+          <div style="margin: 10px;">
+            <p-button label="Crear cuenta"
+              severity="secondary"
+              (click)="isRegister = true">
+            </p-button>
+          </div>          
+    </div>
+    
+  </form>
 
-      </form>
-      <!-- <form *ngIf="register" [formGroup]="loginForm" (ngSubmit)="registerSubmit()">
-        <div>
-          <label for="username">Usuario:</label>
-          <input id="username" formControlName="username" type="text" placeholder="Ingresa tu usuario" />
-          <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
-            <small class="error">El usuario es obligatorio.</small>
-          </div>
-        </div>
-      
-        <div>
-          <label for="password">Contraseña:</label>
-          <input id="password" formControlName="password" type="password" placeholder="Ingresa tu contraseña" />
-          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-            <small class="error">La contraseña es obligatoria.</small>
-          </div>
-        </div>
-      
-        <p-button label="Registrar" severity="success" type="submit" [disabled]="loginForm.invalid"></p-button>
-      </form> -->
-      
-      <div style="display: flex; justify-content: center;">
-        <p-button *ngIf="isAutenticated" (click)="logout()" label="Cerrar sesion" severity="success"></p-button>
+  <!-- REGISTER -->
+  <form *ngIf="isRegister && !isAutenticated" [formGroup]="registerForm">
+    <div  style="display: flex; flex-direction: column; justify-content: center;">
+          <input style="margin: 10px;" formControlName="username" placeholder="Usuario" />
+          <input style="margin: 10px;" type="password" formControlName="password" placeholder="Contraseña" />
+          <input style="margin: 10px;" formControlName="cuit" placeholder="CUIT" />
+          <input  style="margin: 10px;"formControlName="apellidoNombre" placeholder="Apellido y Nombre" />
+          <input  style="margin: 10px;"formControlName="telefono" placeholder="Teléfono" />
+          <input  style="margin: 10px;"formControlName="email" placeholder="Email" />
+          <input  style="margin: 10px;"formControlName="domicilio" placeholder="Domicilio" />
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center; margin: 10px;">
+      <div style="margin: 10px;">
+          <p-button label="Registrarse"
+            (click)="register()"
+            [disabled]="registerForm.invalid">
+          </p-button>
       </div>
+      <div style="margin: 10px;">
+          <p-button label="Volver"
+            severity="secondary"
+            (click)="isRegister = false">
+          </p-button>
+      </div>
+          
+    </div>
+  </form>
 
 </p-card>

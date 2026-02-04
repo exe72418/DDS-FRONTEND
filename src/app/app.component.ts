@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { CargaService } from './services/carga.service';
 import { LoginComponent } from './login/login.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthservicesService } from './services/authservices.service';
 
 
 @Component({
@@ -26,9 +27,7 @@ export class AppComponent implements OnInit {
   title = 'fast';
   pedido!: Pedido;
 
-  constructor(private _productoService: ProductosServiceService, private cargaService: CargaService,
-    //private store:Store,
-    private router: Router,
+  constructor(private _productoService: ProductosServiceService, private cargaService: CargaService, private router: Router, private authService: AuthservicesService
   ) {
 
   }
@@ -46,5 +45,9 @@ export class AppComponent implements OnInit {
     //   replaceUrl: true, state: {pedido: this.pedido}
     // });
   }
+  
+  isAdmin(): boolean {
+    return this.authService.getUserData()?.role === 'admin';
+  } 
 
 }
