@@ -11,6 +11,7 @@ import { PedidoServiceService } from '../../../src/app/services/pedido-service.s
 import { Router } from '@angular/router';
 import { CargaService } from '../services/carga.service';
 import { PagoService } from '../services/pago.service';
+import { AuthservicesService } from '../../../src/app/services/authservices.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,8 @@ export class CarritoComponent implements OnInit {
     private router: Router,
     private _pedidoService: PedidoServiceService,
     private cargaService: CargaService,
-    private _pagoService: PagoService
+    private _pagoService: PagoService,
+    private authService: AuthservicesService
   ) {}
 
   ngOnInit(): void {
@@ -42,36 +44,52 @@ export class CarritoComponent implements OnInit {
     this.pedidoSelectSnapShot = _.cloneDeep(this.store.selectSnapshot(PedidoState.getPedido));
   }
 
+  isAdmin(): boolean {
+    return this.authService.getUserData()?.role === 'admin';
+  }
+
   setearCliente(cliente: Cliente) {
     this.pedidoSelectSnapShot.cliente = cliente;
   }
 
-  llenarData() {
+llenarData() {
     this.cargaService.show();
-    this.apiService.getClientesActivos().subscribe((resp: any) => {
-      const list: Cliente[] = resp.data || resp;
 
-      this.clientes = list.map((cliente: Cliente) => ({
-        id: cliente.id,
-        apellidoNombre: cliente.apellidoNombre,
-        telefono: cliente.telefono,
-        email: cliente.email,
-        domicilio: cliente.domicilio,
-        cuit: cliente.cuit,
-        disponible: cliente.disponible,
-        zona: cliente.zona
-      }));
+    if (this.isAdmin()) {
+        this.apiService.getClientesActivos().subscribe({
+            next: (resp: any) => {
+                const list: Cliente[] = resp.data || resp;
+                this.clientes = list;
+                this.cargaService.hide();
+            }, 
+            error: () => this.cargaService.hide()
+        });
 
-      this.cargaService.hide();
-    }, () => {
-      this.cargaService.hide();
-    });
+    } else {
+        this.apiService.getMiPerfil().subscribe({
+            next: (miPerfil: Cliente) => {
+                this.pedidoSelectSnapShot.cliente = miPerfil;
+                this.cargaService.hide();
+            },
+            error: (err) => {
+                console.error(err);
+                this.cargaService.hide();
+                Swal.fire({ title: 'Error', text: 'No se pudo cargar tu perfil de cliente', icon: 'error'});
+            }
+        });
+    }
   }
 
 
 pagar() {
     this.cargaService.show();
     this.pedidoSelectSnapShot.fecha = this.fechaSelected;
+
+    if (!this.pedidoSelectSnapShot.cliente) {
+        this.cargaService.hide();
+        Swal.fire({ title: "Error", text: "Falta asignar el cliente", icon: "warning" });
+        return;
+    }
 
     this._pedidoService.guardar(this.pedidoSelectSnapShot).subscribe({
       next: (response: any) => {

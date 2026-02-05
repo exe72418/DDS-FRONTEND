@@ -27,10 +27,10 @@
     </div>
     <div style="margin-top: 30px;"></div>
 
-    <div class="form-group">
-        <label for="cliente">Cliente</label>
+    <div class="form-group" *ngIf="isAdmin()">
+        <label for="clienteSelect">Cliente</label>
         <p-dropdown 
-            id="cliente" 
+            id="clienteSelect" 
             [options]="clientes" 
             optionLabel="apellidoNombre"
             (onChange)="setearCliente($event.value)" 
@@ -38,6 +38,15 @@
             styleClass="w-full"
             appendTo="body">
         </p-dropdown>
+    </div>
+
+    <div class="form-group" *ngIf="!isAdmin()" disabled="pedidoSelectSnapShot.cliente">
+        <label>Cliente</label>
+        <div class="cliente-readonly">
+            <span style="font-weight: bold;">
+                {{ pedidoSelectSnapShot.cliente?.apellidoNombre}}
+            </span>
+        </div>
     </div>
 
     <div class="form-group">

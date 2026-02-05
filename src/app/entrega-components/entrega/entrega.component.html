@@ -13,7 +13,7 @@
       </p-button>
     </div>
 
-    <div class="filters-bar">
+    <div class="filters-bar" *ngIf="isAdmin()">
       <p-calendar
         [(ngModel)]="fechaDesde"
         placeholder="Fecha Desde"

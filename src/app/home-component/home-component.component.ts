@@ -92,6 +92,10 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
     }
   }
 
+  get pedidoVacio(): boolean {
+  return !this.pedido?.lineas || this.pedido.lineas.length === 0;
+}
+
   eliminar(producto: Producto) {
     this.cargaService.show();
     this.pedido.lineas = this.pedido.lineas.filter(linea => linea.producto.codigo !== producto.codigo);

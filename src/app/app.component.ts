@@ -50,4 +50,8 @@ export class AppComponent implements OnInit {
     return this.authService.getUserData()?.role === 'admin';
   } 
 
+  isCliente(): boolean {
+    return this.authService.getUserData()?.role === 'cliente';
+  }
+
 }

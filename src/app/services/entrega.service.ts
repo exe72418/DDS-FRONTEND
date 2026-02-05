@@ -25,6 +25,11 @@ export class EntregaService {
     return this.httpClient.post<Entrega>(environment.serverUrl + 'entregas', entrega)
   }
 
+  misEntregas(): Observable<Entrega[]> {
+    return this.httpClient.get<any>(environment.serverUrl + 'entregas/mis-entregas')
+      .pipe(map((response: any) => response.data));
+  }
+
   delete(idEntrega: number): Observable<void> {
     return this.httpClient.delete<void>(environment.serverUrl + 'entregas/' + idEntrega);
   }
