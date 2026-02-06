@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
 import { ClienteService } from '../../services/cliente.service';
 import { Cliente } from '../../models/cliente';
+import { AuthservicesService } from '../../services/authservices.service';
 
 @Component({
   selector: 'app-entrega',
@@ -26,13 +27,20 @@ export class EntregaComponent implements OnInit {
   constructor(
     private _entregaService: EntregaService, 
     private cargaService: CargaService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private authService: AuthservicesService
   ) {}
 
   ngOnInit(): void {
     this.cargaService.show();
-    this.cargarClientes();
+    if (this.isAdmin()) {
+        this.cargarClientes();
+    }
     this.buscar(); 
+  }
+
+  isAdmin(): boolean {
+    return this.authService.getUserData()?.role === 'admin';
   }
 
   cargarClientes() {
@@ -44,21 +52,37 @@ export class EntregaComponent implements OnInit {
     });
   }
 
-  buscar() {
-    const clienteId = this.clienteSelect ? this.clienteSelect.id : null;
-    
-    this._entregaService
-      .getEntregasByFilters(this.fechaDesde, this.fechaHasta, clienteId)
-      .subscribe({
-        next: (entregasFiltradas) => {
-          this.entregas = entregasFiltradas;
-          this.cargaService.hide();
-        },
-        error: (err) => {
-          console.error(err);
-          this.cargaService.hide();
-        }
-      });
+buscar() {
+    if (this.isAdmin()) {
+        const clienteId = this.clienteSelect ? this.clienteSelect.id : null;
+        
+        this._entregaService
+          .getEntregasByFilters(this.fechaDesde, this.fechaHasta, clienteId)
+          .subscribe({
+            next: (entregasFiltradas) => {
+              this.entregas = entregasFiltradas;
+              this.cargaService.hide();
+            },
+            error: (err) => {
+              console.error(err);
+              this.cargaService.hide();
+              Swal.fire({ title: "Error", text: "No se pudieron cargar las entregas", icon: "error" });
+            }
+          });
+
+    } else {
+        this._entregaService.misEntregas().subscribe({
+            next: (misEntregas) => {
+                this.entregas = misEntregas;
+                this.cargaService.hide();
+            },
+            error: (err) => {
+                console.error(err);
+                this.cargaService.hide();
+                Swal.fire({ title: "Error", text: "No se pudieron cargar tus entregas", icon: "error" });
+            }
+        });
+    }
   }
 
   changeEditCreate() {

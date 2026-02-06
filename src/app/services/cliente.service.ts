@@ -2,12 +2,17 @@ import { Injectable } from '@angular/core';
 import { Cliente } from '../models/cliente';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
+
+  getMiPerfil(): Observable<Cliente> {
+    return this.httpClient.get<any>(environment.serverUrl + 'clientes/me')
+      .pipe(map(response => response.data));
+  }
 
   constructor(private httpClient: HttpClient) { }
 

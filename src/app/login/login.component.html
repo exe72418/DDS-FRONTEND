@@ -1,6 +1,6 @@
 <p-card>
   <p-button *ngIf="isAutenticated" (click)="logout()">Cerrar Sesion</p-button>
-  <!-- LOGIN -->
+  
   <form *ngIf="!isRegister && !isAutenticated" [formGroup]="loginForm">
     <div>
           <input style="margin: 10px;" formControlName="username" placeholder="Usuario" />
@@ -20,19 +20,30 @@
             </p-button>
           </div>          
     </div>
-    
   </form>
 
-  <!-- REGISTER -->
   <form *ngIf="isRegister && !isAutenticated" [formGroup]="registerForm">
-    <div  style="display: flex; flex-direction: column; justify-content: center;">
+    <div style="display: flex; flex-direction: column; justify-content: center;">
           <input style="margin: 10px;" formControlName="username" placeholder="Usuario" />
           <input style="margin: 10px;" type="password" formControlName="password" placeholder="Contraseña" />
           <input style="margin: 10px;" formControlName="cuit" placeholder="CUIT" />
-          <input  style="margin: 10px;"formControlName="apellidoNombre" placeholder="Apellido y Nombre" />
-          <input  style="margin: 10px;"formControlName="telefono" placeholder="Teléfono" />
-          <input  style="margin: 10px;"formControlName="email" placeholder="Email" />
-          <input  style="margin: 10px;"formControlName="domicilio" placeholder="Domicilio" />
+          <input style="margin: 10px;" formControlName="apellidoNombre" placeholder="Apellido y Nombre" />
+          <input style="margin: 10px;" formControlName="telefono" placeholder="Teléfono" />
+          <input style="margin: 10px;" formControlName="email" placeholder="Email" />
+          <input style="margin: 10px;" formControlName="domicilio" placeholder="Domicilio" />
+          
+          <div style="margin: 10px;">
+              <p-dropdown
+                [options]="zonas"
+                formControlName="zona"
+                optionLabel="nombre"
+                placeholder="Seleccione Zona"
+                [showClear]="true"
+                [style]="{'width':'100%'}"
+                appendTo="body" 
+              ></p-dropdown>
+          </div>
+
     </div>
     <div style="display: flex; flex-direction: row; justify-content: center; margin: 10px;">
       <div style="margin: 10px;">
@@ -47,7 +58,6 @@
             (click)="isRegister = false">
           </p-button>
       </div>
-          
     </div>
   </form>
 

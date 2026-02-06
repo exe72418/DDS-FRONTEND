@@ -35,7 +35,7 @@
     </div>
 
     <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
-        <button pButton label="Ir al Carrito" icon="pi pi-shopping-cart" class="p-button-success p-button-lg" routerLink="/carrito"> </button>
+        <button pButton label="Ir al Carrito" icon="pi pi-shopping-cart" class="p-button-success p-button-lg" routerLink="/carrito" [disabled]="pedidoVacio"> </button>
     </div>
 
 </div>

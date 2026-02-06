@@ -11,6 +11,7 @@ import { LineaProductoService } from '../services/lineaproducto-service.service'
 import { CargaService } from '../services/carga.service';
 import { PagoService } from '../services/pago.service';
 import { DetallePedidoComponent } from '../detalle-pedido/detalle-pedido.component';
+import { AuthservicesService } from '../services/authservices.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -35,14 +36,20 @@ export class PedidosComponent implements OnInit {
     private cargaService: CargaService,
     private _pagoService: PagoService, 
     private router: Router,
-    private dialog: MatDialog 
+    private dialog: MatDialog,
+    private authService: AuthservicesService 
   ) { }
 
   ngOnInit(): void {
     this.search();
-    this.cargarClientes();
+    if (this.isAdmin()) {
+        this.cargarClientes();
+    }
   }
 
+  isAdmin(): boolean {
+    return this.authService.getUserData()?.role === 'admin';
+  }
 
 
   cargarClientes() {
@@ -52,15 +59,26 @@ export class PedidosComponent implements OnInit {
     });
   }
 
-  search() {
+search() {
     this.cargaService.show();
-    this._pedidoService.getAll().subscribe({
+
+    let observablePedidos;
+
+    if (this.isAdmin()) {
+        observablePedidos = this._pedidoService.getAll();
+    } else {
+        observablePedidos = this._pedidoService.misPedidos();
+    }
+
+    observablePedidos.subscribe({
       next: (pedidos) => {
         this.pedidos = pedidos;
         this.cargaService.hide();
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.cargaService.hide();
+        Swal.fire({ title: "Error", text: "No se pudieron cargar los pedidos", icon: "error" });
       }
     });
   }

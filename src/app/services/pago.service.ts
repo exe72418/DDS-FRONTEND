@@ -21,6 +21,10 @@ export class PagoService {
       );
   }
 
+  misPagos() {
+    return this.httpClient.get<Pago[]>(environment.serverUrl + 'pago/mis-pagos');
+  }
+
   update(pago: Pago): Observable<Pago> {
     return this.httpClient.put<Pago>(environment.serverUrl + 'pago/' + pago.id, pago)
   }

@@ -52,5 +52,10 @@ export class PedidoServiceService {
       );
   }
 
+  misPedidos(): Observable<Pedido[]> {
+    return this.httpClient.get<any>(environment.serverUrl + 'pedido/mis-pedidos')
+       .pipe(map((response: any) => response.data));
+  }
+
 
 }
