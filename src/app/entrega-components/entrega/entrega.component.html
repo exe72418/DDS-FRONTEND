@@ -4,8 +4,9 @@
 
     <div class="entregas-header center">
       <h5>Entregas</h5>
-
+      
       <p-button
+        *ngIf="isAdmin()" 
         label="Nuevo"
         icon="pi pi-plus"
         styleClass="p-button-sm btn-nuevo"
@@ -59,7 +60,8 @@
           <th style="width: 180px;">Zona</th>
           <th style="width: 220px;">Repartidor</th>
           <th>Pedido/s</th>
-          <th class="col-actions">Acciones</th>
+          
+          <th class="col-actions" *ngIf="isAdmin()">Acciones</th>
         </tr>
       </ng-template>
 
@@ -76,13 +78,13 @@
                   N° {{ pedido.nroPedido }}
                 </span>
                 <span class="pedido-text">
-                  Cliente: {{ pedido.cliente.apellidoNombre }}
+                  Cliente: {{ pedido.cliente?.apellidoNombre || 'No Disponible' }}
                 </span>
               </li>
             </ul>
           </td>
 
-          <td class="col-actions">
+          <td class="col-actions" *ngIf="isAdmin()">
             <div class="action-buttons">
               <p-button
                 icon="pi pi-pencil"
@@ -108,7 +110,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="5" class="empty">
+          <td [attr.colspan]="isAdmin() ? 5 : 4" class="empty">
             No hay entregas para mostrar.
           </td>
         </tr>

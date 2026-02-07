@@ -6,12 +6,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PedidoServiceService } from '../services/pedido-service.service';
 import Swal from 'sweetalert2';
 import { CargaService } from '../services/carga.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { ProductosServiceService } from '../services/productos-service.service';
 import { TipoproductoService } from '../services/tipoproducto.service';
 import { Producto } from '../models/producto';
 import { TipoProducto } from '../models/tipoProducto';
 import { LineaDeProducto } from '../models/lineaProducto';
+import { AuthservicesService } from '../services/authservices.service'; 
 
 @Component({
   selector: 'app-crear-pedido',
@@ -25,15 +26,12 @@ export class CrearPedidoComponent implements OnInit {
 
   pedidoForm!: FormGroup;
   
-  // Datos Maestros
   clientes: Cliente[] = [];
   tiposProducto: TipoProducto[] = [];
   
-  // Listas de Productos
   productosDisponibles: Producto[] = []; 
   productosFiltrados: Producto[] = [];   
 
-  // Filtros
   filtroNombre: string = '';
   filtroPrecioMin: number | null = null;
   filtroPrecioMax: number | null = null;
@@ -47,8 +45,13 @@ export class CrearPedidoComponent implements OnInit {
     private _productoService: ProductosServiceService,
     private _tipoProductoService: TipoproductoService,
     private cargaService: CargaService,
-    private _pedidoService: PedidoServiceService
+    private _pedidoService: PedidoServiceService,
+    private authService: AuthservicesService
   ) {}
+
+  isAdmin(): boolean {
+    return this.authService.getUserData()?.role === 'admin';
+  }
 
   ngOnInit(): void {
     this.cargaService.show();
@@ -59,43 +62,44 @@ export class CrearPedidoComponent implements OnInit {
       fecha: new FormControl(new Date(), [Validators.required]),
       total: new FormControl(0)
     });
+    let clientesObservable;
+    
+    if (this.isAdmin()) {
+        clientesObservable = this._clienteService.getClientesActivos();
+    } else {
+        clientesObservable = this._clienteService.getMiPerfil();
+    }
 
     forkJoin({
-      clientes: this._clienteService.getClientesActivos(),
+      clientesData: clientesObservable,
       productos: this._productoService.getAll(),
       tipos: this._tipoProductoService.getTiposDeProductoActivos()
     }).subscribe({
       next: (res: any) => {
-        // 1. Clientes
-        const clientesData = res.clientes.data || res.clientes;
-        this.clientes = clientesData.filter((c: Cliente) => c.disponible === true);
+        
+        if (this.isAdmin()) {
+            const lista = res.clientesData.data || res.clientesData;
+            this.clientes = lista.filter((c: Cliente) => c.disponible === true);
+        } else {
+            const miPerfil = res.clientesData.data || res.clientesData;
+            this.clientes = [miPerfil]; 
+            this.pedidoForm.patchValue({ cliente: miPerfil });
+            this.pedidoForm.get('cliente')?.disable();
+        }
 
-        // 2. Tipos Producto
         this.tiposProducto = res.tipos.data || res.tipos;
-
-        // 3. Productos
         this.productosDisponibles = res.productos.data || res.productos || res.productos;
         
-        // 4. Configurar Pedido
         if (this.pedido) {
-          // CORRECCIÓN: Asegurar que lineas exista antes de renderizar
           if(!this.pedido.lineas) { this.pedido.lineas = []; }
           
-        // --- CORRECCIÓN: HIDRATACIÓN DE LÍNEAS ---
-          // Reemplazamos el producto "parcial" que viene del backend por el "completo" del catálogo.
           this.pedido.lineas.forEach(linea => {
-            // Obtenemos el ID de forma segura (puede venir como objeto o como número directo)
             const prodId = (linea.producto as any).codigo || (linea.producto as any).id || linea.producto;
-
-            // Buscamos el producto REAL en nuestro catálogo cargado
             const productoCompleto = this.productosDisponibles.find(p => p.codigo == prodId);
-
             if (productoCompleto) {
-                // Reemplazamos para que la referencia sea la misma y tenga precio/descripción
                 linea.producto = productoCompleto;
             }
           });
-          // ------------------------------------------ 
           
           this.configurarEdicion();
         } else {
@@ -103,10 +107,13 @@ export class CrearPedidoComponent implements OnInit {
           this.pedido.lineas = [];
           this.pedido.total = 0;
           this.fechaOriginalPedido = null;
-          this.minDateCalendar = new Date(); 
+          this.minDateCalendar = new Date();
+          
+          if (!this.isAdmin()) {
+             this.pedidoForm.patchValue({ fecha: new Date() });
+          } 
         }
 
-        // 5. Aplicar filtros iniciales
         this.aplicarFiltros();
         this.cargaService.hide();
       },
@@ -117,22 +124,23 @@ export class CrearPedidoComponent implements OnInit {
     });
   }
 
+  get clienteControlValue() {
+      return this.pedidoForm.getRawValue().cliente;
+  }
+
   configurarEdicion() {
     this.pedidoForm.patchValue({
       nroPedido: this.pedido.nroPedido,
       total: this.pedido.total
     });
 
-    // Buscar el objeto cliente correcto en la lista para que el dropdown lo preseleccione
     if (this.pedido.cliente) {
-        // Asumiendo que pedido.cliente tiene al menos el ID o es un objeto
-        // Buscamos en this.clientes el que coincida por ID
-        const clienteEnLista = this.clientes.find(c => c.id === this.pedido.cliente.id);
-        if (clienteEnLista) {
-            this.pedidoForm.controls['cliente'].setValue(clienteEnLista);
+        if (this.isAdmin()) {
+            const clienteEnLista = this.clientes.find(c => c.id === this.pedido.cliente.id);
+            this.pedidoForm.controls['cliente'].setValue(clienteEnLista || this.pedido.cliente);
         } else {
-            // Fallback si no está en la lista (ej: cliente dado de baja pero existente en pedido)
             this.pedidoForm.controls['cliente'].setValue(this.pedido.cliente);
+            this.pedidoForm.controls['cliente'].disable();
         }
     }
 
@@ -150,8 +158,6 @@ export class CrearPedidoComponent implements OnInit {
     }
   }
 
-  // --- LÓGICA DE CARRITO (HOME) ---
-
   agregar(producto: Producto) {
     let lineaProd = new LineaDeProducto();
     lineaProd.cantidad = 1;
@@ -162,7 +168,6 @@ export class CrearPedidoComponent implements OnInit {
 
     if (this.pedido.lineas.length > 0) {
       this.pedido.lineas.forEach((linea) => {
-        // Usar == para evitar problemas de string vs number
         if (linea.producto.codigo == producto.codigo) {
           encontro = true;
           linea.cantidad++;
@@ -202,11 +207,9 @@ export class CrearPedidoComponent implements OnInit {
     this.pedido.lineas = this.pedido.lineas.filter(linea => linea.producto.codigo != producto.codigo);
   }
 
-  // CORRECCIÓN CLAVE: Función robusta para la vista
   getCantidadEnPedido(prod: Producto): number {
     if(!this.pedido || !this.pedido.lineas) return 0;
     
-    // Usamos '==' para coincidencia laxa (string vs number)
     const linea = this.pedido.lineas.find(l => l.producto && l.producto.codigo == prod.codigo);
     
     return linea ? linea.cantidad : 0;
@@ -263,7 +266,7 @@ export class CrearPedidoComponent implements OnInit {
     }
 
     const pedidoAGuardar = {
-      ...this.pedidoForm.value,
+      ...this.pedidoForm.getRawValue(), 
       total: this.pedido.total,
       lineas: this.pedido.lineas
     };

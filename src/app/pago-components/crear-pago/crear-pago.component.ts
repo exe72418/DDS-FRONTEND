@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
 import { forkJoin } from 'rxjs';
 import { LineaProductoService } from '../../services/lineaproducto-service.service';
+import { AuthservicesService } from '../../services/authservices.service';
 
 @Component({
   selector: 'app-crear-pago',
@@ -28,7 +29,8 @@ export class CrearPagoComponent implements OnInit {
     private tipopagoService: TipopagoService,
     private cargaService: CargaService,
     private pagoService: PagoService,
-    private lineaProductoService: LineaProductoService
+    private lineaProductoService: LineaProductoService,
+    private authService: AuthservicesService
   ) {
     this.pagoForm = new FormGroup({
       id: new FormControl(''),
@@ -41,9 +43,16 @@ export class CrearPagoComponent implements OnInit {
   ngOnInit(): void {
     this.cargaService.show();
 
+    let observablePedidos;
+    if (this.isAdmin()) {
+        observablePedidos = this.pagoService.getPedidosSinPago(); 
+    } else {
+        observablePedidos = this.pagoService.getMisPedidosSinPago(); 
+    }
+
     forkJoin({
         tipos: this.tipopagoService.getTiposDePagoActivos(),
-        pedidos: this.pagoService.getPedidosSinPago()
+        pedidos: observablePedidos
     }).subscribe({
         next: (res: any) => {
             this.tiposPago = res.tipos.data || res.tipos;
@@ -86,6 +95,10 @@ export class CrearPagoComponent implements OnInit {
             this.cargaService.hide();
         }
     });
+  }
+
+  isAdmin(): boolean {
+    return this.authService.getUserData()?.role === 'admin';
   }
 
   get pedidoSeleccionado(): Pedido | null {

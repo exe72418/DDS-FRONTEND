@@ -49,7 +49,6 @@ export class ProductosComponent implements OnInit {
     });
   }
 
-  // 
   changeEditCreate() {
     this.crearEditarMode = false;
     this.prodSelected = null; 
@@ -62,7 +61,7 @@ export class ProductosComponent implements OnInit {
 
   buscar() {
     this._productoService
-      .getProductosByFilters(this.nombreString, this.tipoProductoSelect, this.precioMinimo, this.precioMaximo)
+      .getProductosByFilters(this.nombreString, this.tipoProductoSelect, this.precioMinimo, this.precioMaximo, null)
       .subscribe((prodFiltrado) => {
         this.productos = prodFiltrado;
       });

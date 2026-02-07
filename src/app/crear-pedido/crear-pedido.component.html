@@ -12,7 +12,7 @@
 
             <div class="header-row">
                 
-                <div class="form-group flex-item">
+                <div class="form-group flex-item" *ngIf="isAdmin()">
                     <label for="cliente">Cliente</label>
                     <p-dropdown 
                         id="cliente" 
@@ -25,6 +25,15 @@
                         styleClass="w-full"
                         appendTo="body">
                     </p-dropdown>
+                </div>
+
+                <div class="form-group flex-item" *ngIf="!isAdmin()">
+                    <label>Cliente</label>
+                    <div style="padding: 0.5rem 0.75rem; background: #e9ecef; border: 1px solid #ced4da; border-radius: 6px; min-height: 42px; display: flex; align-items: center;">
+                        <span style="font-weight: bold; color: #495057;">
+                            {{ clienteControlValue?.apellidoNombre || 'Cargando...' }}
+                        </span>
+                    </div>
                 </div>
 
                 <div class="form-group flex-item">

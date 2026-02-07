@@ -1,5 +1,40 @@
 <div class="container-fluid">
 
+    <div class="filters-bar" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+        <input
+          pInputText
+          type="text"
+          placeholder="Buscar por nombre"
+          [(ngModel)]="nombreString"
+          (change)="buscar()">
+
+        <input
+          pInputText
+          type="number"
+          placeholder="Precio Mínimo"
+          [(ngModel)]="precioMinimo"
+          min="0"
+          (change)="buscar()">
+
+        <input
+          pInputText
+          type="number"
+          placeholder="Precio Máximo"
+          [(ngModel)]="precioMaximo"
+          min="0"
+          (change)="buscar()">
+  
+        <p-dropdown
+          id="tipodeprod"
+          [options]="tiposProducto"
+          optionLabel="nombre"
+          [(ngModel)]="tipoProductoSelect"
+          (onChange)="buscar()"
+          [showClear]="true"
+          placeholder="Tipo Producto"
+          styleClass="dropdown-tipo">
+        </p-dropdown>
+    </div>
     <div class="tabla" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px;">
         
         <div *ngFor="let product of productos">

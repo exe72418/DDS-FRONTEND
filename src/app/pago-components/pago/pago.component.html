@@ -27,8 +27,11 @@
           <th style="width: 80px;">Id</th>
           <th style="width: 140px;">Fecha</th>
           <th>Tipo de Pago</th>
-          <th style="width: 120px;">Pedido</th>
-          <th class="col-actions">Acciones</th>
+          <th style="width: 120px;">Pedido ID</th>
+          
+          <th style="width: 100px; text-align: center;">Detalle</th>
+          
+          <th class="col-actions" *ngIf="isAdmin()">Acciones</th>
         </tr>
       </ng-template>
 
@@ -39,11 +42,23 @@
           <td>{{ pago.tipoPago?.nombre }}</td>
           <td>{{ pago.pedido?.nroPedido }}</td>
 
-          <td class="col-actions">
+          <td class="text-center">
+            <p-button
+              icon="pi pi-eye"
+              severity="info"
+              [rounded]="true"
+              [outlined]="true"
+              styleClass="p-button-sm p-button-icon-only"
+              (onClick)="showDetallePedido(pago.pedido)">
+            </p-button>
+          </td>
+
+          <td class="col-actions" *ngIf="isAdmin()">
             <div class="action-buttons">
               <p-button
                 icon="pi pi-pencil"
                 [rounded]="true"
+                [disabled]="true"
                 [outlined]="true"
                 severity="success"
                 styleClass="p-button-sm p-button-icon-only"
@@ -65,7 +80,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="5" class="empty">
+          <td [attr.colspan]="isAdmin() ? 6 : 5" class="empty">
             No hay pagos para mostrar.
           </td>
         </tr>

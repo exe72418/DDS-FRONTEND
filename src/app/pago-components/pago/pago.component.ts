@@ -3,7 +3,11 @@ import { PagoService } from '../../services/pago.service';
 import { Pago } from '../../models/pago';
 import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
-import { AuthservicesService } from '../../services/authservices.service'; // <--- 1. Importar AuthService
+import { AuthservicesService } from '../../services/authservices.service'; 
+import { MatDialog } from '@angular/material/dialog';
+import { LineaProductoService } from '../../services/lineaproducto-service.service';
+import { DetallePedidoComponent } from '../../detalle-pedido/detalle-pedido.component';
+import { Pedido } from '../../models/pedido';
 
 @Component({
   selector: 'app-pago',
@@ -20,7 +24,9 @@ export class PagoComponent implements OnInit {
   constructor(
     private _pagoService: PagoService, 
     private cargaService: CargaService,
-    private authService: AuthservicesService 
+    private authService: AuthservicesService,
+    private dialog: MatDialog,
+    private _lineaProductoService: LineaProductoService 
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +66,42 @@ export class PagoComponent implements OnInit {
             text: "No se pudieron cargar los pagos.",
             icon: "error"
         });
+      }
+    });
+  }
+
+  showDetallePedido(pedido: Pedido | undefined) {
+    if (!pedido || !pedido.nroPedido) {
+        Swal.fire({ title: 'Error', text: 'Información del pedido no disponible', icon: 'warning' });
+        return;
+    }
+
+    this.cargaService.show();
+    
+    this._lineaProductoService.getLineasByPedidoId(pedido.nroPedido).subscribe({
+      next: (lineas) => {
+        this.cargaService.hide();
+
+        if (lineas.length === 0) {
+          Swal.fire({
+            title: 'Sin líneas',
+            text: 'El pedido asociado no tiene productos cargados.',
+            icon: 'info'
+          });
+          return;
+        }
+
+        this.dialog.open(DetallePedidoComponent, {
+          data: { 
+            lineas: lineas,
+            nroPedido: pedido.nroPedido
+          }
+        });
+      },
+      error: (error) => {
+        this.cargaService.hide();
+        console.error(error);
+        Swal.fire({ title: 'Error', text: 'No se pudieron cargar los detalles del pedido', icon: 'error' });
       }
     });
   }

@@ -28,8 +28,6 @@ export class ClientesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.http.get('https://jsonplaceholder.typicode.com/todos/1').subscribe();
-
     this.clienteForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       apellidoNombre: new FormControl('', [Validators.required]),

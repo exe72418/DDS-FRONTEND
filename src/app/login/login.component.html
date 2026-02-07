@@ -1,64 +1,146 @@
-<p-card>
-  <p-button *ngIf="isAutenticated" (click)="logout()">Cerrar Sesion</p-button>
-  
-  <form *ngIf="!isRegister && !isAutenticated" [formGroup]="loginForm">
-    <div>
-          <input style="margin: 10px;" formControlName="username" placeholder="Usuario" />
-          <input style="margin: 10px;" type="password" formControlName="password" placeholder="Contraseña" />
-    </div>
-    <div style="display: flex; flex-direction: row; justify-content: center;">
-          <div style="margin: 10px;">
-            <p-button label="Iniciar sesión"
-              (click)="login()"
-              [disabled]="loginForm.invalid">
-            </p-button>
-          </div>
-          <div style="margin: 10px;">
-            <p-button label="Crear cuenta"
-              severity="secondary"
-              (click)="isRegister = true">
-            </p-button>
-          </div>          
-    </div>
-  </form>
+<div class="auth-wrapper">
 
-  <form *ngIf="isRegister && !isAutenticated" [formGroup]="registerForm">
-    <div style="display: flex; flex-direction: column; justify-content: center;">
-          <input style="margin: 10px;" formControlName="username" placeholder="Usuario" />
-          <input style="margin: 10px;" type="password" formControlName="password" placeholder="Contraseña" />
-          <input style="margin: 10px;" formControlName="cuit" placeholder="CUIT" />
-          <input style="margin: 10px;" formControlName="apellidoNombre" placeholder="Apellido y Nombre" />
-          <input style="margin: 10px;" formControlName="telefono" placeholder="Teléfono" />
-          <input style="margin: 10px;" formControlName="email" placeholder="Email" />
-          <input style="margin: 10px;" formControlName="domicilio" placeholder="Domicilio" />
+  <div *ngIf="isAutenticated" class="profile-view">
+      <div class="profile-header">
+          <h3>{{ userData?.username }}</h3>
+          <span class="role-badge" [ngClass]="userData?.role">{{ userData?.role | uppercase }}</span>
+      </div>
+
+      <div class="profile-body">
+          <p-divider></p-divider>
           
-          <div style="margin: 10px;">
-              <p-dropdown
-                [options]="zonas"
-                formControlName="zona"
-                optionLabel="nombre"
-                placeholder="Seleccione Zona"
-                [showClear]="true"
-                [style]="{'width':'100%'}"
-                appendTo="body" 
-              ></p-dropdown>
+          <ng-container *ngIf="clienteInfo">
+              <div class="info-row">
+                  <span class="label"><i class="pi pi-id-card"></i> Nombre:</span>
+                  <span class="value">{{ clienteInfo.apellidoNombre }}</span>
+              </div>
+              <div class="info-row">
+                  <span class="label"><i class="pi pi-envelope"></i> Email:</span>
+                  <span class="value">{{ clienteInfo.email }}</span>
+              </div>
+              <div class="info-row">
+                  <span class="label"><i class="pi pi-phone"></i> Teléfono:</span>
+                  <span class="value">{{ clienteInfo.telefono }}</span>
+              </div>
+              <div class="info-row">
+                  <span class="label"><i class="pi pi-map-marker"></i> Dirección:</span>
+                  <span class="value">{{ clienteInfo.domicilio }}</span>
+              </div>
+              <div class="info-row">
+                  <span class="label"><i class="pi pi-map"></i> Zona:</span>
+                  <span class="value">{{ clienteInfo.zona?.nombre }}</span>
+              </div>
+          </ng-container>
+
+          <ng-container *ngIf="!clienteInfo && isAdmin()">
+              <p class="text-center text-muted">Sesión de Administrador activa.</p>
+          </ng-container>
+      </div>
+
+      <div class="profile-footer">
+          <button pButton label="Cerrar Sesión" icon="pi pi-sign-out" class="p-button-danger w-full" (click)="logout()"></button>
+      </div>
+  </div>
+
+
+  <form *ngIf="!isRegister && !isAutenticated" [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="login-header">
+          <h2>Iniciar Sesión</h2>
+      </div>
+
+      <div class="form-group">
+          <span class="p-input-icon-left w-full">
+              <i class="pi pi-user"></i>
+              <input pInputText formControlName="username" placeholder="Usuario" class="w-full" />
+          </span>
+      </div>
+
+      <div class="form-group">
+          <span class="p-input-icon-left w-full">
+              <i class="pi pi-lock"></i>
+              <input type="password" pInputText formControlName="password" placeholder="Contraseña" class="w-full" />
+          </span>
+      </div>
+
+      <div class="action-buttons vertical">
+          <button pButton label="Ingresar" type="submit" [disabled]="loginForm.invalid" class="w-full"></button>
+          
+          <div class="divider">
+              <span>o</span>
           </div>
 
-    </div>
-    <div style="display: flex; flex-direction: row; justify-content: center; margin: 10px;">
-      <div style="margin: 10px;">
-          <p-button label="Registrarse"
-            (click)="register()"
-            [disabled]="registerForm.invalid">
-          </p-button>
+          <button pButton label="Crear una cuenta" type="button" severity="secondary" class="w-full p-button-outlined" (click)="cambiarRegister()"></button>
       </div>
-      <div style="margin: 10px;">
-          <p-button label="Volver"
-            severity="secondary"
-            (click)="isRegister = false">
-          </p-button>
-      </div>
-    </div>
   </form>
 
-</p-card>
+
+  <form *ngIf="isRegister && !isAutenticated" [formGroup]="registerForm" (ngSubmit)="register()">
+      
+      <div class="login-header">
+          <h2>Crear Cuenta</h2>
+      </div>
+
+      <div class="fast-form-grid">
+          
+          <div class="form-row">
+              <div class="form-col">
+                  <label>Usuario</label>
+                  <input pInputText formControlName="username" class="w-full" />
+              </div>
+              <div class="form-col">
+                  <label>Contraseña</label>
+                  <input type="password" pInputText formControlName="password" class="w-full" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-col">
+                  <label>Apellido y Nombre</label>
+                  <input pInputText formControlName="apellidoNombre" class="w-full" />
+              </div>
+              <div class="form-col">
+                  <label>CUIT</label>
+                  <input pInputText formControlName="cuit" class="w-full" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-col">
+                  <label>Email</label>
+                  <input pInputText formControlName="email" class="w-full" />
+              </div>
+              <div class="form-col">
+                  <label>Teléfono</label>
+                  <input pInputText formControlName="telefono" class="w-full" />
+              </div>
+          </div>
+
+          <div class="form-row">
+              <div class="form-col">
+                  <label>Domicilio</label>
+                  <input pInputText formControlName="domicilio" class="w-full" />
+              </div>
+              <div class="form-col">
+                  <label>Zona</label>
+                  <p-dropdown 
+                      [options]="zonas" 
+                      formControlName="zona" 
+                      optionLabel="nombre" 
+                      placeholder="Seleccionar" 
+                      [showClear]="true"
+                      styleClass="w-full"
+                      appendTo="body">
+                  </p-dropdown>
+              </div>
+          </div>
+
+      </div>
+
+      <div class="action-buttons row-buttons">
+          <button pButton label="Volver" type="button" severity="secondary" class="p-button-outlined" (click)="cambiarRegister()"></button>
+          <button pButton label="Registrarse" type="submit" [disabled]="registerForm.invalid" class="p-button-success"></button>
+      </div>
+
+  </form>
+
+</div>

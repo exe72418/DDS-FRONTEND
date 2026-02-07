@@ -1,10 +1,6 @@
-/* ========================================= */
-/* ESTILO ESTÁNDAR FAST (Contenedor y Inputs)*/
-/* ========================================= */
-
 .form-container {
   width: 100%;
-  max-width: 600px; /* Ancho cómodo para el carrito */
+  max-width: 600px;
   margin: 0 auto;
   padding: 30px;
   background-color: #ffffff;
@@ -33,7 +29,6 @@ label {
   font-size: 0.9rem;
 }
 
-/* --- Overrides de PrimeNG (Inputs) --- */
 :host ::ng-deep .p-inputtext,
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-calendar {
@@ -41,50 +36,17 @@ label {
   border-radius: 8px; 
 }
 
-:host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-dropdown {
-    border: 1px solid #dce1e6;
-    background-color: #ffffff;
-    transition: all 0.3s ease;
-}
-
-:host ::ng-deep input.p-inputtext {
-    padding: 12px 15px;
-}
-
-:host ::ng-deep .p-inputtext:focus,
-:host ::ng-deep .p-dropdown.p-focus {
-  border-color: #28a745; /* Verde para indicar compra/éxito, o usa #2196F3 para azul */
-  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
-  outline: none;
-}
-
-:host ::ng-deep .p-dropdown {
-  padding: 0; 
-  align-items: center;
-}
-:host ::ng-deep .p-dropdown .p-inputtext {
-    border: none;
-}
-
-/* Botones */
 .button-group {
-  margin-top: 30px;
   display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  gap: 15px;
 }
 
 .button-group button {
-    width: 100%; /* Botón full width */
-    justify-content: center;
-    padding: 12px;
-    font-weight: bold;
-    font-size: 1rem;
+    flex: 1; 
 }
 
-
-/* ========================================= */
-/* ESTILOS DEL RESUMEN (Originales)          */
-/* ========================================= */
 
 .lista-resumen {
     display: flex;
@@ -102,7 +64,7 @@ label {
     font-weight: bold;
     color: #333;
     font-size: 1rem;
-    margin-bottom: 4px;
+    margin-bottom: 4px; 
 }
 
 .detalles-prod {
@@ -128,7 +90,7 @@ label {
     font-weight: bold;
 }
 
-/* Total Final */
+/* Bloque Total */
 .separador-total {
     border: 0;
     border-top: 1px solid #eee;
@@ -154,11 +116,9 @@ label {
 }
 
 .cliente-readonly {
-    background-color: #f8f9fa;
-    border: 1px solid #dce1e6;
-    padding: 12px 15px;
-    border-radius: 8px;
-    color: #495057;
-    display: flex;
-    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    color: #333;
 }

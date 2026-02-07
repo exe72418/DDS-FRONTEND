@@ -43,4 +43,9 @@ export class PagoService {
         map((response: any) => response.data || response)
       );
   }
+
+  getMisPedidosSinPago(): Observable<Pedido[]> {
+    return this.httpClient.get<any>(environment.serverUrl + 'pedido/mis-pedidos-impagos')
+      .pipe(map(res => res.data));
+  }
 }

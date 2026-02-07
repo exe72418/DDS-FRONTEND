@@ -45,13 +45,15 @@
           optionLabel="apellidoNombre"
           placeholder="Seleccione Repartidor"
           [showClear]="true"
-          [disabled]="!entregaForm.get('zona')?.value"
+          
+          [disabled]="!zonaFormValue"
+          
           emptyMessage="No hay repartidores en esta zona"
           dataKey="id"
           styleClass="w-full"
           appendTo="body"
         ></p-dropdown>
-      </div>
+        </div>
 
       <div class="form-group">
         <label for="pedidos">Pedidos</label>
@@ -62,7 +64,9 @@
           optionLabel="nroPedido"
           placeholder="Seleccione los pedidos"
           display="chip"
-          [disabled]="!entregaForm.get('zona')?.value"
+          
+          [disabled]="!zonaFormValue"
+
           emptyMessage="No hay pedidos pagos para esta zona"
           dataKey="nroPedido"
           styleClass="w-full"

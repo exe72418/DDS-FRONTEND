@@ -24,15 +24,17 @@
       <input
         pInputText
         type="text"
-        placeholder="Precio Máximo"
-        [(ngModel)]="precioMaximo"
+        placeholder="Precio Mínimo"
+        [(ngModel)]="precioMinimo"
+        min="0"
         (change)="buscar()">
 
       <input
         pInputText
         type="text"
-        placeholder="Precio Mínimo"
-        [(ngModel)]="precioMinimo"
+        placeholder="Precio Máximo"
+        [(ngModel)]="precioMaximo"
+        min="0"
         (change)="buscar()">
 
       <p-dropdown

@@ -7,6 +7,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { Zona } from '../models/zona'; 
 import { ZonaService } from '../services/zona.service'; 
+import { ClienteService } from '../services/cliente.service'; 
+import { Cliente } from '../models/cliente'; 
 
 @Component({
   selector: 'app-login',
@@ -21,49 +23,71 @@ export class LoginComponent implements OnInit {
   });
 
   registerForm = new FormGroup({
-    username: new FormControl('', Validators.required),
+    username: new FormControl('', Validators.required), 
     password: new FormControl('', Validators.required),
     cuit: new FormControl('', Validators.required),
     apellidoNombre: new FormControl('', Validators.required),
     telefono: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     domicilio: new FormControl('', Validators.required),
-    zona: new FormControl('', Validators.required) 
+    zona: new FormControl(null, Validators.required) 
   });
 
   isRegister = false;
   isAutenticated!: boolean;
   zonas: Zona[] = []; 
+  
+  clienteInfo: Cliente | null = null;
+  userData: any = null;
 
   constructor(
     private authService: AuthservicesService, 
     private cargaService: CargaService, 
     private router: Router,  
     public dialogRef: MatDialogRef<LoginComponent>,
-    private zonaService: ZonaService 
-  ) {
-    this.loginForm = new FormGroup({
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-    });
-  }
+    private zonaService: ZonaService,
+    private clienteService: ClienteService 
+  ) { }
 
   ngOnInit(): void {
     this.isAutenticated = this.authService.isAuthenticated();
+    this.userData = this.authService.getUserData();
 
-    this.zonaService.getZonasActivas().subscribe((response: any) => {
-        this.zonas = response.data || response;
-    });
+    if (this.isAutenticated) {
+        this.cargarDatosCliente();
+    } else {
+        this.zonaService.getZonasActivas().subscribe((response: any) => {
+            this.zonas = response.data || response;
+        });
+    }
+  }
+
+  cargarDatosCliente() {
+    if (this.isCliente()) {
+        this.cargaService.show();
+        this.clienteService.getMiPerfil().subscribe({
+            next: (data) => {
+                this.clienteInfo = data;
+                this.cargaService.hide();
+            },
+            error: () => this.cargaService.hide()
+        });
+    }
   }
 
   cambiarRegister() {
     this.isRegister = !this.isRegister;
+    this.loginForm.reset();
+    this.registerForm.reset();
   }
 
   logout() {
     this.authService.logout();
     this.isAutenticated = false;
-    this.router.navigate(['home'])
+    this.clienteInfo = null;
+    this.userData = null;
+    this.dialogRef.close();
+    this.router.navigate(['home']);
   }
 
   isAdmin(): boolean {
@@ -75,40 +99,61 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const { username, password } = this.loginForm.value;
+    if(this.loginForm.invalid) return;
 
-    this.authService.login(username!, password!).subscribe(res => {
-      localStorage.setItem('auth_token', res.token);
-      this.isAutenticated = true;
-      this.dialogRef.close() 
-      Swal.fire({ title: "Usuario autenticado", text: "", icon: "success" }); 
-      this.router.navigate(['home'])
-      }, 
-      (error) => { 
-        this.cargaService.hide(); Swal.fire({ title: "Error", text: "No fue posible loguearse", icon: "error" 
-      });
+    const { username, password } = this.loginForm.value;
+    this.cargaService.show();
+
+    this.authService.login(username!, password!).subscribe({
+        next: (res) => {
+            this.cargaService.hide();
+            localStorage.setItem('auth_token', res.token);
+            this.isAutenticated = true;
+            this.userData = this.authService.getUserData();
+            
+            this.dialogRef.close(); 
+            Swal.fire({ 
+                title: `Registrado`, 
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+            }); 
+            
+            this.router.navigate(['home']);
+        }, 
+        error: (error) => { 
+            this.cargaService.hide(); 
+            Swal.fire({ title: "Error", text: "Credenciales incorrectas", icon: "error" });
+        }
     });
   }
 
   register() {
     if (this.registerForm.invalid) {
-        Swal.fire({ title: "Error", text: "Complete todos los campos", icon: "warning" });
+        Swal.fire({ title: "Atención", text: "Complete todos los campos requeridos", icon: "warning" });
         return;
     }
     
-    this.authService.register(this.registerForm.value).subscribe(() => {
-      const { username, password } = this.registerForm.value;
-      this.authService.login(username!, password!).subscribe(res => {
-        localStorage.setItem('auth_token', res.token);
-        this.isAutenticated = true;
-        this.dialogRef.close();
-        Swal.fire({ title: "Usuario autenticado", text: "", icon: "success" }); 
-        this.router.navigate(['home']);
+    this.cargaService.show();
+
+    this.authService.register(this.registerForm.value).subscribe({
+        next: () => {
+            const { username, password } = this.registerForm.value;
+            this.authService.login(username!, password!).subscribe({
+                next: (res) => {
+                    localStorage.setItem('auth_token', res.token);
+                    this.isAutenticated = true;
+                    this.dialogRef.close();
+                    this.cargaService.hide();
+                    Swal.fire({ title: "Cuenta creada!", icon: "success", timer: 1500, showConfirmButton: false }); 
+                    this.router.navigate(['home']);
+                }
+            });
         }, 
-        (error) => { 
-          this.cargaService.hide(); Swal.fire({ title: "Error", text: "No fue posible loguearse", icon: "error" 
-        });
-      });
+        error: (error) => { 
+            this.cargaService.hide(); 
+            Swal.fire({ title: "Error", text: error.error.message || "No se pudo registrar", icon: "error" });
+        }
     });
   } 
 }

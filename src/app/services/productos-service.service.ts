@@ -28,7 +28,8 @@ export class ProductosServiceService {
     descripcion: string = '',
     tipoProducto: TipoProducto | null = null,
     precioMinimo: number | null = null,
-    precioMaximo: number | null = null
+    precioMaximo: number | null = null,
+    soloDisponibles: boolean | null = null
   ): Observable<Producto[]> {
     let params = new HttpParams();
 
@@ -46,6 +47,10 @@ export class ProductosServiceService {
 
     if (precioMaximo !== null) {
       params = params.set('precioMaximo', precioMaximo.toString());
+    }
+
+    if (soloDisponibles !== null) {
+        params = params.set('disponible', soloDisponibles.toString());
     }
 
     return this.httpClient.get<any>(environment.serverUrl + 'producto/filter', { params })

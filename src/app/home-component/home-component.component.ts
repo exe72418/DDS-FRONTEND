@@ -7,6 +7,8 @@ import { Producto } from '../models/producto';
 import { Pedido } from '../models/pedido';
 import { LineaDeProducto } from '../models/lineaProducto';
 import { CargaService } from '../services/carga.service';
+import { TipoproductoService } from '../services/tipoproducto.service';
+import { TipoProducto } from '../models/tipoProducto';
 
 @Component({
   selector: 'app-home-component',
@@ -15,23 +17,63 @@ import { CargaService } from '../services/carga.service';
 })
 export class HomeComponentComponent implements OnInit, OnDestroy {
 
-  constructor(private _productoService: ProductosServiceService, private cargaService: CargaService, private store: Store) { }
+  constructor(
+    private _productoService: ProductosServiceService, 
+    private cargaService: CargaService, 
+    private store: Store,
+    private tipoproductoService: TipoproductoService 
+  ) { }
 
   @Input() productos!: Producto[];
   pedido!: Pedido;
 
+  tiposProducto: TipoProducto[] | undefined;
+  precioMinimo: number | null = null;
+  precioMaximo: number | null = null;
+  nombreString: string = '';
+  tipoProductoSelect: TipoProducto | null = null;
+
   ngOnInit(): void {
     this.cargaService.show();
+    
     this._productoService.getProductosActivos().subscribe((productos) => {
-      this.cargaService.hide();
       this.productos = productos;
+      this.cargaService.hide(); 
     });
-    this.pedido = new Pedido();
-    this.pedido.lineas = [];
-    this.pedido.total = 0;
+
+    this.tipoproductoService.getAll().subscribe((data: any) => {
+        this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
+          const tipoProductoFormateado: TipoProducto = {
+            id: tipoprod.id,
+            nombre: tipoprod.nombre,
+            disponible: tipoprod.disponible
+          };
+          return tipoProductoFormateado;
+        });
+    });
+
+    const pedidoEnMemoria = this.store.selectSnapshot(PedidoState.getPedido);
+
+    if (pedidoEnMemoria && pedidoEnMemoria.lineas && pedidoEnMemoria.lineas.length > 0) {
+        this.pedido = _.cloneDeep(pedidoEnMemoria);
+    } else {
+        this.pedido = new Pedido();
+        this.pedido.lineas = [];
+        this.pedido.total = 0;
+    }
   }
 
-    getCantidadEnPedido(prod: Producto): number {
+  buscar() {
+    this.cargaService.show();
+    this._productoService
+      .getProductosByFilters(this.nombreString, this.tipoProductoSelect!, this.precioMinimo, this.precioMaximo, true)
+      .subscribe((prodFiltrado) => {
+        this.productos = prodFiltrado;
+        this.cargaService.hide();
+      });
+  }
+
+  getCantidadEnPedido(prod: Producto): number {
     if(!this.pedido || !this.pedido.lineas) return 0;
     
     const linea = this.pedido.lineas.find(l => l.producto && l.producto.codigo == prod.codigo);
@@ -93,8 +135,8 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
   }
 
   get pedidoVacio(): boolean {
-  return !this.pedido?.lineas || this.pedido.lineas.length === 0;
-}
+    return !this.pedido?.lineas || this.pedido.lineas.length === 0;
+  }
 
   eliminar(producto: Producto) {
     this.cargaService.show();

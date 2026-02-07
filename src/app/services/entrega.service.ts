@@ -63,4 +63,9 @@ export class EntregaService {
         map(response => response.data || response.entregas)
       );
   }
+
+  getMisPedidosParaEntrega(): Observable<Pedido[]> {
+  return this.httpClient.get<any>(environment.serverUrl + 'entregas/mis-pedidos-para-entrega')
+    .pipe(map(res => res.data));
+}
 }

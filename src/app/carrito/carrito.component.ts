@@ -1,6 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { PedidoState } from '../states/pedido.state';
+import { PedidoState, SetPedidosAction } from '../states/pedido.state'; 
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import _ from 'lodash';
@@ -52,7 +52,7 @@ export class CarritoComponent implements OnInit {
     this.pedidoSelectSnapShot.cliente = cliente;
   }
 
-llenarData() {
+  llenarData() {
     this.cargaService.show();
 
     if (this.isAdmin()) {
@@ -80,8 +80,7 @@ llenarData() {
     }
   }
 
-
-pagar() {
+  pagar() {
     this.cargaService.show();
     this.pedidoSelectSnapShot.fecha = this.fechaSelected;
 
@@ -97,6 +96,8 @@ pagar() {
         
         const pedidoCreado = response.data || response;
         const nroPedido = pedidoCreado.nroPedido;
+
+        this.store.dispatch(new SetPedidosAction(new Pedido()));
 
         Swal.fire({
           title: "Pedido guardado",
