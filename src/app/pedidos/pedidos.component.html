@@ -21,37 +21,47 @@
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
       [responsiveLayout]="'scroll'"
-      [tableStyle]="{ 'min-width': '50rem' }"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       styleClass="p-datatable-sm p-datatable-striped pedidos-table"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th *ngIf="isAdmin()" pSortableColumn="cliente.apellidoNombre">
+          <th *ngIf="isAdmin() && !isMobile" pSortableColumn="cliente.apellidoNombre">
             Cliente <p-sortIcon field="cliente.apellidoNombre"></p-sortIcon>
           </th>
-          <th pSortableColumn="entrega.id" style="width: 110px;">
+          
+          <th *ngIf="!isMobile" pSortableColumn="entrega.id" style="width: 110px;">
             Entrega <p-sortIcon field="entrega.id"></p-sortIcon>
           </th>
-          <th pSortableColumn="fecha" style="width: 140px;">
+          
+          <th pSortableColumn="fecha" style="width: 120px;">
             Fecha <p-sortIcon field="fecha"></p-sortIcon>
           </th>
-          <th pSortableColumn="pago.id" style="width: 110px;">
+          
+          <th *ngIf="!isMobile" pSortableColumn="pago.id" style="width: 110px;">
             Pago <p-sortIcon field="pago.id"></p-sortIcon>
           </th>
-          <th pSortableColumn="total" style="width: 140px;">
+          
+          <th pSortableColumn="total" style="width: 120px;">
             Total <p-sortIcon field="total"></p-sortIcon>
           </th>
-          <th style="width: 110px; text-align: center;">Detalles</th>
+          
+          <th style="width: 80px; text-align: center;">Detalles</th>
+          
           <th class="col-actions">Acciones</th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-pedido>
         <tr>
-          <td *ngIf="isAdmin()" class="fw-semibold">{{ pedido.cliente?.apellidoNombre }}</td>
-          <td>{{ pedido.entrega ? pedido.entrega.id : '—' }}</td>
+          <td *ngIf="isAdmin() && !isMobile" class="fw-semibold">{{ pedido.cliente?.apellidoNombre }}</td>
+          
+          <td *ngIf="!isMobile">{{ pedido.entrega ? pedido.entrega.id : '—' }}</td>
+          
           <td>{{ pedido.fecha | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ pedido.pago ? pedido.pago.id : '—' }}</td>
+          
+          <td *ngIf="!isMobile">{{ pedido.pago ? pedido.pago.id : '—' }}</td>
+          
           <td>{{ pedido.total | currency }}</td>
 
           <td class="text-center">
@@ -61,7 +71,8 @@
               [rounded]="true"
               [outlined]="true"
               styleClass="p-button-sm p-button-icon-only"
-              (onClick)="showProductDetails(pedido)">
+              (onClick)="showProductDetails(pedido)"
+              pTooltip="Ver productos">
             </p-button>
           </td>
 
@@ -103,7 +114,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="7" class="empty">
+          <td [attr.colspan]="4 + (isAdmin() && !isMobile ? 1 : 0) + (isMobile ? 0 : 2)" class="empty">
             No hay pedidos para mostrar.
           </td>
         </tr>

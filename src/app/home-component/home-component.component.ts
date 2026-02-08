@@ -9,6 +9,9 @@ import { LineaDeProducto } from '../models/lineaProducto';
 import { CargaService } from '../services/carga.service';
 import { TipoproductoService } from '../services/tipoproducto.service';
 import { TipoProducto } from '../models/tipoProducto';
+import { BreakpointService } from '../services/breakpoint.service'; 
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home-component',
@@ -21,7 +24,8 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
     private _productoService: ProductosServiceService, 
     private cargaService: CargaService, 
     private store: Store,
-    private tipoproductoService: TipoproductoService 
+    private tipoproductoService: TipoproductoService,
+    private breakpointService: BreakpointService 
   ) { }
 
   @Input() productos!: Producto[];
@@ -33,15 +37,22 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
   nombreString: string = '';
   tipoProductoSelect: TipoProducto | null = null;
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   ngOnInit(): void {
     this.cargaService.show();
     
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this._productoService.getProductosActivos().subscribe((productos) => {
       this.productos = productos;
       this.cargaService.hide(); 
     });
 
-    this.tipoproductoService.getAll().subscribe((data: any) => {
+    this.tipoproductoService.getTiposDeProductoActivos().subscribe((data: any) => {
         this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
           const tipoProductoFormateado: TipoProducto = {
             id: tipoprod.id,
@@ -63,13 +74,27 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
     }
   }
 
-  buscar() {
-    this.cargaService.show();
+buscar() {
+    this.cargaService.show(); 
+
     this._productoService
       .getProductosByFilters(this.nombreString, this.tipoProductoSelect!, this.precioMinimo, this.precioMaximo, true)
-      .subscribe((prodFiltrado) => {
-        this.productos = prodFiltrado;
-        this.cargaService.hide();
+      .subscribe({
+        next: (prodFiltrado: any) => {
+          this.productos = prodFiltrado.data || prodFiltrado;
+        },
+        error: (err) => {
+          console.error('Error al filtrar productos:', err);
+          this.cargaService.hide(); 
+          Swal.fire({ 
+              title: "Error", 
+              text: "No se pudieron cargar los productos", 
+              icon: "error" 
+          });
+        },
+        complete: () => {
+          this.cargaService.hide(); 
+        }
       });
   }
 
@@ -154,5 +179,8 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.store.dispatch(new SetPedidosAction(_.cloneDeep(this.pedido)));
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
   }
 }

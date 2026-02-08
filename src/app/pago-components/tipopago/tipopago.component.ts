@@ -1,25 +1,38 @@
 import { TipoPago } from '../../models/tipopago';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { TipopagoService } from '../../services/tipopago.service';
-import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CargaService } from '../../services/carga.service';
+import { BreakpointService } from '../../services/breakpoint.service'; 
+import { Subscription } from 'rxjs'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tipopago',
   templateUrl: './tipopago.component.html',
   styleUrl: './tipopago.component.css'
 })
-export class TipopagoComponent implements OnInit {
+export class TipopagoComponent implements OnInit, OnDestroy {
   crearEditarMode: boolean = false;
   tipoPagoelected: TipoPago | null = null;
   tipoPagoForm!: FormGroup;
 
   tiposPago: TipoPago[] = [];
 
-  constructor(private tipopagoService: TipopagoService, private cargaService: CargaService) {}
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
+  constructor(
+    private tipopagoService: TipopagoService, 
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService 
+  ) {}
 
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.tipoPagoForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
@@ -27,19 +40,39 @@ export class TipopagoComponent implements OnInit {
     this.search();
   }
 
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+  }
+
   search() {
     this.cargaService.show();
-    this.tipopagoService.getAll().subscribe((data: any) => {
-      this.tiposPago = data['data'].map((tipopago: TipoPago) => {
-        const tipoPagoFormateado: TipoPago = {
-          id: tipopago.id,
-          nombre: tipopago.nombre,
-          descripcion: tipopago.descripcion,
-          disponible: tipopago.disponible
-        };
-        return tipoPagoFormateado;
-      });
-      this.cargaService.hide();
+
+    this.tipopagoService.getAll().subscribe({
+      next: (data: any) => {
+        this.tiposPago = data['data'].map((tipopago: TipoPago) => {
+          const tipoPagoFormateado: TipoPago = {
+            id: tipopago.id,
+            nombre: tipopago.nombre,
+            descripcion: tipopago.descripcion,
+            disponible: tipopago.disponible
+          };
+          return tipoPagoFormateado;
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar tipos de pago:', error);
+        this.cargaService.hide(); 
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar los tipos de pago",
+          icon: "error"
+        });
+      },
+      complete: () => {
+        this.cargaService.hide();
+      }
     });
   }
 

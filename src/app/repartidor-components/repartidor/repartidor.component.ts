@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { RepartidorService } from '../../services/repartidor.service';
 import { Repartidor } from '../../models/repartidor';
 import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CargaService } from '../../services/carga.service';
+import { BreakpointService } from '../../services/breakpoint.service';
+import { Subscription } from 'rxjs'; 
 
 @Component({
   selector: 'app-repartidor',
   templateUrl: './repartidor.component.html',
   styleUrl: './repartidor.component.css'
 })
-export class RepartidorComponent implements OnInit {
+export class RepartidorComponent implements OnInit, OnDestroy {
 
   crearEditarMode: boolean = false;
   repartidorSelected: Repartidor | null = null;
@@ -18,12 +20,20 @@ export class RepartidorComponent implements OnInit {
 
   repartidores: Repartidor[] = [];
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   constructor(
     private repartidorService: RepartidorService,
-    private cargaService: CargaService
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService 
   ) {}
 
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.repartidorForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       cuit: new FormControl('', [Validators.required]),
@@ -35,21 +45,40 @@ export class RepartidorComponent implements OnInit {
     this.search();
   }
 
-  search() {
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+  }
+
+search() {
     this.cargaService.show();
-    this.repartidorService.getAll().subscribe((data: any) => {
-      this.repartidores = data['data'].map((repartidor: Repartidor) => {
-        const repartidorFormateado: Repartidor = {
-          id: repartidor.id,
-          cuit: repartidor.cuit,
-          apellidoNombre: repartidor.apellidoNombre,
-          vehiculo: repartidor.vehiculo,
-          zona: repartidor.zona,
-          disponible: repartidor.disponible
-        };
-        return repartidorFormateado;
-      });
-      this.cargaService.hide();
+
+    this.repartidorService.getAll().subscribe({
+      next: (data: any) => {
+        this.repartidores = data['data'].map((repartidor: Repartidor) => {
+          return {
+            id: repartidor.id,
+            cuit: repartidor.cuit,
+            apellidoNombre: repartidor.apellidoNombre,
+            vehiculo: repartidor.vehiculo,
+            zona: repartidor.zona,
+            disponible: repartidor.disponible
+          };
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar repartidores:', error);
+        this.cargaService.hide();
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar los repartidores",
+          icon: "error"
+        });
+      },
+      complete: () => {
+        this.cargaService.hide();
+      }
     });
   }
 

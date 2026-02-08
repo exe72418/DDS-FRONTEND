@@ -1,21 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 import { ProductosServiceService } from './services/productos-service.service';
 import { Producto } from './models/producto';
-import { CustomComponentsModule } from './modules/custom-components.module';
 import { Pedido } from './models/pedido';
-import { LineaDeProducto } from './models/lineaProducto';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
 import { CargaService } from './services/carga.service';
 import { LoginComponent } from './login/login.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthservicesService } from './services/authservices.service';
 
-
 @Component({
   selector: 'app-root',
-  ///providers: [Store],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -26,24 +20,27 @@ export class AppComponent implements OnInit {
   productos!: Producto[];
   title = 'fast';
   pedido!: Pedido;
+  
+  menuOpen: boolean = false;
 
-  constructor(private _productoService: ProductosServiceService, private cargaService: CargaService, private router: Router, private authService: AuthservicesService
-  ) {
-
-  }
+  constructor(
+    private _productoService: ProductosServiceService, 
+    private cargaService: CargaService, 
+    private router: Router, 
+    private authService: AuthservicesService
+  ) {}
 
   ngOnInit(): void {
-    this.router.navigate(['home'])
   }
+
   abrirLogin() {
-    this.dialog.open(LoginComponent)
+    this.dialog.open(LoginComponent);
+    this.menuOpen = false; 
   }
     
-
   navigateCarrito() {
-    // this.router.navigate(['/home'], {
-    //   replaceUrl: true, state: {pedido: this.pedido}
-    // });
+     this.router.navigate(['/carrito']);
+     this.menuOpen = false;
   }
   
   isAdmin(): boolean {
@@ -54,4 +51,11 @@ export class AppComponent implements OnInit {
     return this.authService.getUserData()?.role === 'cliente';
   }
 
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+  }
 }

@@ -1,12 +1,13 @@
 <div class="container-fluid">
 
-    <div class="filters-bar" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
+    <div class="filters-bar">
         <input
           pInputText
           type="text"
           placeholder="Buscar por nombre"
           [(ngModel)]="nombreString"
-          (change)="buscar()">
+          (change)="buscar()"
+          class="filter-input-text">
 
         <input
           pInputText
@@ -14,7 +15,8 @@
           placeholder="Precio Mínimo"
           [(ngModel)]="precioMinimo"
           min="0"
-          (change)="buscar()">
+          (change)="buscar()"
+          class="filter-input-number">
 
         <input
           pInputText
@@ -22,7 +24,8 @@
           placeholder="Precio Máximo"
           [(ngModel)]="precioMaximo"
           min="0"
-          (change)="buscar()">
+          (change)="buscar()"
+          class="filter-input-number">
   
         <p-dropdown
           id="tipodeprod"
@@ -35,22 +38,23 @@
           styleClass="dropdown-tipo">
         </p-dropdown>
     </div>
-    <div class="tabla" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px;">
-        
-        <div *ngFor="let product of productos">
-            <p-card [style]="{ width: '250px', 'text-align': 'center' }">
 
-                <h4 style="margin: 10px 0; font-size: 1.1rem; height: 3em; overflow: hidden;">{{ product.descripcion }}</h4>
-                <p style="font-weight: bold;">{{ product.precio | currency }}</p>
-                <p style="font-weight: bold; color: #555;">Stock: {{ product.stock }}</p>
+    <div class="product-grid">
+        
+        <div *ngFor="let product of productos" class="product-card-wrapper">
+            <p-card styleClass="custom-p-card">
+
+                <h4 class="prod-title">{{ product.descripcion }}</h4>
+                <p class="prod-price">{{ product.precio | currency }}</p>
+                <p class="prod-stock">Stock: {{ product.stock }}</p>
 
                 <ng-container *ngIf="getCantidadEnPedido(product) > 0; else botonComprar">
                     
-                    <p style="font-size: 1.1rem; font-weight: bold; color: #007ad9;">
+                    <p class="cant-display">
                         Cantidad: {{ getCantidadEnPedido(product) }}
                     </p>
                     
-                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+                    <div class="action-buttons">
                         <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning p-button-rounded"></button>
                         <button (click)="agregar(product)" pButton icon="pi pi-plus" class="p-button-success p-button-rounded"></button>
                         <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
@@ -59,8 +63,8 @@
                 </ng-container>
 
                 <ng-template #botonComprar>
-                    <div class="flex gap-3 mt-1" style="margin-top: 10px;">
-                        <p-button (click)="agregar(product)" label="Comprar" class="w-full" styleClass="w-full" />
+                    <div class="comprar-wrapper">
+                        <p-button (click)="agregar(product)" label="Comprar" styleClass="w-full" />
                     </div>
                 </ng-template>
 
@@ -69,8 +73,12 @@
 
     </div>
 
-    <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
+    <div *ngIf="!isMobile" class="cart-button-desktop">
         <button pButton label="Ir al Carrito" icon="pi pi-shopping-cart" class="p-button-success p-button-lg" routerLink="/carrito" [disabled]="pedidoVacio"> </button>
+    </div>
+
+    <div *ngIf="isMobile" class="cart-fab-container">
+        <button pButton icon="pi pi-shopping-cart" class="p-button-success p-button-rounded p-button-lg shadow-4" routerLink="/carrito" [disabled]="pedidoVacio"></button>
     </div>
 
 </div>

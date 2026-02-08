@@ -1,33 +1,40 @@
 import { Cliente } from '../../models/cliente';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { ClienteService } from '../../services/cliente.service';
-import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CargaService } from '../../services/carga.service';
 import { HttpClient } from '@angular/common/http';
+import { BreakpointService } from '../../services/breakpoint.service'; 
+import { Subscription } from 'rxjs'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.css'
 })
-export class ClientesComponent implements OnInit {
+export class ClientesComponent implements OnInit, OnDestroy {
 
   crearEditarMode: boolean = false;
-
-
   clienteSelected: Cliente | null = null;
-
   clienteForm!: FormGroup;
   clientes!: Cliente[];
+
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
 
   constructor(
     private clienteService: ClienteService,
     private cargaService: CargaService,
-    private http: HttpClient
+    private http: HttpClient,
+    private breakpointService: BreakpointService 
   ) { }
 
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.clienteForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       apellidoNombre: new FormControl('', [Validators.required]),
@@ -42,26 +49,44 @@ export class ClientesComponent implements OnInit {
     this.search();
   }
 
-  search() {
-    this.cargaService.show();
-    this.clienteService.getAll().subscribe((data: any) => {
-      this.clientes = data['data'].map((cliente: Cliente) => {
-        const clienteFormateado: Cliente = {
-          id: cliente.id,
-          apellidoNombre: cliente.apellidoNombre,
-          telefono: cliente.telefono,
-          email: cliente.email,
-          domicilio: cliente.domicilio,
-          cuit: cliente.cuit,
-          disponible: cliente.disponible,
-          zona: cliente.zona
-        };
-        return clienteFormateado;
-      });
-      this.cargaService.hide();
-    });
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
   }
 
+  search() {
+    this.cargaService.show();
+
+    this.clienteService.getAll().subscribe({
+      next: (data: any) => {
+        this.clientes = data['data'].map((cliente: Cliente) => {
+          return {
+            id: cliente.id,
+            apellidoNombre: cliente.apellidoNombre,
+            telefono: cliente.telefono,
+            email: cliente.email,
+            domicilio: cliente.domicilio,
+            cuit: cliente.cuit,
+            disponible: cliente.disponible,
+            zona: cliente.zona
+          };
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar clientes:', error);
+        this.cargaService.hide(); 
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar los clientes",
+          icon: "error"
+        });
+      },
+      complete: () => {
+        this.cargaService.hide(); 
+      }
+    });
+  }
 
   changeEditCreate() {
     this.crearEditarMode = false;

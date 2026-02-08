@@ -2,7 +2,7 @@
 
   <div *ngIf="!crearEditarModePago" class="pagos-card">
 
-    <div class="pagos-header center">
+    <div class="pagos-header">
       <h5>Pagos</h5>
 
       <p-button
@@ -19,15 +19,17 @@
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
       [responsiveLayout]="'scroll'"
-      [tableStyle]="{ 'min-width': '50rem' }"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       styleClass="p-datatable-sm p-datatable-striped pagos-table"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 80px;">Id</th>
-          <th style="width: 140px;">Fecha</th>
-          <th>Tipo de Pago</th>
-          <th style="width: 120px;">Pedido ID</th>
+          <th *ngIf="!isMobile" style="width: 80px;">Id</th>
+          
+          <th style="width: 120px;">Fecha</th>
+          
+          <th *ngIf="!isMobile">Tipo de Pago</th>
+          <th *ngIf="!isMobile" style="width: 120px;">Pedido ID</th>
           
           <th style="width: 100px; text-align: center;">Detalle</th>
           
@@ -37,10 +39,12 @@
 
       <ng-template pTemplate="body" let-pago>
         <tr>
-          <td>{{ pago.id }}</td>
+          <td *ngIf="!isMobile">{{ pago.id }}</td>
+          
           <td>{{ pago.fecha | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ pago.tipoPago?.nombre }}</td>
-          <td>{{ pago.pedido?.nroPedido }}</td>
+          
+          <td *ngIf="!isMobile">{{ pago.tipoPago?.nombre }}</td>
+          <td *ngIf="!isMobile">{{ pago.pedido?.nroPedido }}</td>
 
           <td class="text-center">
             <p-button
@@ -49,7 +53,8 @@
               [rounded]="true"
               [outlined]="true"
               styleClass="p-button-sm p-button-icon-only"
-              (onClick)="showDetallePedido(pago.pedido)">
+              (onClick)="showDetallePedido(pago.pedido)"
+              pTooltip="Ver Detalle">
             </p-button>
           </td>
 
@@ -80,7 +85,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td [attr.colspan]="isAdmin() ? 6 : 5" class="empty">
+          <td [attr.colspan]="(isMobile ? 2 : 4) + (isAdmin() ? 1 : 0) + (isMobile ? 0 : 1)" class="empty">
             No hay pagos para mostrar.
           </td>
         </tr>

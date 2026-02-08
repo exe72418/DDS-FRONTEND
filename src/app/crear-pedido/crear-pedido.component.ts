@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core'; // Agregado OnDestroy
 import { Pedido } from '../models/pedido';
 import { ClienteService } from '../services/cliente.service';
 import { Cliente } from '../models/cliente';
@@ -6,20 +6,21 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PedidoServiceService } from '../services/pedido-service.service';
 import Swal from 'sweetalert2';
 import { CargaService } from '../services/carga.service';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subscription } from 'rxjs'; 
 import { ProductosServiceService } from '../services/productos-service.service';
 import { TipoproductoService } from '../services/tipoproducto.service';
 import { Producto } from '../models/producto';
 import { TipoProducto } from '../models/tipoProducto';
 import { LineaDeProducto } from '../models/lineaProducto';
 import { AuthservicesService } from '../services/authservices.service'; 
+import { BreakpointService } from '../services/breakpoint.service'; 
 
 @Component({
   selector: 'app-crear-pedido',
   templateUrl: './crear-pedido.component.html',
   styleUrl: './crear-pedido.component.css'
 })
-export class CrearPedidoComponent implements OnInit {
+export class CrearPedidoComponent implements OnInit, OnDestroy {
 
   @Input() pedido!: Pedido;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
@@ -40,13 +41,17 @@ export class CrearPedidoComponent implements OnInit {
   minDateCalendar!: Date;
   fechaOriginalPedido!: Date | null;
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   constructor(
     private _clienteService: ClienteService,
     private _productoService: ProductosServiceService,
     private _tipoProductoService: TipoproductoService,
     private cargaService: CargaService,
     private _pedidoService: PedidoServiceService,
-    private authService: AuthservicesService
+    private authService: AuthservicesService,
+    private breakpointService: BreakpointService
   ) {}
 
   isAdmin(): boolean {
@@ -56,12 +61,17 @@ export class CrearPedidoComponent implements OnInit {
   ngOnInit(): void {
     this.cargaService.show();
 
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.pedidoForm = new FormGroup({
       nroPedido: new FormControl(''),
       cliente: new FormControl(null, [Validators.required]),
       fecha: new FormControl(new Date(), [Validators.required]),
       total: new FormControl(0)
     });
+
     let clientesObservable;
     
     if (this.isAdmin()) {
@@ -122,6 +132,12 @@ export class CrearPedidoComponent implements OnInit {
         this.cargaService.hide();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
   }
 
   get clienteControlValue() {

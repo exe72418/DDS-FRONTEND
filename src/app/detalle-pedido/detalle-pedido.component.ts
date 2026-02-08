@@ -16,12 +16,17 @@ export class DetallePedidoComponent implements OnInit {
     public dialogRef: MatDialogRef<DetallePedidoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.lineas = data.lineas;
-    this.nroPedido = data.nroPedido;
+    if (data) {
+        this.lineas = data.lineas || [];
+        this.nroPedido = data.nroPedido || 0;
+    }
   }
 
   ngOnInit(): void {
-    this.total = this.lineas.reduce((acc, linea) => acc + (linea.subtotal), 0);
+    this.total = this.lineas.reduce((acc, linea) => {
+        const sub = linea.subtotal || (linea.cantidad * (linea.producto?.precio || 0));
+        return acc + sub;
+    }, 0);
   }
 
   cerrar(): void {

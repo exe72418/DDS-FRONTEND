@@ -1,23 +1,25 @@
 .pagos-card {
   background: #fff;
   border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  padding: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  padding: 15px; 
+  width: 100%;
 }
 
-.pagos-header.center {
+.pagos-header {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .pagos-header h5 {
   margin: 0;
   font-weight: 700;
   letter-spacing: 0.3px;
+  font-size: 1.3rem;
 }
 
 :host ::ng-deep .btn-nuevo {
@@ -27,29 +29,34 @@
 
 :host ::ng-deep .pagos-table .p-datatable-thead > tr > th {
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 :host ::ng-deep .pagos-table .p-datatable-tbody > tr > td {
   vertical-align: middle;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .col-actions {
   text-align: center;
-  width: 150px;
+  width: 100px;
+}
+
+.text-center {
+    text-align: center;
 }
 
 .action-buttons {
   display: inline-flex;
-  gap: 10px;
+  gap: 5px;
   justify-content: center;
   align-items: center;
 }
 
 :host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
-  height: 34px;
-  width: 34px;
+  height: 32px;
+  width: 32px;
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -64,4 +71,39 @@
 
 .form-wrapper {
   margin-top: 18px;
+}
+
+@media screen and (min-width: 768px) {
+
+    .pagos-card {
+        padding: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .pagos-header {
+        flex-direction: row; 
+        justify-content: space-between;
+    }
+
+    .pagos-header h5 {
+        font-size: 1.5rem;
+    }
+
+    :host ::ng-deep .pagos-table .p-datatable-thead > tr > th,
+    :host ::ng-deep .pagos-table .p-datatable-tbody > tr > td {
+        font-size: 13px;
+    }
+
+    .col-actions {
+        width: 150px;
+    }
+
+    .action-buttons {
+        gap: 10px;
+    }
+
+    :host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
+        height: 34px;
+        width: 34px;
+    }
 }

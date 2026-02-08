@@ -50,7 +50,7 @@
     </div>
 
     <div class="form-group">
-        <label for="fecha">Fecha</label>
+        <label for="fecha">Fecha de Entrega</label>
         <p-calendar 
             id="fecha" 
             [ngModelOptions]="{standalone: true}"
@@ -58,6 +58,7 @@
             placeholder="dd/mm/aaaa"
             dateFormat="dd/mm/yy" 
             showIcon="true" 
+            [touchUI]="isMobile" 
             styleClass="w-full"
             appendTo="body">
         </p-calendar>

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog'; 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs'; 
 import Swal from 'sweetalert2';
 import { Pedido } from '../models/pedido';
 import { Cliente } from '../models/cliente';
@@ -12,13 +12,14 @@ import { CargaService } from '../services/carga.service';
 import { PagoService } from '../services/pago.service';
 import { DetallePedidoComponent } from '../detalle-pedido/detalle-pedido.component';
 import { AuthservicesService } from '../services/authservices.service';
+import { BreakpointService } from '../services/breakpoint.service'; 
 
 @Component({
   selector: 'app-pedidos',
   templateUrl: './pedidos.component.html',
   styleUrls: ['./pedidos.component.css']
 })
-export class PedidosComponent implements OnInit {
+export class PedidosComponent implements OnInit, OnDestroy {
 
   crearMode: boolean = false;
   pedidos!: Pedido[];
@@ -29,6 +30,9 @@ export class PedidosComponent implements OnInit {
   fechaFin!: Date;
   clientes: Cliente[] = [];
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   constructor(
     private _pedidoService: PedidoServiceService,
     private _clienteService: ClienteService,
@@ -37,20 +41,32 @@ export class PedidosComponent implements OnInit {
     private _pagoService: PagoService, 
     private router: Router,
     private dialog: MatDialog,
-    private authService: AuthservicesService 
+    private authService: AuthservicesService,
+    private breakpointService: BreakpointService 
   ) { }
 
   ngOnInit(): void {
+    this.cargaService.show();
+    
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.search();
     if (this.isAdmin()) {
         this.cargarClientes();
     }
   }
 
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+  }
+
   isAdmin(): boolean {
     return this.authService.getUserData()?.role === 'admin';
   }
-
 
   cargarClientes() {
     this._clienteService.getClientesActivos().subscribe((resp: any) => {
@@ -60,7 +76,7 @@ export class PedidosComponent implements OnInit {
   }
 
 search() {
-    this.cargaService.show();
+    this.cargaService.show(); 
 
     let observablePedidos;
 
@@ -71,24 +87,46 @@ search() {
     }
 
     observablePedidos.subscribe({
-      next: (pedidos) => {
-        this.pedidos = pedidos;
-        this.cargaService.hide();
+      next: (response: any) => {
+        this.pedidos = response.data || response;
       },
       error: (err) => {
-        console.error(err);
-        this.cargaService.hide();
-        Swal.fire({ title: "Error", text: "No se pudieron cargar los pedidos", icon: "error" });
+        console.error('Error al cargar pedidos:', err);
+        this.cargaService.hide(); 
+        Swal.fire({ 
+            title: "Error", 
+            text: "No se pudieron cargar los pedidos", 
+            icon: "error" 
+        });
+      },
+      complete: () => {
+        this.cargaService.hide(); 
       }
     });
   }
 
-  buscar() {
+buscar() {
+    this.cargaService.show(); 
+
     const fechaInicio = this.fechaInicio ? new Date(this.fechaInicio) : null;
     const fechaFin = this.fechaFin ? new Date(this.fechaFin) : null;
 
-    this._pedidoService.getPedidosByFilters(this.clienteSelect, fechaInicio, fechaFin).subscribe((pedidos) => {
-      this.pedidos = pedidos;
+    this._pedidoService.getPedidosByFilters(this.clienteSelect, fechaInicio, fechaFin).subscribe({
+      next: (pedidos) => {
+        this.pedidos = (pedidos as any).data || pedidos;
+      },
+      error: (err) => {
+        console.error('Error al filtrar pedidos:', err);
+        this.cargaService.hide(); 
+        Swal.fire({
+            title: "Error",
+            text: "Error al buscar pedidos",
+            icon: "error"
+        });
+      },
+      complete: () => {
+        this.cargaService.hide(); 
+      }
     });
   }
 
@@ -168,7 +206,6 @@ search() {
       }
     });
   }
-
 
   irAPago(pedido: Pedido) {
       if (pedido.nroPedido) {

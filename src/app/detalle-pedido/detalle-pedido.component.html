@@ -1,33 +1,50 @@
-<div style="width: 100%; padding: 20px;"> 
+<div class="dialog-container">
     
-    <h2 style="text-align: center; margin-bottom: 20px;">Detalle del Pedido #{{nroPedido}}</h2>
-    
-    <p-table 
-        [value]="lineas" 
-        [style]="{ 'width': '100%' }" 
-        [scrollable]="true" 
-        scrollHeight="400px">
-        
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="text-align: center;">Producto</th>
-                <th style="text-align: center;">Cant.</th> 
-                <th style="text-align: center;">Precio</th>
-                <th style="text-align: center;">Subtotal</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-linea>
-            <tr>
-                <td>{{ linea.producto.descripcion }}</td>
-                <td style="text-align: center;">{{ linea.cantidad }}</td>
-                <td style="text-align: center;">{{ linea.producto.precio | currency }}</td>
-                <td style="text-align: center; font-weight: bold;">{{ linea.subtotal | currency }}</td>
-            </tr>
-        </ng-template>
-    </p-table>
-
-    <div style="display: flex; justify-content: space-between; margin-top: 20px; align-items: center; padding-top: 15px;">
-        <h3 style="margin: 0;">TOTAL: {{ total | currency }}</h3>
-        <p-button label="Cerrar" icon="pi pi-times" severity="info" (onClick)="cerrar()"></p-button>
+    <div class="dialog-header">
+        <h2>Detalle del Pedido #{{nroPedido}}</h2>
     </div>
+    
+    <div class="table-wrapper">
+        <p-table 
+            [value]="lineas" 
+            [scrollable]="true" 
+            scrollHeight="400px"
+            styleClass="p-datatable-sm p-datatable-striped custom-table">
+            
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="col-producto">Producto</th>
+                    <th class="col-cant text-center">Cant.</th> 
+                    <th class="col-moneda text-right">Precio</th>
+                    <th class="col-moneda text-right">Subtotal</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-linea>
+                <tr>
+                    <td class="col-producto">
+                        <span class="prod-desc">{{ linea.producto?.descripcion }}</span>
+                    </td>
+                    <td class="col-cant text-center">{{ linea.cantidad }}</td>
+                    <td class="col-moneda text-right">{{ linea.producto?.precio | currency }}</td>
+                    <td class="col-moneda text-right fw-bold">{{ linea.subtotal | currency }}</td>
+                </tr>
+            </ng-template>
+            
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="4" class="text-center p-4">No hay líneas en este pedido.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="dialog-footer">
+        <div class="total-section">
+            <span class="label">TOTAL:</span>
+            <span class="value">{{ total | currency }}</span>
+        </div>
+        <p-button label="Cerrar" icon="pi pi-times" severity="secondary" [outlined]="true" (onClick)="cerrar()"></p-button>
+    </div>
+
 </div>

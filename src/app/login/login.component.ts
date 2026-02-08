@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthservicesService } from '../services/authservices.service';
 import { Router } from '@angular/router';
@@ -9,13 +9,15 @@ import { Zona } from '../models/zona';
 import { ZonaService } from '../services/zona.service'; 
 import { ClienteService } from '../services/cliente.service'; 
 import { Cliente } from '../models/cliente'; 
+import { BreakpointService } from '../services/breakpoint.service'; 
+import { Subscription } from 'rxjs'; 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'] 
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm = new FormGroup({
     username: new FormControl('', Validators.required),
@@ -40,25 +42,41 @@ export class LoginComponent implements OnInit {
   clienteInfo: Cliente | null = null;
   userData: any = null;
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   constructor(
     private authService: AuthservicesService, 
     private cargaService: CargaService, 
     private router: Router,  
     public dialogRef: MatDialogRef<LoginComponent>,
     private zonaService: ZonaService,
-    private clienteService: ClienteService 
+    private clienteService: ClienteService,
+    private breakpointService: BreakpointService 
   ) { }
 
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.isAutenticated = this.authService.isAuthenticated();
     this.userData = this.authService.getUserData();
 
     if (this.isAutenticated) {
-        this.cargarDatosCliente();
+        setTimeout(() => {
+            this.cargarDatosCliente();
+        });
     } else {
         this.zonaService.getZonasActivas().subscribe((response: any) => {
             this.zonas = response.data || response;
         });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
     }
   }
 
@@ -113,7 +131,7 @@ export class LoginComponent implements OnInit {
             
             this.dialogRef.close(); 
             Swal.fire({ 
-                title: `Registrado`, 
+                title: `Bienvenido`,  // Cambié "Registrado" por "Bienvenido" que suena mejor al login
                 icon: "success",
                 timer: 1500,
                 showConfirmButton: false

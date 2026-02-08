@@ -1,23 +1,25 @@
 .entregas-card {
   background: #fff;
   border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  padding: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  padding: 15px; 
+  width: 100%;
 }
 
-.entregas-header.center {
+.entregas-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .entregas-header h5 {
   margin: 0;
   font-weight: 700;
   letter-spacing: 0.3px;
+  font-size: 1.3rem;
 }
 
 :host ::ng-deep .btn-nuevo {
@@ -27,42 +29,48 @@
 
 .filters-bar {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: 10px;
-  align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
+:host ::ng-deep .w-full-mobile,
 :host ::ng-deep .dropdown-cliente {
-  min-width: 220px;
+    width: 100%;
+}
+
+:host ::ng-deep .p-calendar, 
+:host ::ng-deep .p-dropdown {
+    width: 100%;
 }
 
 :host ::ng-deep .entregas-table .p-datatable-thead > tr > th {
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px; 
+  white-space: nowrap;
 }
 
 :host ::ng-deep .entregas-table .p-datatable-tbody > tr > td {
   vertical-align: top;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .col-actions {
   text-align: center;
-  width: 150px;
+  width: 100px;
 }
 
 .action-buttons {
   display: inline-flex;
-  gap: 10px;
+  gap: 5px;
   justify-content: center;
   align-items: center;
 }
 
 :host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
-  height: 34px;
-  width: 34px;
+  height: 32px;
+  width: 32px;
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -71,28 +79,34 @@
 
 .pedidos-list {
   margin: 0;
-  padding-left: 18px;
+  padding-left: 0; 
+  list-style: none;
 }
 
 .pedidos-list li {
-  margin: 4px 0;
+  margin: 6px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .pedido-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
   background: rgba(13, 110, 253, 0.12);
   color: #0d6efd;
   margin-right: 6px;
+  white-space: nowrap;
 }
 
 .pedido-text {
   opacity: 0.9;
+  font-size: 11px;
 }
 
 .empty {
@@ -103,4 +117,68 @@
 
 .form-wrapper {
   margin-top: 18px;
+}
+
+@media screen and (min-width: 768px) {
+
+    .entregas-card {
+        padding: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .entregas-header {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .entregas-header h5 {
+        font-size: 1.5rem;
+    }
+
+    .filters-bar {
+        flex-direction: row;
+        justify-content: center;
+        width: auto;
+    }
+
+    :host ::ng-deep .w-full-mobile {
+        width: auto;
+    }
+    
+    :host ::ng-deep .dropdown-cliente {
+        min-width: 220px;
+        width: auto;
+    }
+
+    :host ::ng-deep .entregas-table .p-datatable-thead > tr > th,
+    :host ::ng-deep .entregas-table .p-datatable-tbody > tr > td {
+        font-size: 13px;
+    }
+
+    .col-actions {
+        width: 150px;
+    }
+
+    .action-buttons {
+        gap: 10px;
+    }
+
+    :host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
+        height: 34px;
+        width: 34px;
+    }
+
+    .pedidos-list {
+        padding-left: 18px;
+        list-style: disc; 
+    }
+    
+    .pedido-chip {
+        font-size: 12px;
+        padding: 2px 8px;
+    }
+    
+    .pedido-text {
+        font-size: 13px;
+    }
 }

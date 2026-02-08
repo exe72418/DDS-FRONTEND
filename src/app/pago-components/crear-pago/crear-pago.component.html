@@ -15,6 +15,7 @@
           placeholder="dd/mm/aaaa"
           dateFormat="dd/mm/yy"
           [showIcon]="true"
+          [touchUI]="isMobile" 
           styleClass="w-full"
           appendTo="body"
         ></p-calendar>
@@ -50,7 +51,7 @@
 
       <div *ngIf="pedidoSeleccionado" class="resumen-wrapper">
         <p-card header="Resumen del Pedido" styleClass="resumen-card">
-           
+            
            <div class="lista-resumen">
                <div *ngFor="let linea of pedidoSeleccionado.lineas" class="item-linea">
                    
@@ -79,6 +80,7 @@
 
         </p-card>
       </div>
+      
       <div class="button-group">
         <button pButton label="Cancelar" class="p-button-outlined p-button-secondary" type="button" (click)="back()"></button>
         <button pButton label="Guardar Pago" severity="primary" type="submit"></button>

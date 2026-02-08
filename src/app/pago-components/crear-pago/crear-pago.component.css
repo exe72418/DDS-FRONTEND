@@ -1,15 +1,11 @@
-/* ========================================= */
-/* ESTILO FORMULARIO (Standard FAST)         */
-/* ========================================= */
-
 .form-container {
   width: 100%;
-  max-width: 600px; /* Mismo ancho que el carrito */
+  max-width: 100%; 
   margin: 0 auto;
-  padding: 30px;
+  padding: 20px;
   background-color: #ffffff;
   border-radius: 12px; 
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   border: 1px solid #eaeaea; 
 }
 
@@ -18,7 +14,7 @@ h4 {
   margin-bottom: 25px;
   color: #2c3e50;
   font-weight: 600;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 .form-group {
@@ -33,7 +29,6 @@ label {
   font-size: 0.9rem;
 }
 
-/* --- Overrides de PrimeNG (Inputs) --- */
 :host ::ng-deep .p-inputtext,
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-calendar {
@@ -67,29 +62,23 @@ label {
     border: none;
 }
 
-/* Botones */
 .button-group {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column; 
   margin-top: 30px;
   gap: 15px;
 }
 
 .button-group button {
+    width: 100%;
     flex: 1; 
 }
-
-
-/* ========================================= */
-/* ESTILOS DEL RESUMEN (Estilo Carrito)      */
-/* ========================================= */
 
 .resumen-wrapper {
     margin-top: 25px;
     margin-bottom: 25px;
 }
 
-/* Estilo de la tarjeta interna (Grisácea como en el carrito) */
 :host ::ng-deep .resumen-card {
     box-shadow: none !important;
     border: 1px solid #f0f0f0; 
@@ -97,10 +86,9 @@ label {
 }
 
 :host ::ng-deep .resumen-card .p-card-body {
-    padding: 1.25rem; 
+    padding: 1rem; 
 }
 
-/* Ajuste para que el título del p-card sea sutil */
 :host ::ng-deep .resumen-card .p-card-title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -133,7 +121,7 @@ label {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-wrap: wrap; /* Permite que baje si es muy largo */
+    flex-wrap: wrap; 
 }
 
 .label {
@@ -148,9 +136,9 @@ label {
 .subtotal-item {
     color: #007ad9; 
     font-weight: bold;
+    white-space: nowrap;
 }
 
-/* Bloque Total */
 .separador-total {
     border: 0;
     border-top: 1px solid #eee;
@@ -173,4 +161,26 @@ label {
     font-size: 1.5rem;
     font-weight: bold;
     color: #28a745; 
+}
+
+@media screen and (min-width: 768px) {
+    
+    .form-container {
+        max-width: 600px; 
+        padding: 30px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    h4 {
+        font-size: 1.5rem;
+    }
+
+    .button-group {
+        flex-direction: row; 
+        justify-content: space-between;
+    }
+
+    :host ::ng-deep .resumen-card .p-card-body {
+        padding: 1.25rem; 
+    }
 }

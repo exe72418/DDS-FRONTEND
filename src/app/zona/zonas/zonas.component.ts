@@ -1,28 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { Zona } from '../../models/zona';
 import { ZonaService } from '../../services/zona.service';
-import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CrearZonasComponent } from "../crear-zonas/crear-zonas.component"; 
 import { CargaService } from '../../services/carga.service';
+import { BreakpointService } from '../../services/breakpoint.service';
+import { Subscription } from 'rxjs'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-zonas',
   templateUrl: './zonas.component.html',
   styleUrls: ['./zonas.component.css']
 })
-export class ZonasComponent implements OnInit {
+export class ZonasComponent implements OnInit, OnDestroy {
   crearEditarMode: boolean = false;
   zonaSelected!: Zona; 
   zonaForm!: FormGroup;
   zonas: Zona[] = [];
 
-  constructor(private zonaService: ZonaService, private cargaService: CargaService) { }
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
+  constructor(
+    private zonaService: ZonaService, 
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService 
+  ) { }
 
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.zonaForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
@@ -30,23 +39,40 @@ export class ZonasComponent implements OnInit {
     this.search();
   }
 
-  search() {
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+  }
+
+search() {
     this.cargaService.show();
-    this.zonaService.getAll().subscribe((data: any) => {
-      this.zonas = data['data'].map((zona: Zona) => {
-        const zonaFormateada: Zona = {
-          id: zona.id,
-          nombre: zona.nombre,
-          descripcion: zona.descripcion,
-          disponible: zona.disponible
-        };
-        return zonaFormateada;
-      });
-      this.cargaService.hide();
-    }, error => {
-      this.cargaService.hide();
-      console.error(error);
-    })
+    
+    this.zonaService.getAll().subscribe({
+      next: (data: any) => {
+        this.zonas = data['data'].map((zona: Zona) => {
+          const zonaFormateada: Zona = {
+            id: zona.id,
+            nombre: zona.nombre,
+            descripcion: zona.descripcion,
+            disponible: zona.disponible
+          };
+          return zonaFormateada;
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar zonas:', error);
+        this.cargaService.hide();
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar las zonas",
+          icon: "error"
+        });
+      },
+      complete: () => {
+        this.cargaService.hide(); 
+      }
+    });
   }
 
   changeEditCreate() {

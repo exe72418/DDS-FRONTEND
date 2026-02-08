@@ -22,7 +22,8 @@
         showIcon="true"
         (onSelect)="buscar()"
         (onClear)="buscar()"
-        [showClear]="true">
+        [showClear]="true"
+        styleClass="w-full-mobile">
       </p-calendar>
 
       <p-calendar
@@ -32,7 +33,8 @@
         showIcon="true"
         (onSelect)="buscar()"
         (onClear)="buscar()"
-        [showClear]="true">
+        [showClear]="true"
+        styleClass="w-full-mobile">
       </p-calendar>
 
       <p-dropdown
@@ -52,13 +54,16 @@
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
       [responsiveLayout]="'scroll'"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       styleClass="p-datatable-sm p-datatable-striped entregas-table"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 130px;">Fecha</th>
-          <th style="width: 180px;">Zona</th>
-          <th style="width: 220px;">Repartidor</th>
+          <th style="width: 100px;">Fecha</th>
+          <th>Zona</th>
+          
+          <th *ngIf="!isMobile" style="width: 200px;">Repartidor</th>
+          
           <th>Pedido/s</th>
           
           <th class="col-actions" *ngIf="isAdmin()">Acciones</th>
@@ -67,9 +72,10 @@
 
       <ng-template pTemplate="body" let-entrega>
         <tr>
-          <td>{{ entrega.fecha | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ entrega.fecha | date: 'dd/MM/yy' }}</td>
           <td class="fw-semibold">{{ entrega.zona?.nombre }}</td>
-          <td>{{ entrega.repartidor?.apellidoNombre }}</td>
+          
+          <td *ngIf="!isMobile">{{ entrega.repartidor?.apellidoNombre }}</td>
 
           <td>
             <ul class="pedidos-list">
@@ -78,7 +84,8 @@
                   N° {{ pedido.nroPedido }}
                 </span>
                 <span class="pedido-text">
-                  Cliente: {{ pedido.cliente?.apellidoNombre || 'No Disponible' }}
+                  <span *ngIf="isMobile">{{ (pedido.cliente?.apellidoNombre || '-').split(' ')[0] }}</span>
+                  <span *ngIf="!isMobile">{{ pedido.cliente?.apellidoNombre || 'No Disponible' }}</span>
                 </span>
               </li>
             </ul>
@@ -110,7 +117,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td [attr.colspan]="isAdmin() ? 5 : 4" class="empty">
+          <td [attr.colspan]="3 + (isMobile ? 0 : 1) + (isAdmin() ? 1 : 0)" class="empty">
             No hay entregas para mostrar.
           </td>
         </tr>

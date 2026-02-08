@@ -1,7 +1,7 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, OnDestroy } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { PedidoState, SetPedidosAction } from '../states/pedido.state'; 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import _ from 'lodash';
 import { Pedido } from '../../../src/app/models/pedido';
@@ -12,22 +12,23 @@ import { Router } from '@angular/router';
 import { CargaService } from '../services/carga.service';
 import { PagoService } from '../services/pago.service';
 import { AuthservicesService } from '../../../src/app/services/authservices.service';
+import { BreakpointService } from '../services/breakpoint.service'; 
 
-@Injectable({
-  providedIn: 'root'
-})
 @Component({
   selector: 'app-carrito',
   templateUrl: './carrito.component.html',
   styleUrl: './carrito.component.css'
 })
-export class CarritoComponent implements OnInit {
+export class CarritoComponent implements OnInit, OnDestroy {
 
   @Select(PedidoState.getPedido) pedido$!: Observable<Pedido>;
   pedidoSelectSnapShot!: Pedido;
   clientes: Cliente[] = [];
   clienteSelected!: Cliente;
   fechaSelected!: Date;
+
+  isMobile: boolean = false;
+  private resizeSubscription!: Subscription;
 
   constructor(
     private store: Store,
@@ -36,12 +37,23 @@ export class CarritoComponent implements OnInit {
     private _pedidoService: PedidoServiceService,
     private cargaService: CargaService,
     private _pagoService: PagoService,
-    private authService: AuthservicesService
+    private authService: AuthservicesService,
+    private breakpointService: BreakpointService 
   ) {}
 
   ngOnInit(): void {
     this.llenarData();
     this.pedidoSelectSnapShot = _.cloneDeep(this.store.selectSnapshot(PedidoState.getPedido));
+
+    this.resizeSubscription = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
   }
 
   isAdmin(): boolean {
@@ -105,9 +117,7 @@ export class CarritoComponent implements OnInit {
           timer: 1500,
           showConfirmButton: false
         }).then(() => {
-            
             this._pagoService.pedidoPendienteId = nroPedido;
-
             this.router.navigate(['/pago']);
         });
 

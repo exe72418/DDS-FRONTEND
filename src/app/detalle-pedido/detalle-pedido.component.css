@@ -1,0 +1,98 @@
+.dialog-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.dialog-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.dialog-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.table-wrapper {
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.col-producto {
+    width: 40%; 
+    min-width: 150px;
+}
+
+.col-cant {
+    width: 15%;
+    min-width: 50px;
+}
+
+.col-moneda {
+    width: 22.5%;
+    min-width: 80px;
+}
+
+.prod-desc {
+    font-weight: 500;
+    color: #495057;
+}
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.fw-bold { font-weight: 700; color: #333; }
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+.dialog-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.total-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.total-section .label {
+    font-size: 1.1rem;
+    color: #555;
+    font-weight: 600;
+}
+
+.total-section .value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #28a745;
+}
+
+@media screen and (max-width: 480px) {
+    .dialog-header h2 { font-size: 1.2rem; }
+    
+    .total-section .label { font-size: 1rem; }
+    .total-section .value { font-size: 1.2rem; }
+}

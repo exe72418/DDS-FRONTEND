@@ -15,6 +15,7 @@
           placeholder="dd/mm/aaaa"
           dateFormat="dd/mm/yy"
           [showIcon]="true"
+          [touchUI]="isMobile" 
           styleClass="w-full"
           appendTo="body"
         ></p-calendar>
@@ -45,9 +46,7 @@
           optionLabel="apellidoNombre"
           placeholder="Seleccione Repartidor"
           [showClear]="true"
-          
           [disabled]="!zonaFormValue"
-          
           emptyMessage="No hay repartidores en esta zona"
           dataKey="id"
           styleClass="w-full"
@@ -64,9 +63,7 @@
           optionLabel="nroPedido"
           placeholder="Seleccione los pedidos"
           display="chip"
-          
           [disabled]="!zonaFormValue"
-
           emptyMessage="No hay pedidos pagos para esta zona"
           dataKey="nroPedido"
           styleClass="w-full"

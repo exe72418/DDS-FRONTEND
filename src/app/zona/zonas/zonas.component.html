@@ -1,9 +1,7 @@
 <div class="container py-4">
 
-  <!-- LISTADO -->
   <div *ngIf="!crearEditarMode" class="zonas-card">
 
-    <!-- HEADER CENTRADO -->
     <div class="zonas-header center">
       <h5>Zonas</h5>
 
@@ -15,11 +13,10 @@
       </p-button>
     </div>
 
-    <!-- TABLA -->
     <p-table
       *ngIf="!crearEditarMode"
       [value]="zonas"
-      [tableStyle]="{ 'min-width': '50rem' }"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
@@ -29,7 +26,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th>Nombre</th>
-          <th>Descripción</th>
+          
+          <th *ngIf="!isMobile">Descripción</th>
+          
           <th style="width: 120px;">Disponible</th>
           <th class="col-actions">Acciones</th>
         </tr>
@@ -38,7 +37,8 @@
       <ng-template pTemplate="body" let-zona>
         <tr>
           <td class="fw-semibold">{{ zona.nombre }}</td>
-          <td>{{ zona.descripcion }}</td>
+          
+          <td *ngIf="!isMobile">{{ zona.descripcion }}</td>
 
           <td>
             <span class="estado" [class.ok]="zona.disponible" [class.no]="!zona.disponible">
@@ -74,7 +74,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="4" class="empty">
+          <td [attr.colspan]="isMobile ? 3 : 4" class="empty">
             No hay zonas para mostrar.
           </td>
         </tr>

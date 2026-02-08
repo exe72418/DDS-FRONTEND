@@ -1,9 +1,7 @@
-// Importa el modelo de Pedido
 import { State, StateContext, Selector, Store, Action } from '@ngxs/store';
 import { Injectable } from "@angular/core";
 import { Pedido } from '../models/pedido';
 
-// Acciones
 export class SetPedidosAction {
     static readonly type = '[Pedido] Set Pedidos';
     constructor(public pedido: Pedido) { }

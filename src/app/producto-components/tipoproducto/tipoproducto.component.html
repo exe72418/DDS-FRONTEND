@@ -19,7 +19,7 @@
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
       [responsiveLayout]="'scroll'"
-      [tableStyle]="{ 'min-width': '50rem' }"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       styleClass="p-datatable-sm p-datatable-striped app-table"
     >
       <ng-template pTemplate="header">

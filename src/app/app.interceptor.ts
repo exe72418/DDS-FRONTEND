@@ -8,10 +8,8 @@ import { InterceptorService } from './services/interceptor.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    console.log('Interceptor OK');
 
     const token = localStorage.getItem('auth_token');
-    console.log(token)
     if (token) {
       req = req.clone({
         setHeaders: {

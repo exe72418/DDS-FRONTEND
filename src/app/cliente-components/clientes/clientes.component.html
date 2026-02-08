@@ -1,10 +1,8 @@
 <div class="container py-4">
 
-
   <div *ngIf="!crearEditarMode" class="clientes-card">
 
-
-    <div class="clientes-header center">
+    <div class="clientes-header">
       <h5>Clientes</h5>
 
       <p-button
@@ -15,10 +13,9 @@
       </p-button>
     </div>
 
-
     <p-table
       [value]="clientes"
-      [tableStyle]="{ 'min-width': '50rem' }"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
@@ -27,12 +24,15 @@
     >
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 70px;">ID</th>
+          <th *ngIf="!isMobile">ID</th>
+          
           <th>Apellido y Nombre</th>
           <th>Teléfono</th>
-          <th>CUIT</th>
-          <th>Email</th>
-          <th>Domicilio</th>
+          
+          <th *ngIf="!isMobile">CUIT</th>
+          <th *ngIf="!isMobile">Email</th>
+          <th *ngIf="!isMobile">Domicilio</th>
+          
           <th style="width: 120px;">Disponible</th>
           <th>Zona</th>
           <th class="col-actions">Acciones</th>
@@ -41,12 +41,14 @@
 
       <ng-template pTemplate="body" let-cliente>
         <tr>
-          <td>{{ cliente.id }}</td>
+          <td *ngIf="!isMobile">{{ cliente.id }}</td>
+          
           <td class="fw-semibold">{{ cliente.apellidoNombre }}</td>
           <td>{{ cliente.telefono }}</td>
-          <td>{{ cliente.cuit }}</td>
-          <td>{{ cliente.email }}</td>
-          <td>{{ cliente.domicilio }}</td>
+          
+          <td *ngIf="!isMobile">{{ cliente.cuit }}</td>
+          <td *ngIf="!isMobile">{{ cliente.email }}</td>
+          <td *ngIf="!isMobile">{{ cliente.domicilio }}</td>
 
           <td>
             <span
@@ -87,7 +89,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="9" class="empty">
+          <td [attr.colspan]="isMobile ? 5 : 9" class="empty">
             No hay clientes para mostrar.
           </td>
         </tr>

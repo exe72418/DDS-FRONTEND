@@ -1,10 +1,131 @@
-
-.tabla{
-    display: grid; 
-    justify-content: center; 
-    grid-template-columns: 300px 300px 300px;
-        @media (max-width: 900px) {
-            display: table-row;
-        }
+.container-fluid {
+    padding: 15px;
 }
+
+.filters-bar {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.filter-input-text,
+.filter-input-number {
+    width: 100%;
+}
+
+:host ::ng-deep .dropdown-tipo {
+    width: 100%;
+}
+
+:host ::ng-deep .p-inputtext {
+    width: 100%;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.product-card-wrapper {
+    width: 100%; 
+    max-width: 400px; 
+}
+
+:host ::ng-deep .custom-p-card {
+    text-align: center;
+    height: 100%; 
+}
+
+.prod-title {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    height: auto; 
+    overflow: hidden;
+    color: #333;
+}
+
+.prod-price {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin: 5px 0;
+}
+
+.prod-stock {
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.cant-display {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #007ad9;
+    margin-bottom: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.comprar-wrapper {
+    margin-top: 10px;
+}
+
+:host ::ng-deep .w-full {
+    width: 100%;
+}
+
+.cart-fab-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.cart-fab-container button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+@media screen and (min-width: 768px) {
+
+    .filters-bar {
+        flex-direction: row; 
+    }
+
+    .filter-input-text { width: auto; min-width: 250px; }
+    .filter-input-number { width: auto; }
     
+    :host ::ng-deep .dropdown-tipo {
+        width: 200px;
+    }
+
+    .product-card-wrapper {
+        width: 250px;
+        max-width: none;
+    }
+
+    .prod-title {
+        height: 3em;
+    }
+
+    .cart-button-desktop {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+}

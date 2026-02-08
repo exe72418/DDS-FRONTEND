@@ -1,18 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { RepartidorService } from '../../services/repartidor.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Repartidor } from '../../models/repartidor';
 import { Zona } from '../../models/zona';
 import { ZonaService } from '../../services/zona.service';
-import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
+import { BreakpointService } from '../../services/breakpoint.service'; 
+import { Subscription } from 'rxjs'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-repartidores',
   templateUrl: './crear-repartidores.component.html',
   styleUrl: './crear-repartidores.component.css'
 })
-export class CrearRepartidoresComponent implements OnInit {
+export class CrearRepartidoresComponent implements OnInit, OnDestroy {
 
   @Input() repartidor: Repartidor | null = null;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
@@ -20,10 +22,14 @@ export class CrearRepartidoresComponent implements OnInit {
   repartidorForm: FormGroup;
   zonas: Zona[] = [];
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   constructor(
     private repartidorService: RepartidorService,
     private zonaService: ZonaService,
-    private cargaService: CargaService
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService 
   ) {
     this.repartidorForm = new FormGroup({
       id: new FormControl(''),
@@ -35,6 +41,10 @@ export class CrearRepartidoresComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.zonaService.getZonasActivas().subscribe((response: any) => {
       this.zonas = response.data || response;
     });
@@ -43,6 +53,12 @@ export class CrearRepartidoresComponent implements OnInit {
       this.repartidorForm.patchValue(this.repartidor);
     } else {
       this.repartidorForm.reset();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
     }
   }
 
@@ -78,7 +94,6 @@ export class CrearRepartidoresComponent implements OnInit {
         },
         error: (error) => {
           this.cargaService.hide();
-          console.error('Error al crear el repartidor:', error);
           Swal.fire({
             title: "Error",
             text: 'Error al crear el repartidor',
@@ -100,7 +115,6 @@ export class CrearRepartidoresComponent implements OnInit {
         },
         error: (error) => {
           this.cargaService.hide();
-          console.error('Error al modificar el repartidor:', error);
           Swal.fire({
             title: "Error",
             text: 'Error al modificar el repartidor',

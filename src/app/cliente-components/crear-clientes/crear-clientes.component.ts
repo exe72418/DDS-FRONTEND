@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { ClienteService } from '../../services/cliente.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Cliente } from '../../models/cliente';
@@ -6,13 +6,15 @@ import { Zona } from '../../models/zona';
 import { ZonaService } from '../../services/zona.service';
 import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
+import { BreakpointService } from '../../services/breakpoint.service'; 
+import { Subscription } from 'rxjs'; 
 
 @Component({
   selector: 'app-crear-clientes',
   templateUrl: './crear-clientes.component.html',
   styleUrl: './crear-clientes.component.css'
 })
-export class CrearClientesComponent implements OnInit {
+export class CrearClientesComponent implements OnInit, OnDestroy {
 
   @Input() cliente: Cliente | null = null;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
@@ -20,10 +22,14 @@ export class CrearClientesComponent implements OnInit {
   clienteForm: FormGroup;
   zonas: Zona[] = [];
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   constructor(
     private clienteService: ClienteService,
     private zonaService: ZonaService,
-    private cargaService: CargaService
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService
   ) {
     this.clienteForm = new FormGroup({
       id: new FormControl(''),
@@ -37,14 +43,27 @@ export class CrearClientesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.zonaService.getZonasActivas().subscribe((response: any) => {
       this.zonas = response.data || response;
     });
 
     if (this.cliente?.id) {
       this.clienteForm.patchValue(this.cliente);
+      if (this.cliente.zona) {
+
+      }
     } else {
       this.clienteForm.reset();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
     }
   }
 

@@ -19,23 +19,26 @@
         type="text"
         placeholder="Buscar por nombre"
         [(ngModel)]="nombreString"
-        (change)="buscar()">
+        (change)="buscar()"
+        class="filter-input">
 
       <input
         pInputText
-        type="text"
+        type="number" 
         placeholder="Precio Mínimo"
         [(ngModel)]="precioMinimo"
         min="0"
-        (change)="buscar()">
+        (change)="buscar()"
+        class="filter-input-number">
 
       <input
         pInputText
-        type="text"
+        type="number"
         placeholder="Precio Máximo"
         [(ngModel)]="precioMaximo"
         min="0"
-        (change)="buscar()">
+        (change)="buscar()"
+        class="filter-input-number">
 
       <p-dropdown
         id="tipodeprod"
@@ -45,7 +48,8 @@
         (onChange)="buscar()"
         [showClear]="true"
         placeholder="Tipo Producto"
-        styleClass="dropdown-tipo">
+        styleClass="dropdown-tipo"
+        appendTo="body">
       </p-dropdown>
     </div>
 
@@ -55,15 +59,19 @@
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
       [responsiveLayout]="'scroll'"
-      [tableStyle]="{ 'min-width': '50rem' }"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       styleClass="p-datatable-sm p-datatable-striped productos-table"
     >
       <ng-template pTemplate="header">
         <tr>
           <th>Nombre</th>
-          <th style="width: 110px;">Stock</th>
-          <th style="width: 140px;">Precio</th>
-          <th>Tipo de Producto</th>
+          
+          <th *ngIf="!isMobile" style="width: 110px;">Stock</th>
+          
+          <th style="width: 120px;">Precio</th>
+          
+          <th *ngIf="!isMobile">Tipo de Producto</th>
+          
           <th style="width: 120px;">Disponible</th>
           <th class="col-actions">Acciones</th>
         </tr>
@@ -72,9 +80,12 @@
       <ng-template pTemplate="body" let-product>
         <tr>
           <td class="fw-semibold">{{ product.descripcion }}</td>
-          <td>{{ product.stock }}</td>
+          
+          <td *ngIf="!isMobile">{{ product.stock }}</td>
+          
           <td>{{ product.precio | currency }}</td>
-          <td>{{ product.tipoProducto?.nombre }}</td>
+          
+          <td *ngIf="!isMobile">{{ product.tipoProducto?.nombre }}</td>
 
           <td>
             <span class="estado" [class.ok]="product.disponible" [class.no]="!product.disponible">
@@ -110,7 +121,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6" class="empty">
+          <td [attr.colspan]="isMobile ? 4 : 6" class="empty">
             No hay productos para mostrar.
           </td>
         </tr>

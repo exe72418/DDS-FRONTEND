@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { TipoproductoService } from '../../services/tipoproducto.service';
 import { TipoProducto } from '../../models/tipoProducto';
 import Swal from 'sweetalert2';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CargaService } from '../../services/carga.service';
+import { BreakpointService } from '../../services/breakpoint.service';
+import { Subscription } from 'rxjs'; 
 
 @Component({
   selector: 'app-tipoproducto',
   templateUrl: './tipoproducto.component.html',
   styleUrl: './tipoproducto.component.css'
 })
-export class TipoproductoComponent implements OnInit {
+export class TipoproductoComponent implements OnInit, OnDestroy {
 
   crearEditarMode: boolean = false;
 
@@ -19,12 +21,20 @@ export class TipoproductoComponent implements OnInit {
   tipoProdForm!: FormGroup;
   tiposProducto: TipoProducto[] = [];
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   constructor(
     private tipoproductoService: TipoproductoService,
-    private cargaService: CargaService
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService 
   ) {}
 
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.tipoProdForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
@@ -32,8 +42,15 @@ export class TipoproductoComponent implements OnInit {
     this.search();
   }
 
-  search() {
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+  }
+
+search() {
     this.cargaService.show();
+    
     this.tipoproductoService.getAll().subscribe({
       next: (data: any) => {
         this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => ({
@@ -43,15 +60,19 @@ export class TipoproductoComponent implements OnInit {
         }));
       },
       error: (err) => {
-        console.error(err);
-        this.cargaService.hide();
+        console.error('Error al cargar tipos de producto:', err);
+        this.cargaService.hide(); 
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar los tipos de producto",
+          icon: "error"
+        });
       },
       complete: () => {
-        this.cargaService.hide();
+        this.cargaService.hide(); 
       }
     });
   }
-
 
   changeEditCreate() {
     this.crearEditarMode = false;
@@ -59,12 +80,10 @@ export class TipoproductoComponent implements OnInit {
     this.search();
   }
 
-
   new() {
     this.tipoProdSelected = null; 
     this.crearEditarMode = true;
   }
-
   
   editProduct(tipoprod: TipoProducto) {
     this.tipoProdSelected = tipoprod;

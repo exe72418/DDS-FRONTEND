@@ -1,9 +1,7 @@
 <div class="container py-4">
 
-  <!-- LISTADO -->
   <div *ngIf="!crearEditarMode" class="repartidores-card">
 
-    <!-- HEADER CENTRADO -->
     <div class="repartidores-header center">
       <h5>Repartidores</h5>
 
@@ -15,21 +13,24 @@
       </p-button>
     </div>
 
-    <!-- TABLA -->
     <p-table
       [value]="repartidores"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
       [responsiveLayout]="'scroll'"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       styleClass="p-datatable-sm p-datatable-striped repartidores-table"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 70px;">ID</th>
-          <th>Cuit</th>
+          <th *ngIf="!isMobile" style="width: 70px;">ID</th>
+          <th *ngIf="!isMobile">Cuit</th>
+          
           <th>Apellido y Nombre</th>
-          <th>Vehículo</th>
+          
+          <th *ngIf="!isMobile">Vehículo</th>
+          
           <th>Zona</th>
           <th style="width: 120px;">Disponible</th>
           <th class="col-actions">Acciones</th>
@@ -38,10 +39,13 @@
 
       <ng-template pTemplate="body" let-repartidor>
         <tr>
-          <td>{{ repartidor.id }}</td>
-          <td>{{ repartidor.cuit }}</td>
+          <td *ngIf="!isMobile">{{ repartidor.id }}</td>
+          <td *ngIf="!isMobile">{{ repartidor.cuit }}</td>
+          
           <td class="fw-semibold">{{ repartidor.apellidoNombre }}</td>
-          <td>{{ repartidor.vehiculo }}</td>
+          
+          <td *ngIf="!isMobile">{{ repartidor.vehiculo }}</td>
+          
           <td>{{ repartidor.zona?.nombre }}</td>
 
           <td>
@@ -81,7 +85,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="7" class="empty">
+          <td [attr.colspan]="isMobile ? 4 : 7" class="empty">
             No hay repartidores para mostrar.
           </td>
         </tr>
@@ -89,7 +93,6 @@
     </p-table>
   </div>
 
-  <!-- CREAR / EDITAR -->
   <div *ngIf="crearEditarMode" class="form-wrapper">
     <app-crear-repartidores
       (editCrear)="changeEditCreate()"

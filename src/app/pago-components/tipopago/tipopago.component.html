@@ -19,13 +19,15 @@
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
       [responsiveLayout]="'scroll'"
-      [tableStyle]="{ 'min-width': '50rem' }"
+      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
       styleClass="p-datatable-sm p-datatable-striped tipospago-table"
     >
       <ng-template pTemplate="header">
         <tr>
           <th>Nombre</th>
-          <th>Descripción</th>
+          
+          <th *ngIf="!isMobile">Descripción</th>
+          
           <th style="width: 120px;">Disponible</th>
           <th class="col-actions">Acciones</th>
         </tr>
@@ -34,7 +36,8 @@
       <ng-template pTemplate="body" let-tipoPago>
         <tr>
           <td class="fw-semibold">{{ tipoPago.nombre }}</td>
-          <td>{{ tipoPago.descripcion }}</td>
+          
+          <td *ngIf="!isMobile">{{ tipoPago.descripcion }}</td>
 
           <td>
             <span class="estado" [class.ok]="tipoPago.disponible" [class.no]="!tipoPago.disponible">
@@ -70,7 +73,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="4" class="empty">
+          <td [attr.colspan]="isMobile ? 3 : 4" class="empty">
             No hay tipos de pago para mostrar.
           </td>
         </tr>

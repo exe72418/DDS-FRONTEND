@@ -1,22 +1,31 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core'; 
 import { ZonaService } from '../../services/zona.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Zona } from '../../models/zona';
 import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
+import { BreakpointService } from '../../services/breakpoint.service'; 
+import { Subscription } from 'rxjs'; 
 
 @Component({
   selector: 'app-crear-zonas',
   templateUrl: './crear-zonas.component.html',
   styleUrls: ['./crear-zonas.component.css']
 })
-export class CrearZonasComponent implements OnInit {
+export class CrearZonasComponent implements OnInit, OnDestroy {
 
   @Input() zona!: Zona;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
   zonaForm!: FormGroup;
 
-  constructor(private zonaService: ZonaService, private cargaService: CargaService) {
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
+  constructor(
+    private zonaService: ZonaService, 
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService 
+  ) {
     this.zonaForm = new FormGroup({
       id: new FormControl(''),
       nombre: new FormControl('', [Validators.required]),
@@ -24,14 +33,24 @@ export class CrearZonasComponent implements OnInit {
     });
   }
 
-  back() {
-    this.editCrear.emit(false)
-  }
-
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     if (this.zona) {
       this.zonaForm.patchValue(this.zona);
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+  }
+
+  back() {
+    this.editCrear.emit(false)
   }
 
   guardar(zona: Zona) {
@@ -53,7 +72,6 @@ export class CrearZonasComponent implements OnInit {
             this.editCrear.emit(false);
           }, error => {
             this.cargaService.hide();
-            console.error('Error al crear la zona:', error);
             Swal.fire({
               title: "Error",
               text: 'Error al crear la zona',
@@ -76,7 +94,6 @@ export class CrearZonasComponent implements OnInit {
             this.editCrear.emit(false);
           }, error => {
             this.cargaService.hide();
-            console.error('Error al modificar la zona:', error);
             Swal.fire({
               title: "Error",
               text: 'Error al modificar la zona',
@@ -92,7 +109,6 @@ export class CrearZonasComponent implements OnInit {
         text: 'Formulario inválido. Verifique los datos ingresados.',
         icon: "error"
       });
-      console.error('Formulario inválido');
     }
   }
 

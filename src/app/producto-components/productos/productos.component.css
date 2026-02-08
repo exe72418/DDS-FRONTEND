@@ -1,23 +1,25 @@
 .productos-card {
   background: #fff;
   border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  padding: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  padding: 15px; 
+  width: 100%;
 }
 
-.productos-header.center {
+.productos-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .productos-header h5 {
   margin: 0;
   font-weight: 700;
   letter-spacing: 0.3px;
+  font-size: 1.3rem;
 }
 
 :host ::ng-deep .btn-nuevo {
@@ -27,46 +29,48 @@
 
 .filters-bar {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: 10px;
-  align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-.filters-bar input {
-  width: 200px;
+.filter-input, 
+.filter-input-number {
+    width: 100%;
 }
 
+:host ::ng-deep .p-inputtext,
 :host ::ng-deep .dropdown-tipo {
-  min-width: 200px;
+    width: 100%;
 }
 
 :host ::ng-deep .productos-table .p-datatable-thead > tr > th {
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 :host ::ng-deep .productos-table .p-datatable-tbody > tr > td {
   vertical-align: middle;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .col-actions {
   text-align: center;
-  width: 150px;
+  width: 120px;
 }
 
 .action-buttons {
   display: inline-flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
   align-items: center;
 }
 
 :host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
-  height: 34px;
-  width: 34px;
+  height: 32px;
+  width: 32px;
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -77,10 +81,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .estado.ok {
@@ -101,4 +105,57 @@
 
 .form-wrapper {
   margin-top: 18px;
+}
+
+@media screen and (min-width: 768px) {
+
+    .productos-card {
+        padding: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .productos-header {
+        flex-direction: row; 
+        justify-content: space-between;
+    }
+
+    .productos-header h5 {
+        font-size: 1.5rem;
+    }
+
+    .filters-bar {
+        flex-direction: row; 
+        justify-content: center;
+        width: auto;
+    }
+
+    .filter-input { width: 200px; }
+    .filter-input-number { width: 120px; }
+    
+    :host ::ng-deep .dropdown-tipo {
+        width: 200px;
+    }
+
+    :host ::ng-deep .productos-table .p-datatable-thead > tr > th,
+    :host ::ng-deep .productos-table .p-datatable-tbody > tr > td {
+        font-size: 13px;
+    }
+
+    .col-actions {
+        width: 150px;
+    }
+
+    .action-buttons {
+        gap: 10px;
+    }
+
+    :host ::ng-deep .p-button.p-button-icon-only.p-button-sm {
+        height: 34px;
+        width: 34px;
+    }
+
+    .estado {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
 }

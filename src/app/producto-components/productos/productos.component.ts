@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; 
 import { ProductosServiceService } from '../../services/productos-service.service';
 import { Producto } from '../../models/producto';
 import Swal from 'sweetalert2';
 import { TipoProducto } from '../../models/tipoProducto';
 import { TipoproductoService } from '../../services/tipoproducto.service';
 import { CargaService } from '../../services/carga.service';
+import { BreakpointService } from '../../services/breakpoint.service'; 
+import { Subscription } from 'rxjs'; 
 
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
   styleUrl: './productos.component.css'
 })
-export class ProductosComponent implements OnInit {
+export class ProductosComponent implements OnInit, OnDestroy {
 
   tiposProducto: TipoProducto[] | undefined;
 
   precioMinimo: number | null = null;
   precioMaximo: number | null = null;
-
 
   prodSelected: Producto | null = null;
 
@@ -27,14 +28,23 @@ export class ProductosComponent implements OnInit {
   tipoProductoSelect!: TipoProducto;
   precio!: number;
 
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
   constructor(
     private _productoService: ProductosServiceService,
     private tipoproductoService: TipoproductoService,
-    private cargaService: CargaService
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService 
   ) {}
 
   ngOnInit(): void {
     this.cargaService.show();
+    
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     this.search();
     this.tipoproductoService.getAll().subscribe((data: any) => {
       this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
@@ -49,6 +59,12 @@ export class ProductosComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+  }
+
   changeEditCreate() {
     this.crearEditarMode = false;
     this.prodSelected = null; 
@@ -59,17 +75,45 @@ export class ProductosComponent implements OnInit {
   
   }
 
-  buscar() {
+buscar() {
+    this.cargaService.show(); 
+    
     this._productoService
       .getProductosByFilters(this.nombreString, this.tipoProductoSelect, this.precioMinimo, this.precioMaximo, null)
-      .subscribe((prodFiltrado) => {
-        this.productos = prodFiltrado;
+      .subscribe({
+        next: (prodFiltrado) => {
+          this.productos = prodFiltrado;
+        },
+        error: (err) => {
+          console.error('Error al filtrar:', err);
+          this.cargaService.hide(); 
+          Swal.fire({ title: "Error", text: "Error al buscar productos", icon: "error" });
+        },
+        complete: () => {
+          this.cargaService.hide(); 
+        }
       });
   }
 
-  search() {
-    this._productoService.getAll().subscribe((productos) => {
-      this.productos = productos;
+search() {
+    this.cargaService.show();
+
+    this._productoService.getAll().subscribe({
+      next: (response: any) => {
+        this.productos = response.data || response; 
+      },
+      error: (err) => {
+        console.error('Error al cargar productos:', err);
+        this.cargaService.hide(); 
+        Swal.fire({
+          title: "Error",
+          text: "No se pudieron cargar los productos",
+          icon: "error"
+        });
+      },
+      complete: () => {
+        this.cargaService.hide(); 
+      }
     });
   }
 

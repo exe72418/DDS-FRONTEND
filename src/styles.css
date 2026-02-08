@@ -2,29 +2,24 @@
 @import "primeng/resources/primeng.css";
 @import "../node_modules/primeicons/primeicons.css";
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+
   background-image: url('assets/fondo.jpg');
-  background-size: auto;
+  
+  background-size: cover; 
+  
   background-position: center center;
+  
   background-repeat: no-repeat;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  
+  background-attachment: fixed;
+  
+  min-height: 100vh;
 }

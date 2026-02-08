@@ -1,23 +1,31 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core'; 
 import { TipopagoService } from '../../services/tipopago.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TipoPago } from '../../models/tipopago';
 import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
-
+import { BreakpointService } from '../../services/breakpoint.service'; 
+import { Subscription } from 'rxjs'; 
 @Component({
   selector: 'app-crear-tipopago',
   templateUrl: './crear-tipopago.component.html',
   styleUrls: ['./crear-tipopago.component.css']
 })
-export class CrearTipoPagoComponent implements OnInit {
+export class CrearTipoPagoComponent implements OnInit, OnDestroy {
 
   @Input() tipoPago: TipoPago | null = null;
   @Output() editCrear: EventEmitter<boolean> = new EventEmitter();
 
   tipoPagoForm: FormGroup;
 
-  constructor(private tipopagoService: TipopagoService, private cargaService: CargaService) {
+  isMobile: boolean = false;
+  private resizeSub!: Subscription;
+
+  constructor(
+    private tipopagoService: TipopagoService, 
+    private cargaService: CargaService,
+    private breakpointService: BreakpointService 
+  ) {
     this.tipoPagoForm = new FormGroup({
       id: new FormControl(''),
       nombre: new FormControl('', [Validators.required]),
@@ -25,16 +33,26 @@ export class CrearTipoPagoComponent implements OnInit {
     });
   }
 
-  back() {
-    this.editCrear.emit(false);
-  }
-
   ngOnInit(): void {
+    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
+      this.isMobile = mobile;
+    });
+
     if (this.tipoPago?.id) {
       this.tipoPagoForm.patchValue(this.tipoPago);
     } else {
       this.tipoPagoForm.reset();
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeSub) {
+      this.resizeSub.unsubscribe();
+    }
+  }
+
+  back() {
+    this.editCrear.emit(false);
   }
 
   guardar(tipoPago: TipoPago) {

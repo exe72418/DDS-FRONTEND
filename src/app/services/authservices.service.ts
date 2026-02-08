@@ -1,4 +1,3 @@
-// src/app/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -40,7 +39,6 @@ export class AuthservicesService {
   // Verificar si el usuario está autenticado (si hay un token)
   isAuthenticated(): boolean {
     const token = this.getToken();
-    // Aquí puedes agregar una lógica extra para verificar la validez del token (por ejemplo, expiración)
     return token !== null;
   }
 
@@ -59,7 +57,6 @@ export class AuthservicesService {
 
   // Método para cerrar sesión (eliminar el token)
   logout(): void {
-    console.log('cerrando sesion')
     localStorage.removeItem('auth_token');
   }
 }
