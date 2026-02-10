@@ -50,8 +50,9 @@
     </div>
 
     <div class="form-group">
-        <label for="fecha">Fecha de Entrega</label>
+        <label for="fecha">Fecha</label>
         <p-calendar 
+            [disabled]="true"
             id="fecha" 
             [ngModelOptions]="{standalone: true}"
             [(ngModel)]="fechaSelected" 

@@ -25,7 +25,7 @@ export class CarritoComponent implements OnInit, OnDestroy {
   pedidoSelectSnapShot!: Pedido;
   clientes: Cliente[] = [];
   clienteSelected!: Cliente;
-  fechaSelected!: Date;
+  fechaSelected: Date = new Date();
 
   isMobile: boolean = false;
   private resizeSubscription!: Subscription;
