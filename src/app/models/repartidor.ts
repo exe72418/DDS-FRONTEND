@@ -4,7 +4,7 @@ import { Zona } from "./zona";
 export class Repartidor {
 
     id!: number
-    cuit!: number;
+    cuit!: String;
     apellidoNombre!: String;
 
     vehiculo!: String;
