@@ -56,15 +56,15 @@
                <div *ngFor="let linea of pedidoSeleccionado.lineas" class="item-linea">
                    
                    <div class="nombre-prod">
-                       {{ linea.producto?.descripcion }}
+                       {{ linea.producto.descripcion }}
                    </div>
 
                    <div class="detalles-prod">
                        <span><span class="label">Cant:</span> {{ linea.cantidad }}</span>
                        <span class="separador">|</span>
-                       <span><span class="label">Precio:</span> {{ linea.producto?.precio | currency }}</span>
+                       <span><span class="label">Precio:</span> {{ linea.producto.precio | currency }}</span>
                        <span class="separador">|</span>
-                       <span class="subtotal-item">Subtotal: {{ (linea.subtotal || (linea.cantidad * linea.producto?.precio!)) | currency }}</span>
+                       <span class="subtotal-item">Subtotal: {{ (linea.subtotal || (linea.cantidad * linea.producto.precio)) | currency }}</span>
                    </div>
 
                </div>
