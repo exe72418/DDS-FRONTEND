@@ -2,7 +2,7 @@
   <div class="form-container">
     <form [formGroup]="zonaForm" (ngSubmit)="guardar(zonaForm.value)">
       
-      <h4 *ngIf="zona?.id; else crearTpl">Modificar Zona</h4>
+      <h4 *ngIf="zona.id; else crearTpl">Modificar Zona</h4>
       <ng-template #crearTpl>
         <h4>Registrar Nueva Zona</h4>
       </ng-template>

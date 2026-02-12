@@ -48,19 +48,27 @@
                 <p class="prod-price">{{ product.precio | currency }}</p>
                 <p class="prod-stock">Stock: {{ product.stock }}</p>
 
-                <ng-container *ngIf="getCantidadEnPedido(product) > 0; else botonComprar">
-                    
-                    <p class="cant-display">
-                        Cantidad: {{ getCantidadEnPedido(product) }}
-                    </p>
-                    
-                    <div class="action-buttons">
-                        <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning p-button-rounded"></button>
-                        <button (click)="agregar(product)" pButton icon="pi pi-plus" class="p-button-success p-button-rounded"></button>
-                        <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
-                    </div>
+                    <ng-container *ngIf="getCantidadEnPedido(product) > 0; else botonComprar">
+                        
+                        <p class="cant-display">
+                            Cantidad: {{ getCantidadEnPedido(product) }}
+                        </p>
+                        
+                        <div class="action-buttons">
+                            <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning p-button-rounded"></button>
+                            
+                            <button 
+                                (click)="agregar(product)" 
+                                pButton 
+                                icon="pi pi-plus" 
+                                class="p-button-success p-button-rounded"
+                                [disabled]="getCantidadEnPedido(product) >= product.stock">
+                            </button>
 
-                </ng-container>
+                            <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
+                        </div>
+
+                    </ng-container>
 
                 <ng-template #botonComprar>
                     <div class="comprar-wrapper">

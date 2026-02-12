@@ -85,7 +85,10 @@
                 <h4 class="prod-title">{{ product.descripcion }}</h4>
                 
                 <p class="prod-price">{{ product.precio | currency }}</p>
-                <p class="prod-stock">Stock: {{ product.stock }}</p>
+                
+                <p class="prod-stock" [ngClass]="{'text-danger': product.stock === 0}">
+                    Stock: {{ product.stock }}
+                </p>
 
                 <ng-container *ngIf="getCantidadEnPedido(product) > 0; else botonComprar">
                     
@@ -95,7 +98,15 @@
                     
                     <div class="control-buttons">
                         <button (click)="restar(product)" pButton icon="pi pi-minus" class="p-button-warning p-button-rounded"></button>
-                        <button (click)="agregar(product)" pButton icon="pi pi-plus" class="p-button-success p-button-rounded"></button>
+                        
+                        <button 
+                            (click)="agregar(product)" 
+                            pButton 
+                            icon="pi pi-plus" 
+                            class="p-button-success p-button-rounded"
+                            [disabled]="getCantidadEnPedido(product) >= product.stock">
+                        </button>
+
                         <button (click)="eliminar(product)" pButton icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
                     </div>
 
@@ -103,7 +114,11 @@
 
                 <ng-template #botonComprar>
                     <div class="comprar-btn-wrapper">
-                        <p-button (click)="agregar(product)" label="Comprar" styleClass="w-full" />
+                        <p-button 
+                            (click)="agregar(product)" 
+                            label="{{ product.stock === 0 ? 'Sin Stock' : 'Comprar' }}" 
+                            styleClass="w-full" 
+                            [disabled]="product.stock === 0"/>
                     </div>
                 </ng-template>
 

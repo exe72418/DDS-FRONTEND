@@ -30,6 +30,8 @@
           
           <th *ngIf="!isMobile">Tipo de Pago</th>
           <th *ngIf="!isMobile" style="width: 120px;">Pedido ID</th>
+
+          <th *ngIf="!isMobile && isAdmin()">Cliente</th>
           
           <th style="width: 100px; text-align: center;">Detalle</th>
           
@@ -45,6 +47,10 @@
           
           <td *ngIf="!isMobile">{{ pago.tipoPago?.nombre }}</td>
           <td *ngIf="!isMobile">{{ pago.pedido?.nroPedido }}</td>
+
+          <td *ngIf="!isMobile && isAdmin()">
+            {{ pago.pedido?.cliente?.apellidoNombre || '-' }}
+          </td>
 
           <td class="text-center">
             <p-button

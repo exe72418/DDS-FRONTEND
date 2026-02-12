@@ -40,14 +40,18 @@
         </p-dropdown>
     </div>
 
-    <div class="form-group" *ngIf="!isAdmin()" disabled="pedidoSelectSnapShot.cliente">
-        <label>Cliente</label>
-        <div class="cliente-readonly">
-            <span style="font-weight: bold;">
-                {{ pedidoSelectSnapShot.cliente.apellidoNombre }}
-            </span>
+    <div class="form-group" *ngIf="!isAdmin()"> <label>Cliente</label>
+            
+            <div class="cliente-readonly" *ngIf="pedidoSelectSnapShot.cliente">
+                <span style="font-weight: bold;">
+                    {{ pedidoSelectSnapShot.cliente.apellidoNombre }}
+                </span>
+            </div>
+            
+            <div class="cliente-readonly" *ngIf="!pedidoSelectSnapShot.cliente">
+                <span class="text-muted">Sin cliente asignado</span>
+            </div>
         </div>
-    </div>
 
     <div class="form-group">
         <label for="fecha">Fecha</label>
