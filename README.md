@@ -26,6 +26,33 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
+## Testing Unitarios por componentes 
+El proyecto cuenta con unos test de componentes automatizados desarrollados con Cypress. 
+Los mismos se pueden encontrar en **\cypress\component**
+
+### Cobertura de los tests
+
+**login.component.cy.ts:** Valida qe se muestre el loguin, la interacción con los campos de entrada y la lógica de cambio entre los formularios de ingreso y registro del mismo.
+**home.component.cy.ts:** Verifica que se muestre el catálogo de productos y la lógica de control de stock, validando que la interfaz responda correctamente al flujo de compra y a los límites de inventario definidos.
+**pago.component.cy.ts:** Evalúa la integración de formularios reactivos y la lógica de selección de pagos, asegurandose que los montos se actualicen solos al elegir un pedido y que el pago se guarde bien si se cargó la información correspondiente.
+**entrega.component.cy.ts:** Valida que al elegir una zona se filtren de forma correcta los repartidores y pedidos disponibles, y que no te deje guardar la entrega si no hay un repartidor asignado.
+
+
+### Pre-requisitos para ejecutarlos
+Asegúrese de que el Backend y el Frontend estén corriendo en su entorno local.
+
+1. Abrir una nueva consola y escribir:
+``` bash
+npm install cypress --save-dev
+```
+2. Una vez terminado el anterior, ejecutar:
+``` bash
+npx cypress open
+```
+3. Seleccionar **Component Testing**
+4. Elegir el navegador
+5. Hacer clic en los archivos e ir probando.
+
 ## Testing E2E (End-to-End)
 El proyecto cuenta con una prueba automatizada desarrollada con Cypress. Valida el Flujo Crítico de Negocio, simulando la interacción real de un usuario y un administrador.
 El mismo se puede encontrar en **\cypress\e2e\flujo_completo_compra.cy.ts**
