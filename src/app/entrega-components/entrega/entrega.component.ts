@@ -44,7 +44,7 @@ export class EntregaComponent implements OnInit, OnDestroy {
       this.isMobile = mobile;
     });
 
-    if (this.isAdmin()) {
+    if (this.esAdmin()) {
         this.cargarClientes();
     }
     this.buscar(); 
@@ -56,7 +56,7 @@ export class EntregaComponent implements OnInit, OnDestroy {
     }
   }
 
-  isAdmin(): boolean {
+  esAdmin(): boolean {
     return this.authService.getUserData()?.role === 'admin';
   }
 
@@ -74,7 +74,7 @@ export class EntregaComponent implements OnInit, OnDestroy {
 
     let observableEntregas;
 
-    if (this.isAdmin()) {
+    if (this.esAdmin()) {
         const clienteId = this.clienteSelect ? this.clienteSelect.id : null;
         observableEntregas = this._entregaService.getEntregasByFilters(this.fechaDesde, this.fechaHasta, clienteId);
     } else {

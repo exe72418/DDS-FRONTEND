@@ -21,7 +21,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         
-        <ng-container *ngIf="isAdmin()">
+        <ng-container *ngIf="esAdmin()">
           <li class="nav-item"><a class="nav-link" routerLink="/clientes">Clientes</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/repartidores">Repartidores</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/crearTipoProducto">Tipos Prod.</a></li>
@@ -30,7 +30,7 @@
           <li class="nav-item"><a class="nav-link" routerLink="/tiposDePago">Tipos Pago</a></li>
         </ng-container>
 
-        <ng-container *ngIf="isAdmin() || isCliente()">
+        <ng-container *ngIf="esAdmin() || esCliente()">
           <li class="nav-item"><a class="nav-link" routerLink="/entregas">Entregas</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/pago">Pagos</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/pedidos">Pedidos</a></li>

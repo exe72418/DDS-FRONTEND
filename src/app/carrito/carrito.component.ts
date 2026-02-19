@@ -56,7 +56,7 @@ export class CarritoComponent implements OnInit, OnDestroy {
     }
   }
 
-  isAdmin(): boolean {
+  esAdmin(): boolean {
     return this.authService.getUserData()?.role === 'admin';
   }
 
@@ -67,7 +67,7 @@ export class CarritoComponent implements OnInit, OnDestroy {
   llenarData() {
     this.cargaService.show();
 
-    if (this.isAdmin()) {
+    if (this.esAdmin()) {
         this.apiService.getClientesActivos().subscribe({
             next: (resp: any) => {
                 const list: Cliente[] = resp.data || resp;

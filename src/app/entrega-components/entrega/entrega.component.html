@@ -6,7 +6,7 @@
       <h5>Entregas</h5>
       
       <p-button
-        *ngIf="isAdmin()" 
+        *ngIf="esAdmin()" 
         label="Nuevo"
         icon="pi pi-plus"
         styleClass="p-button-sm btn-nuevo"
@@ -14,7 +14,7 @@
       </p-button>
     </div>
 
-    <div class="filters-bar" *ngIf="isAdmin()">
+    <div class="filters-bar" *ngIf="esAdmin()">
       <p-calendar
         [(ngModel)]="fechaDesde"
         placeholder="Fecha Desde"
@@ -66,7 +66,7 @@
           
           <th>Pedido/s</th>
           
-          <th class="col-actions" *ngIf="isAdmin()">Acciones</th>
+          <th class="col-actions" *ngIf="esAdmin()">Acciones</th>
         </tr>
       </ng-template>
 
@@ -91,7 +91,7 @@
             </ul>
           </td>
 
-          <td class="col-actions" *ngIf="isAdmin()">
+          <td class="col-actions" *ngIf="esAdmin()">
             <div class="action-buttons">
               <p-button
                 icon="pi pi-pencil"
@@ -117,7 +117,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td [attr.colspan]="3 + (isMobile ? 0 : 1) + (isAdmin() ? 1 : 0)" class="empty">
+          <td [attr.colspan]="3 + (isMobile ? 0 : 1) + (esAdmin() ? 1 : 0)" class="empty">
             No hay entregas para mostrar.
           </td>
         </tr>

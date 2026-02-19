@@ -9,7 +9,7 @@
         label="Nuevo"
         icon="pi pi-plus"
         styleClass="p-button-sm btn-nuevo"
-        (onClick)="new()">
+        (onClick)="nuevo()">
       </p-button>
     </div>
 
@@ -102,7 +102,7 @@
                 [outlined]="true"
                 severity="success"
                 styleClass="p-button-sm p-button-icon-only"
-                (onClick)="editProduct(product)">
+                (onClick)="editarProduct(product)">
               </p-button>
 
               <p-button
@@ -112,7 +112,7 @@
                 [rounded]="true"
                 [outlined]="true"
                 styleClass="p-button-sm p-button-icon-only"
-                (onClick)="deleteProduct(product)">
+                (onClick)="borrarProduct(product)">
               </p-button>
             </div>
           </td>
@@ -131,7 +131,7 @@
   </div>
 
   <div *ngIf="crearEditarMode" class="form-wrapper">
-    <app-crear-productos (editCrear)="changeEditCreate()" [producto]="prodSelected">
+    <app-crear-productos (editCrear)="cambiarEditarCrear()" [producto]="prodSelected">
     </app-crear-productos>
   </div>
 

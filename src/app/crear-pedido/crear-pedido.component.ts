@@ -54,7 +54,7 @@ export class CrearPedidoComponent implements OnInit, OnDestroy {
     private breakpointService: BreakpointService
   ) {}
 
-  isAdmin(): boolean {
+  esAdmin(): boolean {
     return this.authService.getUserData()?.role === 'admin';
   }
 
@@ -74,7 +74,7 @@ export class CrearPedidoComponent implements OnInit, OnDestroy {
 
     let clientesObservable;
     
-    if (this.isAdmin()) {
+    if (this.esAdmin()) {
         clientesObservable = this._clienteService.getClientesActivos();
     } else {
         clientesObservable = this._clienteService.getMiPerfil();
@@ -87,7 +87,7 @@ export class CrearPedidoComponent implements OnInit, OnDestroy {
     }).subscribe({
       next: (res: any) => {
         
-        if (this.isAdmin()) {
+        if (this.esAdmin()) {
             const lista = res.clientesData.data || res.clientesData;
             this.clientes = lista.filter((c: Cliente) => c.disponible === true);
         } else {
@@ -119,7 +119,7 @@ export class CrearPedidoComponent implements OnInit, OnDestroy {
           this.fechaOriginalPedido = null;
           this.minDateCalendar = new Date();
           
-          if (!this.isAdmin()) {
+          if (!this.esAdmin()) {
              this.pedidoForm.patchValue({ fecha: new Date() });
           } 
         }
@@ -151,7 +151,7 @@ export class CrearPedidoComponent implements OnInit, OnDestroy {
     });
 
     if (this.pedido.cliente) {
-        if (this.isAdmin()) {
+        if (this.esAdmin()) {
             const clienteEnLista = this.clientes.find(c => c.id === this.pedido.cliente.id);
             this.pedidoForm.controls['cliente'].setValue(clienteEnLista || this.pedido.cliente);
         } else {
@@ -246,11 +246,11 @@ export class CrearPedidoComponent implements OnInit, OnDestroy {
     });
   }
 
-  back() {
+  atras() {
     this.editCrear.emit(false);
   }
 
-  savePedido() {
+  guardarPedido() {
     if (this.pedidoForm.invalid) {
       Swal.fire({ title: "Error", text: "Complete Cliente y Fecha", icon: "warning" });
       return;
