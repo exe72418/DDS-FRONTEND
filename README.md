@@ -1,6 +1,6 @@
 # FRONTEND Trabajo Práctico de Desarrollo de Software - Supermercado FAST
 
-## 👥 Integrantes
+## Integrantes
 
 | Legajo | Apellido y Nombres |
 |:-------|:-------------------|
@@ -9,7 +9,7 @@
 | 43814 | Aieta, Federico |
 | 42775 | Reinoso, Alfredo |
 
-## 🔗 Repositorios
+## Repositorios
 
 * **Frontend App:** [https://github.com/Facultad-utn-desarrollo/DDS-FRONTEND/tree/stable](https://github.com/Facultad-utn-desarrollo/DDS-FRONTEND/tree/stable)
 * **Backend App:** [https://github.com/Facultad-utn-desarrollo/DDS-BACKEND/tree/stable](https://github.com/Facultad-utn-desarrollo/DDS-BACKEND/tree/stable)
@@ -154,5 +154,5 @@ npx cypress open
 
 ---
 
-## 6. Playlist de Vistas
+## 8. Playlist de Vistas
 (En esta sección se agregarán próximamente los videos demostrativos del flujo de Usuario y Administrador)
