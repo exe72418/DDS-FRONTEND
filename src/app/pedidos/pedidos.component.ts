@@ -53,7 +53,7 @@ export class PedidosComponent implements OnInit, OnDestroy {
     });
 
     this.search();
-    if (this.isAdmin()) {
+    if (this.esAdmin()) {
         this.cargarClientes();
     }
   }
@@ -64,7 +64,7 @@ export class PedidosComponent implements OnInit, OnDestroy {
     }
   }
 
-  isAdmin(): boolean {
+  esAdmin(): boolean {
     return this.authService.getUserData()?.role === 'admin';
   }
 
@@ -80,7 +80,7 @@ search() {
 
     let observablePedidos;
 
-    if (this.isAdmin()) {
+    if (this.esAdmin()) {
         observablePedidos = this._pedidoService.getAll();
     } else {
         observablePedidos = this._pedidoService.misPedidos();

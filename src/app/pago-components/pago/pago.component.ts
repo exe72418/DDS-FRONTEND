@@ -127,7 +127,7 @@ export class PagoComponent implements OnInit, OnDestroy {
     });
   }
 
-  changeEditCreate() {
+  cambiarEditarCrear() {
     this.crearEditarModePago = false;
     this.pagoSelected = null;
     this.search();

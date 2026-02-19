@@ -9,7 +9,7 @@
         label="Nuevo"
         icon="pi pi-plus"
         styleClass="p-button-sm btn-nuevo"
-        (onClick)="new()">
+        (onClick)="nuevo()">
       </p-button>
     </div>
 
@@ -54,7 +54,7 @@
                 [outlined]="true"
                 severity="success"
                 styleClass="p-button-sm p-button-icon-only"
-                (onClick)="editTipoPago(tipoPago)">
+                (onClick)="editarTipoPago(tipoPago)">
               </p-button>
 
               <p-button
@@ -64,7 +64,7 @@
                 [rounded]="true"
                 [outlined]="true"
                 styleClass="p-button-sm p-button-icon-only"
-                (onClick)="deleteTipoPago(tipoPago)">
+                (onClick)="borrarTipoPago(tipoPago)">
               </p-button>
             </div>
           </td>
