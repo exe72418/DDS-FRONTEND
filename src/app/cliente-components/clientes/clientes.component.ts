@@ -20,7 +20,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
   clienteForm!: FormGroup;
   clientes!: Cliente[];
 
-  esMobile: boolean = false;
+  isMobile: boolean = false;
   private resizeSub!: Subscription;
 
   constructor(
@@ -31,8 +31,10 @@ export class ClientesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     this.clienteForm = new FormGroup({

@@ -114,7 +114,7 @@ export class TipopagoComponent implements OnInit, OnDestroy {
               'El tipo de pago ha sido dado de baja.',
               'success'
             );
-            this.search();
+            this.buscar();
           },
           error: () => {
             this.cargaService.hide();
