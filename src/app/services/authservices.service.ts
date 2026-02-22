@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -11,11 +11,13 @@ export class AuthservicesService {
 
   constructor(private http: HttpClient) {}
 
-  // Método para hacer login y obtener el token
   login(username: string, password: string): Observable<any> {
     return this.http
       .post<any>(environment.serverUrl + 'login/', { username, password })
       .pipe(
+        tap(res => {
+          localStorage.setItem('auth_token', res.token); 
+        }),
         catchError((error) => {
           console.error('Error de autenticación:', error);
           throw error;
@@ -23,39 +25,32 @@ export class AuthservicesService {
       );
   }
 
-  
-  register(data: any) {
-  return this.http.post(
-    environment.serverUrl + 'login/register',
-    data
-  );
+  register(data: any): Observable<any> {
+    return this.http.post(environment.serverUrl + 'login/register', data);
   }
 
-  // Obtener el token JWT del localStorage
   getToken(): string | null {
     return localStorage.getItem('auth_token');
   }
 
-  // Verificar si el usuario está autenticado (si hay un token)
   isAuthenticated(): boolean {
-    const token = this.getToken();
-    return token !== null;
+    return this.getToken() !== null;
   }
 
-  getUserData(): { userId: number; role: string } | null {
-    const token = this.getToken();
-    if (!token) return null;
+ getUserData(): { userId: number; role: string; username: string } | null {
+  const token = this.getToken();
+  if (!token) return null;
 
-    const payload = token.split('.')[1];
-    const decoded = JSON.parse(atob(payload));
+  const payload = token.split('.')[1];
+  const decoded = JSON.parse(atob(payload));
 
-    return {
-      userId: decoded.userId,
-      role: decoded.role,
-    };
-  }
+  return {
+    userId: decoded.userId,
+    role: decoded.role,
+    username: decoded.username,
+  };
+}
 
-  // Método para cerrar sesión (eliminar el token)
   logout(): void {
     localStorage.removeItem('auth_token');
   }
