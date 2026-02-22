@@ -30,8 +30,10 @@ export class RepartidorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     this.repartidorForm = new FormGroup({
@@ -110,21 +112,24 @@ search() {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
-        this.repartidorService.delete(repartidor.id).subscribe(() => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "Repartidor dado de baja",
-            text: "",
-            icon: "success"
-          });
-          this.search();
-        }, (error) => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "Repartidor no se dio de baja",
-            text: error.message,
-            icon: "error"
-          });
+        this.repartidorService.delete(repartidor.id).subscribe({
+          next: () => {
+            this.cargaService.hide();
+            Swal.fire({
+              title: "Repartidor dado de baja",
+              text: "",
+              icon: "success"
+            });
+            this.search();
+          },
+          error: (error) => {
+            this.cargaService.hide();
+            Swal.fire({
+              title: "Repartidor no se dio de baja",
+              text: error.message,
+              icon: "error"
+            });
+          }
         });
       }
     });

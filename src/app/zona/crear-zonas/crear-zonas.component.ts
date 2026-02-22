@@ -34,8 +34,10 @@ export class CrearZonasComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     if (this.zona) {
@@ -61,44 +63,50 @@ export class CrearZonasComponent implements OnInit, OnDestroy {
         zona.id = 0; 
 
         this.zonaService.create(zona)
-          .subscribe(response => {
-            this.cargaService.hide();
-            Swal.fire({
-              title: "Guardado",
-              text: 'Zona creada correctamente',
-              icon: "success"
-            });
+          .subscribe({
+            next: (response) => {
+              this.cargaService.hide();
+              Swal.fire({
+                title: "Guardado",
+                text: 'Zona creada correctamente',
+                icon: "success"
+              });
 
-            this.editCrear.emit(false);
-          }, error => {
-            this.cargaService.hide();
-            Swal.fire({
-              title: "Error",
-              text: 'Error al crear la zona',
-              icon: "error"
-            });
+              this.editCrear.emit(false);
+            },
+            error: (error) => {
+              this.cargaService.hide();
+              Swal.fire({
+                title: "Error",
+                text: 'Error al crear la zona',
+                icon: "error"
+              });
+            }
           });
 
       } else {
         zona.id = this.zona.id; 
 
         this.zonaService.update(zona)
-          .subscribe(response => {
-            this.cargaService.hide();
-            Swal.fire({
-              title: "Guardado",
-              text: 'Zona actualizada correctamente',
-              icon: "success"
-            });
+          .subscribe({
+            next: (response) => {
+              this.cargaService.hide();
+              Swal.fire({
+                title: "Guardado",
+                text: 'Zona actualizada correctamente',
+                icon: "success"
+              });
 
-            this.editCrear.emit(false);
-          }, error => {
-            this.cargaService.hide();
-            Swal.fire({
-              title: "Error",
-              text: 'Error al modificar la zona',
-              icon: "error"
-            });
+              this.editCrear.emit(false);
+            },
+            error: (error) => {
+              this.cargaService.hide();
+              Swal.fire({
+                title: "Error",
+                text: 'Error al modificar la zona',
+                icon: "error"
+              });
+            }
           });
       }
 

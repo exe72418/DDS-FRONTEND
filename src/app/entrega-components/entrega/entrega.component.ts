@@ -40,8 +40,10 @@ export class EntregaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargaService.show();
     
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     if (this.isAdmin()) {
@@ -118,21 +120,24 @@ export class EntregaComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
-        this._entregaService.delete(ent.id!).subscribe(() => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "Entrega borrada",
-            text: "",
-            icon: "success"
-          });
-          this.buscar(); 
-        }, (error) => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "No se pudo borrar",
-            text: error.error.message || error.message,
-            icon: "error"
-          });
+        this._entregaService.delete(ent.id!).subscribe({
+          next: () => {
+            this.cargaService.hide();
+            Swal.fire({
+              title: "Entrega borrada",
+              text: "",
+              icon: "success"
+            });
+            this.buscar(); 
+          },
+          error: (error) => {
+            this.cargaService.hide();
+            Swal.fire({
+              title: "No se pudo borrar",
+              text: error.error.message || error.message,
+              icon: "error"
+            });
+          }
         });
       }
     });

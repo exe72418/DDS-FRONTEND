@@ -41,12 +41,16 @@ export class CrearRepartidoresComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
-    this.zonaService.getZonasActivas().subscribe((response: any) => {
-      this.zonas = response.data || response;
+    this.zonaService.getZonasActivas().subscribe({
+      next: (response: any) => {
+        this.zonas = response.data || response;
+      }
     });
 
     if (this.repartidor?.id) {

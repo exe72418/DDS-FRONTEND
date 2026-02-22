@@ -41,21 +41,25 @@ export class ProductosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargaService.show();
     
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     this.search();
-    this.tipoproductoService.getAll().subscribe((data: any) => {
-      this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
-        const tipoProductoFormateado: TipoProducto = {
-          id: tipoprod.id,
-          nombre: tipoprod.nombre,
-          disponible: tipoprod.disponible
-        };
-        return tipoProductoFormateado;
-      });
-      this.cargaService.hide();
+    this.tipoproductoService.getAll().subscribe({
+      next: (data: any) => {
+        this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
+          const tipoProductoFormateado: TipoProducto = {
+            id: tipoprod.id,
+            nombre: tipoprod.nombre,
+            disponible: tipoprod.disponible
+          };
+          return tipoProductoFormateado;
+        });
+        this.cargaService.hide();
+      }
     });
   }
 
@@ -129,8 +133,8 @@ search() {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
-        this._productoService.delete(prod).subscribe(
-          () => {
+        this._productoService.delete(prod).subscribe({
+          next: () => {
             this.cargaService.hide();
             Swal.fire({
               title: "Producto Dado de baja",
@@ -139,7 +143,7 @@ search() {
             });
             this.search();
           },
-          () => {
+          error: () => {
             this.cargaService.hide();
             Swal.fire({
               title: "Error",
@@ -147,7 +151,7 @@ search() {
               icon: "error"
             });
           }
-        );
+        });
       }
     });
   }

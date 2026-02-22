@@ -41,27 +41,33 @@ export class CrearProductosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     if (this.producto?.codigo) {
-      this._productoService.findOne(this.producto.codigo).subscribe((prodBackend) => {
-        this.prodForm.patchValue(prodBackend);
+      this._productoService.findOne(this.producto.codigo).subscribe({
+        next: (prodBackend) => {
+          this.prodForm.patchValue(prodBackend);
+        }
       });
     } else {
       this.prodForm.reset(); 
     }
 
-    this.tipoproductoService.getTiposDeProductoActivos().subscribe((data: any) => {
-      this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
-        const tipoProductoFormateado: TipoProducto = {
-          id: tipoprod.id,
-          nombre: tipoprod.nombre,
-          disponible: tipoprod.disponible
-        };
-        return tipoProductoFormateado;
-      });
+    this.tipoproductoService.getTiposDeProductoActivos().subscribe({
+      next: (data: any) => {
+        this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
+          const tipoProductoFormateado: TipoProducto = {
+            id: tipoprod.id,
+            nombre: tipoprod.nombre,
+            disponible: tipoprod.disponible
+          };
+          return tipoProductoFormateado;
+        });
+      }
     });
   }
 

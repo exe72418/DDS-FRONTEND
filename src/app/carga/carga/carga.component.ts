@@ -11,8 +11,10 @@ export class CargaComponent implements OnInit {
   constructor(public cargaService: CargaService) { }
 
   ngOnInit(): void {
-    this.cargaService.carga$.subscribe(value => {
-      this.estacargando = value;
+    this.cargaService.carga$.subscribe({
+      next: (value) => {
+        this.estacargando = value;
+      }
     });
   }
 

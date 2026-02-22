@@ -29,8 +29,10 @@ export class TipopagoComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     this.tipoPagoForm = new FormGroup({
@@ -104,21 +106,24 @@ export class TipopagoComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.cargaService.show();
-        this.tipopagoService.delete(tipoPago.id).subscribe(() => {
-          this.cargaService.hide();
-          Swal.fire(
-            'Eliminado',
-            'El tipo de pago ha sido dado de baja.',
-            'success'
-          );
-          this.search();
-        }, () => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "Error",
-            text: 'Error al dar de baja el tipo de pago',
-            icon: "error"
-          });
+        this.tipopagoService.delete(tipoPago.id).subscribe({
+          next: () => {
+            this.cargaService.hide();
+            Swal.fire(
+              'Eliminado',
+              'El tipo de pago ha sido dado de baja.',
+              'success'
+            );
+            this.search();
+          },
+          error: () => {
+            this.cargaService.hide();
+            Swal.fire({
+              title: "Error",
+              text: 'Error al dar de baja el tipo de pago',
+              icon: "error"
+            });
+          }
         });
       }
     });

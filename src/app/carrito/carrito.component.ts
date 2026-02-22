@@ -45,8 +45,10 @@ export class CarritoComponent implements OnInit, OnDestroy {
     this.llenarData();
     this.pedidoSelectSnapShot = _.cloneDeep(this.store.selectSnapshot(PedidoState.getPedido));
 
-    this.resizeSubscription = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSubscription = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
   }
 

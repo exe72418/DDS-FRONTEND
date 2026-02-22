@@ -28,8 +28,10 @@ export class ZonasComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     this.zonaForm = new FormGroup({
@@ -103,21 +105,24 @@ search() {
       if (result.isConfirmed) {
         this.cargaService.show();
         
-        this.zonaService.delete(zona.id!).subscribe(() => {
-          this.cargaService.hide();
-          Swal.fire(
-            'Eliminado',
-            'La zona ha sido dada de baja.',
-            'success'
-          );
-          this.search();
-        }, (error) => {
-          this.cargaService.hide();
-          Swal.fire({
-            title: "Error",
-            text: 'Error al dar de baja la zona',
-            icon: "error"
-          });
+        this.zonaService.delete(zona.id!).subscribe({
+          next: () => {
+            this.cargaService.hide();
+            Swal.fire(
+              'Eliminado',
+              'La zona ha sido dada de baja.',
+              'success'
+            );
+            this.search();
+          },
+          error: (error) => {
+            this.cargaService.hide();
+            Swal.fire({
+              title: "Error",
+              text: 'Error al dar de baja la zona',
+              icon: "error"
+            });
+          }
         });
       }
     });

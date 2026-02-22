@@ -56,8 +56,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     this.isAutenticated = this.authService.isAuthenticated();
@@ -68,8 +70,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.cargarDatosCliente();
         });
     } else {
-        this.zonaService.getZonasActivas().subscribe((response: any) => {
+        this.zonaService.getZonasActivas().subscribe({
+          next: (response: any) => {
             this.zonas = response.data || response;
+          }
         });
     }
   }
@@ -131,7 +135,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             
             this.dialogRef.close(); 
             Swal.fire({ 
-                title: `Bienvenido`,  // Cambié "Registrado" por "Bienvenido" que suena mejor al login
+                title: `Bienvenido`,  
                 icon: "success",
                 timer: 1500,
                 showConfirmButton: false

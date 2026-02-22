@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { CargaService } from '../../services/carga.service';
 import { BreakpointService } from '../../services/breakpoint.service'; 
 import { Subscription } from 'rxjs'; 
+
 @Component({
   selector: 'app-crear-tipopago',
   templateUrl: './crear-tipopago.component.html',
@@ -34,8 +35,10 @@ export class CrearTipoPagoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     if (this.tipoPago?.id) {
@@ -71,40 +74,46 @@ export class CrearTipoPagoComponent implements OnInit, OnDestroy {
 
     if (!esEdicion) {
       tipoPago.id = 0;
-      this.tipopagoService.create(tipoPago).subscribe(() => {
-        this.cargaService.hide();
-        Swal.fire({
-          title: "Guardado",
-          text: 'Tipo de pago creado',
-          icon: "success"
-        });
-        this.editCrear.emit(false);
-      }, (error) => {
-        this.cargaService.hide();
-        console.error('Error al crear el tipo de pago:', error);
-        Swal.fire({
-          title: "Error",
-          text: 'Error al crear el tipo de pago',
-          icon: "error"
-        });
+      this.tipopagoService.create(tipoPago).subscribe({
+        next: () => {
+          this.cargaService.hide();
+          Swal.fire({
+            title: "Guardado",
+            text: 'Tipo de pago creado',
+            icon: "success"
+          });
+          this.editCrear.emit(false);
+        },
+        error: (error) => {
+          this.cargaService.hide();
+          console.error('Error al crear el tipo de pago:', error);
+          Swal.fire({
+            title: "Error",
+            text: 'Error al crear el tipo de pago',
+            icon: "error"
+          });
+        }
       });
     } else {
-      this.tipopagoService.update(tipoPago).subscribe(() => {
-        this.cargaService.hide();
-        Swal.fire({
-          title: "Guardado",
-          text: 'Tipo de pago actualizado',
-          icon: "success"
-        });
-        this.editCrear.emit(false);
-      }, (error) => {
-        this.cargaService.hide();
-        console.error('Error al modificar el tipo de pago:', error);
-        Swal.fire({
-          title: "Error",
-          text: 'Error al modificar el tipo de pago',
-          icon: "error"
-        });
+      this.tipopagoService.update(tipoPago).subscribe({
+        next: () => {
+          this.cargaService.hide();
+          Swal.fire({
+            title: "Guardado",
+            text: 'Tipo de pago actualizado',
+            icon: "success"
+          });
+          this.editCrear.emit(false);
+        },
+        error: (error) => {
+          this.cargaService.hide();
+          console.error('Error al modificar el tipo de pago:', error);
+          Swal.fire({
+            title: "Error",
+            text: 'Error al modificar el tipo de pago',
+            icon: "error"
+          });
+        }
       });
     }
   }

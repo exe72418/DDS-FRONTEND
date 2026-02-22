@@ -43,16 +43,21 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargaService.show();
     
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
-    this._productoService.getProductosActivos().subscribe((productos) => {
-      this.productos = productos;
-      this.cargaService.hide(); 
+    this._productoService.getProductosActivos().subscribe({
+      next: (productos) => {
+        this.productos = productos;
+        this.cargaService.hide(); 
+      }
     });
 
-    this.tipoproductoService.getTiposDeProductoActivos().subscribe((data: any) => {
+    this.tipoproductoService.getTiposDeProductoActivos().subscribe({
+      next: (data: any) => {
         this.tiposProducto = data['data'].map((tipoprod: TipoProducto) => {
           const tipoProductoFormateado: TipoProducto = {
             id: tipoprod.id,
@@ -61,6 +66,7 @@ export class HomeComponentComponent implements OnInit, OnDestroy {
           };
           return tipoProductoFormateado;
         });
+      }
     });
 
     const pedidoEnMemoria = this.store.selectSnapshot(PedidoState.getPedido);

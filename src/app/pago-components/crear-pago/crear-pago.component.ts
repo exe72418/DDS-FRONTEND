@@ -48,8 +48,10 @@ export class CrearPagoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargaService.show();
 
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     let observablePedidos;

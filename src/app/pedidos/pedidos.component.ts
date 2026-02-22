@@ -48,8 +48,10 @@ export class PedidosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargaService.show();
     
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     this.search();
@@ -69,9 +71,11 @@ export class PedidosComponent implements OnInit, OnDestroy {
   }
 
   cargarClientes() {
-    this._clienteService.getClientesActivos().subscribe((resp: any) => {
-      const list: Cliente[] = resp.data || resp;
-      this.clientes = list;
+    this._clienteService.getClientesActivos().subscribe({
+      next: (resp: any) => {
+        const list: Cliente[] = resp.data || resp;
+        this.clientes = list;
+      }
     });
   }
 

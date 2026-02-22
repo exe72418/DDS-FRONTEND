@@ -43,12 +43,16 @@ export class CrearClientesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
-    this.zonaService.getZonasActivas().subscribe((response: any) => {
-      this.zonas = response.data || response;
+    this.zonaService.getZonasActivas().subscribe({
+      next: (response: any) => {
+        this.zonas = response.data || response;
+      }
     });
 
     if (this.cliente?.id) {

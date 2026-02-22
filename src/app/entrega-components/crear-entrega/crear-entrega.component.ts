@@ -64,8 +64,10 @@ export class CrearEntregaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cargaService.show();
 
-    this.resizeSub = this.breakpointService.isMobile$.subscribe(mobile => {
-      this.isMobile = mobile;
+    this.resizeSub = this.breakpointService.isMobile$.subscribe({
+      next: (mobile) => {
+        this.isMobile = mobile;
+      }
     });
 
     let pedidosObservable;
@@ -244,23 +246,29 @@ export class CrearEntregaComponent implements OnInit, OnDestroy {
 
       if (this.entrega && this.entrega.id) {
         entregaData.id = this.entrega.id;
-        this._entregaService.update(entregaData).subscribe(() => {
-          this.cargaService.hide();
-          Swal.fire({ title: "Guardado", text: "Entrega actualizada", icon: "success" });
-          this.editCrear.emit(false);
-        }, error => {
-          this.cargaService.hide();
-          Swal.fire({ title: "Error", text: error.error.message || 'Error al modificar', icon: "error" });
+        this._entregaService.update(entregaData).subscribe({
+          next: () => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Guardado", text: "Entrega actualizada", icon: "success" });
+            this.editCrear.emit(false);
+          },
+          error: (error) => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Error", text: error.error.message || 'Error al modificar', icon: "error" });
+          }
         });
       } else {
         entregaData.id = 0;
-        this._entregaService.save(entregaData).subscribe(() => {
-          this.cargaService.hide();
-          Swal.fire({ title: "Guardado", text: "Entrega creada", icon: "success" });
-          this.editCrear.emit(false);
-        }, error => {
-          this.cargaService.hide();
-          Swal.fire({ title: "Error", text: error.error.message || 'Error al crear', icon: "error" });
+        this._entregaService.save(entregaData).subscribe({
+          next: () => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Guardado", text: "Entrega creada", icon: "success" });
+            this.editCrear.emit(false);
+          },
+          error: (error) => {
+            this.cargaService.hide();
+            Swal.fire({ title: "Error", text: error.error.message || 'Error al crear', icon: "error" });
+          }
         });
       }
     } else {

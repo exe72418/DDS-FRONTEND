@@ -5,12 +5,13 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { appHttpInterceptor } from './app.interceptor';
 
-  export const appConfig: ApplicationConfig = {
-    providers: [
-      provideHttpClient(            
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(            
         withInterceptors([appHttpInterceptor])
     ),
-      provideZoneChangeDetection({ eventCoalescing: true }),
-      provideRouter(routes), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(),
-    ],
-  };
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideAnimationsAsync()
+  ],
+};
