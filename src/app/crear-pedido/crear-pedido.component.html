@@ -12,7 +12,7 @@
 
             <div class="header-row">
                 
-                <div class="form-group flex-item" *ngIf="isAdmin()">
+                <div class="form-group flex-item" *ngIf="esAdmin()">
                     <label for="cliente">Cliente</label>
                     <p-dropdown 
                         id="cliente" 
@@ -27,7 +27,7 @@
                     </p-dropdown>
                 </div>
 
-                <div class="form-group flex-item" *ngIf="!isAdmin()">
+                <div class="form-group flex-item" *ngIf="!esAdmin()">
                     <label>Cliente</label>
                     <div style="padding: 0.5rem 0.75rem; background: #e9ecef; border: 1px solid #ced4da; border-radius: 6px; min-height: 42px; display: flex; align-items: center;">
                         <span style="font-weight: bold; color: #495057;">
@@ -128,8 +128,8 @@
     </div>
 
     <div class="button-group main-actions">
-        <button pButton label="Volver" severity="secondary" type="button" (click)="back()"></button>
-        <button pButton label="Guardar Pedido" severity="success" (click)="savePedido()"></button>
+        <button pButton label="Volver" severity="secondary" type="button" (click)="atras()"></button>
+        <button pButton label="Guardar Pedido" severity="success" (click)="guardarPedido()"></button>
     </div>
 
 </div>

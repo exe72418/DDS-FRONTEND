@@ -54,7 +54,7 @@ export class CrearTipoPagoComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
+  atras() {
     this.editCrear.emit(false);
   }
 

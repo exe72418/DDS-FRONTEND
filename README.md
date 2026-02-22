@@ -1,42 +1,112 @@
-# Fast
+# FRONTEND Trabajo Práctico de Desarrollo de Software - Supermercado FAST
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.1.
+## Integrantes
 
-## Development server
+| Legajo | Apellido y Nombres |
+|:-------|:-------------------|
+| 47048 | Zarate, Exequiel |
+| 47094 | Martinez, Bruno |
+| 43814 | Aieta, Federico |
+| 42775 | Reinoso, Alfredo |
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Repositorios
 
-## Code scaffolding
+* **Frontend App:** [https://github.com/Facultad-utn-desarrollo/DDS-FRONTEND/tree/stable](https://github.com/Facultad-utn-desarrollo/DDS-FRONTEND/tree/stable)
+* **Backend App:** [https://github.com/Facultad-utn-desarrollo/DDS-BACKEND/tree/stable](https://github.com/Facultad-utn-desarrollo/DDS-BACKEND/tree/stable)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## 1. Propuesta
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Descripción
+La empresa de nuestro trabajo es un supermercado "FAST" que busca desarrollar una plataforma web para que los clientes puedan realizar pedidos de forma online. El sistema administra todo el ciclo de venta, desde la selección de productos hasta la entrega (delivery) y el pago, diferenciando roles entre Clientes y Administradores.
 
-## Running unit tests
+- Proposal: [Hacer click aquí](https://github.com/BrunoMar99/tp/blob/fc37bd3851383300b3631d4459443cda8e70dfed/proposal.md)
+- Trello: [Hacer click aquí](https://trello.com/invite/b/6620503434dd05d365b99496/ATTI867d255b6b2db2c7a96e0ef11a6976e6055451AE/trabajo-practico)
+- Toda la conversacion/organizacion fue a traves de Discord
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 2. Información de la Aplicación
 
-## Running end-to-end tests
+- **Node.js:** El proyecto requiere Node.js v20 o superior para ejecutar el servidor backend y las herramientas de desarrollo del frontend.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- **Framework:** Toda la aplicación está construida a partir del framework Angular 18.1.
 
-## Further help
+- **Gestor de Estado:** NGXS (v18.1.1) almacena la información centralizada, como los datos del pedido en curso y del usuario.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Librería UI Principal:** PrimeNG (v17.18.9) la librería de diseño principal que provee los componentes visuales listos para usar.
 
-## Testing Unitarios por componentes 
+- **Librería UI Secundaria:** Angular Material (v18.1.4) y el CDK (v18.1.4) son un conjunto de herramientas y componentes visuales secundarios que complementan la interfaz.
+
+- **Testing E2E / Componentes:** Cypress (v15.10.0) como motor de pruebas moderno utilizado para aislar los componentes y simular la interacción real de los usuarios en el navegador.
+
+- **Lenguaje:** TypeScript (v5.5.2) que le suma tipado estricto a JavaScript para atrapar errores antes de ejecutar el código.
+
+- **Gestor de paquetes:** pnpm (v9.0.4) para instalar todas las dependencias del frontend.
+
+---
+
+## 3. Instrucciones de Instalación
+
+Sigue estos pasos para correr el frontend en tu entorno local:
+
+### a. Clonar el repositorio
+```bash
+git clone https://github.com/Facultad-utn-desarrollo/DDS-FRONTEND.git
+```
+```bash
+cd DDS-FRONTEND
+```
+### b. Instalar dependencias
+```bash
+npm install
+```
+### c. Ejecutar la aplicación
+
+Para entorno de desarrollo:
+
+```bash
+npm run ng serve
+```
+La aplicación estará disponible localmente en http://localhost:4200.
+
+---
+
+## 4. Datos de Prueba (Testing)
+Para facilitar la corrección y pruebas de los roles, se proporcionan las siguientes credenciales:
+
+**Rol: CLIENTE**
+* **Usuario:** BrunoCliente
+* **Contraseña:** BrunoCliente12345
+
+**Rol: ADMINISTRADOR**
+* **Usuario:** Bruno123
+* **Contraseña:** Bruno123
+
+---
+
+## 5. Deploy
+
+El proyecto se encuentra desplegado y funcional en los siguientes enlaces:
+
+* **Frontend (Netlify):** [https://frontfast.netlify.app/](https://frontfast.netlify.app/)
+
+* **Backend (Render):** [https://dds-backend-a.onrender.com/](https://dds-backend-a.onrender.com/)
+
+**Aviso Importante: Debido a las limitaciones del plan gratuito en Render, el servidor entra en modo suspensión por inactividad. La primera petición puede demorar unos 60 segundos en responder mientras el servicio se reactiva.**
+
+---
+
+## 6. Testing Unitarios por componentes 
 El proyecto cuenta con unos test de componentes automatizados desarrollados con Cypress. 
 Los mismos se pueden encontrar en **\cypress\component**
 
 ### Cobertura de los tests
 
-**login.component.cy.ts:** Valida qe se muestre el loguin, la interacción con los campos de entrada y la lógica de cambio entre los formularios de ingreso y registro del mismo.
-**home.component.cy.ts:** Verifica que se muestre el catálogo de productos y la lógica de control de stock, validando que la interfaz responda correctamente al flujo de compra y a los límites de inventario definidos.
-**pago.component.cy.ts:** Evalúa la integración de formularios reactivos y la lógica de selección de pagos, asegurandose que los montos se actualicen solos al elegir un pedido y que el pago se guarde bien si se cargó la información correspondiente.
-**entrega.component.cy.ts:** Valida que al elegir una zona se filtren de forma correcta los repartidores y pedidos disponibles, y que no te deje guardar la entrega si no hay un repartidor asignado.
-
+- **login.component.cy.ts:** Valida qe se muestre el loguin, la interacción con los campos de entrada y la lógica de cambio entre los formularios de ingreso y registro del mismo.
+- **home.component.cy.ts:** Verifica que se muestre el catálogo de productos y la lógica de control de stock, validando que la interfaz responda correctamente al flujo de compra y a los límites de inventario definidos.
+- **pago.component.cy.ts:** Evalúa la integración de formularios reactivos y la lógica de selección de pagos, asegurandose que los montos se actualicen solos al elegir un pedido y que el pago se guarde bien si se cargó la información correspondiente.
+- **entrega.component.cy.ts:** Valida que al elegir una zona se filtren de forma correcta los repartidores y pedidos disponibles, y que no te deje guardar la entrega si no hay un repartidor asignado.
 
 ### Pre-requisitos para ejecutarlos
 Asegúrese de que el Backend y el Frontend estén corriendo en su entorno local.
@@ -53,18 +123,24 @@ npx cypress open
 4. Elegir el navegador
 5. Hacer clic en los archivos e ir probando.
 
-## Testing E2E (End-to-End)
+## 7. Testing E2E (End-to-End)
 El proyecto cuenta con una prueba automatizada desarrollada con Cypress. Valida el Flujo Crítico de Negocio, simulando la interacción real de un usuario y un administrador.
 El mismo se puede encontrar en **\cypress\e2e\flujo_completo_compra.cy.ts**
 
 ### Cobertura del Test
-**1. Login de Cliente:** Ingreso con credenciales válidas.
-**2. Búsqueda y Filtrado:** Uso del buscador y filtros por categoría.
-**3. Carrito de Compras:** Agregado de múltiples productos con distintas cantidades.
-**4. Checkout:** Confirmación del pedido y persistencia de datos.
-**5. Procesamiento de Pagos:** Pago con distintos medios (Efectivo y Transferencia/QR).
-**6. Cambio de Roles:** Logout del cliente y Login como Administrador.
-**7. Continuidad del negocio:** Asignación de Zona, Repartidor y unificando múltiples pedidos pendientes en una misma entrega.
+1. **Login de Cliente:** Ingreso con credenciales válidas.
+
+2. **Búsqueda y Filtrado:** Uso del buscador y filtros por categoría.
+
+3. **Carrito de Compras:** Agregado de múltiples productos con distintas cantidades.
+
+4. **Checkout:** Confirmación del pedido y persistencia de datos.
+
+5. **Procesamiento de Pagos:** Pago con distintos medios (Efectivo y Transferencia/QR).
+
+6. **Cambio de Roles:** Logout del cliente y Login como Administrador.
+
+7. **Continuidad del negocio:** Asignación de Zona, Repartidor y unificando múltiples pedidos pendientes en una misma entrega.
 
 ### Pre-requisitos para ejecutar el Test
 Asegúrese de que el Backend y el Frontend estén corriendo en su entorno local.
@@ -76,3 +152,10 @@ npx cypress open
 2. Seleccionar **E2E Testing.**
 3. Elegir el navegador
 4. Hacer clic en el archivo **flujo_completo_compra.cy.ts**
+
+---
+
+## 8. Playlist de Vistas
+En esta seccion brindaremos el link a la playlist de videos mostrando la aplicación y el manejo de los roles.
+
+[Hacer click aquí](https://youtube.com/playlist?list=PLfm1QmpcGZxFqjhD5qURIUcmYd2H9kl27&si=gglMzCbjGbAkKWve)

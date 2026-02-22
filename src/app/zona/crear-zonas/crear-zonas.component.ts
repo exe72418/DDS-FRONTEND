@@ -51,7 +51,7 @@ export class CrearZonasComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
+  atras() {
     this.editCrear.emit(false)
   }
 

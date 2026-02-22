@@ -234,7 +234,7 @@ export class CrearEntregaComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
+  atras() {
     this.editCrear.emit(false);
   }
 

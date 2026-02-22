@@ -77,7 +77,7 @@ export class CrearProductosComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
+  atras() {
     this.editCrear.emit(false);
   }
 

@@ -69,7 +69,7 @@ export class ProductosComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeEditCreate() {
+  cambiarEditarCrear() {
     this.crearEditarMode = false;
     this.prodSelected = null; 
     this.search();
@@ -121,7 +121,7 @@ search() {
     });
   }
 
-  deleteProduct(prod: Producto) {
+  borrarProduct(prod: Producto) {
     Swal.fire({
       title: "Atencion?",
       text: "Deseas dar de baja el producto " + prod.descripcion,
@@ -156,12 +156,12 @@ search() {
     });
   }
 
-  editProduct(prod: Producto) {
+  editarProduct(prod: Producto) {
     this.prodSelected = prod;     
     this.crearEditarMode = true;  
   }
 
-  new() {
+  nuevo() {
     this.prodSelected = null;     
     this.crearEditarMode = true;  
   }

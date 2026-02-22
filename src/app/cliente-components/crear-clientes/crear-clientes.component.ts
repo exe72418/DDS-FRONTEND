@@ -71,7 +71,7 @@ export class CrearClientesComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
+  atras() {
     this.editCrear.emit(false);
   }
 

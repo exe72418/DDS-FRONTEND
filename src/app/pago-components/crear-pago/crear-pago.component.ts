@@ -153,7 +153,7 @@ export class CrearPagoComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
+  atras() {
     this.editCrear.emit(false);
   }
 

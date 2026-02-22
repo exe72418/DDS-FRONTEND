@@ -87,12 +87,12 @@ search() {
     this.zonaSelected = null!; 
   }
 
-  editZona(zona: Zona) {
+  editarZona(zona: Zona) {
     this.crearEditarMode = true;
     this.zonaSelected = zona;
   }
 
-  deleteZona(zona: Zona) {
+  borrarZona(zona: Zona) {
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'Deseas dar de baja la zona: ' + zona.nombre,

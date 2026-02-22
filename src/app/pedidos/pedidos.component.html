@@ -26,7 +26,7 @@
     >
       <ng-template pTemplate="header">
         <tr>
-          <th *ngIf="isAdmin() && !isMobile" pSortableColumn="cliente.apellidoNombre">
+          <th *ngIf="esAdmin() && !isMobile" pSortableColumn="cliente.apellidoNombre">
             Cliente <p-sortIcon field="cliente.apellidoNombre"></p-sortIcon>
           </th>
           
@@ -54,7 +54,7 @@
 
       <ng-template pTemplate="body" let-pedido>
         <tr>
-          <td *ngIf="isAdmin() && !isMobile" class="fw-semibold">{{ pedido.cliente?.apellidoNombre }}</td>
+          <td *ngIf="esAdmin() && !isMobile" class="fw-semibold">{{ pedido.cliente?.apellidoNombre }}</td>
           
           <td *ngIf="!isMobile">{{ pedido.entrega ? pedido.entrega.id : '—' }}</td>
           
@@ -114,7 +114,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td [attr.colspan]="4 + (isAdmin() && !isMobile ? 1 : 0) + (isMobile ? 0 : 2)" class="empty">
+          <td [attr.colspan]="4 + (esAdmin() && !isMobile ? 1 : 0) + (isMobile ? 0 : 2)" class="empty">
             No hay pedidos para mostrar.
           </td>
         </tr>

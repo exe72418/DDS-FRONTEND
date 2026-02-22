@@ -43,11 +43,11 @@ export class AppComponent implements OnInit {
      this.menuOpen = false;
   }
   
-  isAdmin(): boolean {
+  esAdmin(): boolean {
     return this.authService.getUserData()?.role === 'admin';
   } 
 
-  isCliente(): boolean {
+  esCliente(): boolean {
     return this.authService.getUserData()?.role === 'cliente';
   }
 

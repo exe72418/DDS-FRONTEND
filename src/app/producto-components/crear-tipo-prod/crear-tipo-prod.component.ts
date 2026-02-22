@@ -53,7 +53,7 @@ export class CrearTipoProdComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
+  atras() {
     this.editCrear.emit(false);
   }
 

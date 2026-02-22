@@ -39,7 +39,7 @@ export class TipopagoComponent implements OnInit, OnDestroy {
       id: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
     });
-    this.search();
+    this.buscar();
   }
 
   ngOnDestroy(): void {
@@ -48,7 +48,7 @@ export class TipopagoComponent implements OnInit, OnDestroy {
     }
   }
 
-  search() {
+  buscar() {
     this.cargaService.show();
 
     this.tipopagoService.getAll().subscribe({
@@ -81,20 +81,20 @@ export class TipopagoComponent implements OnInit, OnDestroy {
   changeEditCreate() {
     this.crearEditarMode = false;
     this.tipoPagoelected = null;
-    this.search();
+    this.buscar();
   }
 
-  new() {
+  nuevo() {
     this.tipoPagoelected = null;
     this.crearEditarMode = true;
   }
 
-  editTipoPago(tipopago: TipoPago) {
+  editarTipoPago(tipopago: TipoPago) {
     this.tipoPagoelected = tipopago;
     this.crearEditarMode = true;
   }
 
-  deleteTipoPago(tipoPago: TipoPago) {
+  borrarTipoPago(tipoPago: TipoPago) {
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'Deseas dar de baja el tipo de pago ' + tipoPago.nombre,

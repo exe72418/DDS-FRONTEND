@@ -15,7 +15,7 @@
 
     <p-table
       [value]="clientes"
-      [tableStyle]="{ 'min-width': isMobile ? '100%' : '50rem' }"
+      [tableStyle]="{ 'min-width': esMobile ? '100%' : '50rem' }"
       [paginator]="true"
       [rows]="10"
       [rowsPerPageOptions]="[10, 25, 50]"
@@ -24,14 +24,14 @@
     >
       <ng-template pTemplate="header">
         <tr>
-          <th *ngIf="!isMobile">ID</th>
+          <th *ngIf="!esMobile">ID</th>
           
           <th>Apellido y Nombre</th>
           <th>Teléfono</th>
           
-          <th *ngIf="!isMobile">CUIT</th>
-          <th *ngIf="!isMobile">Email</th>
-          <th *ngIf="!isMobile">Domicilio</th>
+          <th *ngIf="!esMobile">CUIT</th>
+          <th *ngIf="!esMobile">Email</th>
+          <th *ngIf="!esMobile">Domicilio</th>
           
           <th style="width: 120px;">Disponible</th>
           <th>Zona</th>
@@ -41,14 +41,14 @@
 
       <ng-template pTemplate="body" let-cliente>
         <tr>
-          <td *ngIf="!isMobile">{{ cliente.id }}</td>
+          <td *ngIf="!esMobile">{{ cliente.id }}</td>
           
           <td class="fw-semibold">{{ cliente.apellidoNombre }}</td>
           <td>{{ cliente.telefono }}</td>
           
-          <td *ngIf="!isMobile">{{ cliente.cuit }}</td>
-          <td *ngIf="!isMobile">{{ cliente.email }}</td>
-          <td *ngIf="!isMobile">{{ cliente.domicilio }}</td>
+          <td *ngIf="!esMobile">{{ cliente.cuit }}</td>
+          <td *ngIf="!esMobile">{{ cliente.email }}</td>
+          <td *ngIf="!esMobile">{{ cliente.domicilio }}</td>
 
           <td>
             <span
@@ -89,7 +89,7 @@
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td [attr.colspan]="isMobile ? 5 : 9" class="empty">
+          <td [attr.colspan]="esMobile ? 5 : 9" class="empty">
             No hay clientes para mostrar.
           </td>
         </tr>
