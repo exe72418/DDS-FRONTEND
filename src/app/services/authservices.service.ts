@@ -37,19 +37,28 @@ export class AuthservicesService {
     return this.getToken() !== null;
   }
 
- getUserData(): { userId: number; role: string; username: string } | null {
-  const token = this.getToken();
-  if (!token) return null;
-
-  const payload = token.split('.')[1];
-  const decoded = JSON.parse(atob(payload));
-
-  return {
-    userId: decoded.userId,
-    role: decoded.role,
-    username: decoded.username,
-  };
-}
+  getUserData(): { userId: number; role: string; username?: string } | null {
+    const token = this.getToken();
+    if (!token) return null;
+  
+    try {
+      const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload));
+  
+      if (decoded.exp * 1000 < Date.now()) {
+        this.logout(); 
+        return null;
+      }
+  
+      return {
+        userId: decoded.userId,
+        role: decoded.role,
+        username: decoded.username,
+      };
+    } catch {
+      return null;
+    }
+  }
 
   logout(): void {
     localStorage.removeItem('auth_token');
